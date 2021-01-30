@@ -3,12 +3,40 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from "redux/store";
+import { Amplify } from 'aws-amplify';
+import config from './amplify-config';
+
+Amplify.configure({
+  Auth: {
+      mandatorySignIn: true,
+      region: config.cognito.REGION,
+      userPoolId: config.cognito.USER_POOL_ID,
+      identityPoolId: config.cognito.IDENTITY_POOL_ID,
+      userPoolWebClientId: config.cognito.APP_CLIENT_ID
+  },
+  // API: {
+  //   endpoints: [
+  //     {
+  //       name: "catalog",
+  //       endpoint: config.apiGateway.URL,
+  //       region: config.apiGateway.REGION
+  //     },
+  //   ]
+  // }
+});
+
+store.dispatch();
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <Provider store={store}>
+        <Router>
+          <App />
+        </Router>
+    </Provider>,
+document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
