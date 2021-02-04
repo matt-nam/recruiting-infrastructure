@@ -1,0 +1,22 @@
+@import "../../../../styles/variables";
+
+li:hover {
+    cursor: pointer;
+    // text-decoration: underline;
+}
+
+.sidebar-dropdown {
+    display: flex;
+    justify-content: space-between;
+
+    .sidebar-dropdown-header {
+        width: 100%;
+    }
+    .sidebar-dropdown-btn {
+        color: black;
+        border-radius: 0;
+        width: 28px;
+        height: 28px;
+        border: 1px solid $gray-color;
+    }
+}

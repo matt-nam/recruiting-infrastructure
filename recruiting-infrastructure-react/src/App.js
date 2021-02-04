@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import Routes from "./Routes";
+import { AppContext } from "utils/contextLib";
+
+import { BrowserRouter as Router, useLocation, useHistory } from "react-router-dom";
+// import { useController } from 'react-scroll-parallax';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const history = useHistory();
+    const [isAuthenticated, userHasAuthenticated] = useState(false);
+
+    async function handleLogout() {
+        userHasAuthenticated(false);
+        history.push("/login");
+    }
+
+    return (
+        <Router>
+            <ScrollToTop />
+            <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
+                <div className="main-div">
+                    <Routes />
+                </div>
+            </AppContext.Provider>
+        </Router>
+    );
+}
+
+function ScrollToTop({ history }) {
+    const { pathname } = useLocation();
+
+    // const { parallaxController } = useController();
+
+    useEffect(() => {
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+            // setTimeout(() => {
+            //     parallaxController.update();
+            //     window.scrollTo(0, 1);
+            // }, 300);
+        }, 300);
+    }, [pathname]);
+
+    return null;
 }
 
 export default App;

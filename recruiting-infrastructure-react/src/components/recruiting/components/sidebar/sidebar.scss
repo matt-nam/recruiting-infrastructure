@@ -1,0 +1,34 @@
+@import "../../../../styles/variables";
+
+.recruiting-sidebar {
+    position: relative;
+
+    .sidebar-item {
+        margin: 10px;
+
+        ul {
+            list-style-type: none;
+            color: gray;
+
+            li {
+                margin-left: -20px;
+            }
+        }
+    }
+
+    .refresh-btn {
+        padding: 2px;
+        width: 40px;
+        height: 40px;
+        border: 1px solid $gray-color;
+        vertical-align: middle;
+        position: absolute;
+        border-radius: 0px;
+        bottom: 0;
+        right: 0;
+        img {
+            width: 20px;
+            height: 20px;
+        }
+    }
+}
