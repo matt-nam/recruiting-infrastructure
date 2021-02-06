@@ -5,7 +5,7 @@ import {
     FETCH_APPLICATIONS_FAILED,
     VIEW_APPLICATIONS
 } from "./action-types";
-import client from "./api"
+import client from "../services/api"
 import { applicationsFactory } from "../shared/models/applications.model";
 
 // TODO: CHANGE CLIENT ENDPOINT

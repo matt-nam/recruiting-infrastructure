@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { getCurrentApplication, getApplicationsStatus, getApplicationsByOptions } from "redux/selectors";
+import { getCurrentApplication, getApplicationsStatus, getApplicationsByOptions } from "services/Applications/selectors";
 
 export default function useApplications() {
     const applications = useSelector(state => {

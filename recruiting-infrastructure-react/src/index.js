@@ -5,9 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from "redux/store";
+import store from "services/store";
 import { Amplify } from 'aws-amplify';
-import config from './amplify-config';
+import config from 'utils/amplify-config';
 
 Amplify.configure({
   Auth: {
@@ -28,7 +28,7 @@ Amplify.configure({
   // }
 });
 
-store.dispatch();
+// store.dispatch({type: "fetchMockApplications"});
 
 ReactDOM.render(
     <Provider store={store}>

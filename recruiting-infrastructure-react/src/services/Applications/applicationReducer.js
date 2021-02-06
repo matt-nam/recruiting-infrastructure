@@ -1,6 +1,6 @@
 import { Applications } from "../../shared/models/applications.model";
-import { FETCH_APPLICATIONS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, VIEW_APPLICATIONS, SET_OPTIONS } from "../action-types";
-import { LOADING, LOADED, FAILED } from "../status-types";
+import { FETCH_APPLICATIONS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, VIEW_APPLICATIONS, SET_OPTIONS } from "./action-types";
+import { LOADING, LOADED, FAILED } from "../../services/status-types";
 
 const initialState = {
     data: new Applications(),

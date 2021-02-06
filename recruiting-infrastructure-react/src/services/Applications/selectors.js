@@ -1,4 +1,4 @@
-import { LOADING, LOADED, FAILED } from "./status-types";
+import { LOADING, LOADED, FAILED } from "../status-types";
 
 export const getApplicationsState = store => store.applications;
 
