@@ -11,7 +11,7 @@ export const Sidebar = ({ companies, talentPools }) => {
             </div>
             <div className="sidebar-item">
                 — applicant pool
-                        <ul>
+                <ul>
                     <li>all applicants</li>
                     <li>
                         <OptionSelector title="talent pool" items={talentPools} />
@@ -24,7 +24,7 @@ export const Sidebar = ({ companies, talentPools }) => {
             <div className="sidebar-item">
                 rejected pool
                     </div>
-        <button className="refresh-btn"><img src={refreshIcon} alt="refresh"/></button>
+            <button className="refresh-btn"><img src={refreshIcon} alt="refresh" /></button>
         </div>
     )
 };

@@ -6,12 +6,23 @@
     .sidebar-item {
         margin: 10px;
 
-        ul {
+        > ul {
             list-style-type: none;
             color: gray;
 
-            li {
+            > li {
                 margin-left: -20px;
+            }
+        }
+
+        .option-selector {
+            > ul {
+                list-style-type: none;
+                color: gray;
+    
+                > li {
+                    margin-left: -20px;
+                }
             }
         }
     }
