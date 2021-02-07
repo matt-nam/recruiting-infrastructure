@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import OptionSelector from '../option-selector'
 import refreshIcon from "../../images/refresh-icon.svg";
+// import { useDispatch } from "react-redux";
 import './sidebar.scss';
 
 export const Sidebar = ({ companies, talentPools }) => {
+    function changeApplicantView() {
+        console.log("Dispatch action to show all applicants");
+    }
+    
     return (
         <div className="recruiting-sidebar">
             <div className="sidebar-item">
@@ -12,7 +17,7 @@ export const Sidebar = ({ companies, talentPools }) => {
             <div className="sidebar-item">
                 — applicant pool
                 <ul>
-                    <li>all applicants</li>
+                    <li><span onClick={() => changeApplicantView()}>all applicants</span></li>
                     <li>
                         <OptionSelector title="talent pool" items={talentPools} />
                     </li>

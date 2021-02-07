@@ -1,9 +1,11 @@
 @import "../../../../styles/variables";
 
-li:hover {
+li span:hover {
     cursor: pointer;
     color: $blue-color;
     border: solid $blue-color;
+    // border: solid rgba(50, 142, 246, 0.7);
+    opacity: 0.8;
     padding-left: 7px;
     border-width: 0px 0px 0px 7px;
     // text-decoration: underline;
