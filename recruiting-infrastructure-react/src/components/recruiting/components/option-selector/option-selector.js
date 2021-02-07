@@ -3,10 +3,15 @@ import { Multiselect } from 'multiselect-react-dropdown';
 // import { useDispatch } from "react-redux";
 import './option-selector.scss';
 
+// Helps differentiate which data is going to be dispatched
 const dispatchKeys = {
     GENERAL_TALENT_POOL_KEY: 0,
     COMPANY_KEY: 1,
     TALENT_POOL_KEY: 2
+}
+
+function isString(myVar) {
+    return typeof myVar === 'string' || myVar instanceof String;
 }
 
 /**
@@ -29,10 +34,6 @@ export const OptionSelector = ({ title, items }) => {
 
     function onRemove(selectedList, removedItem) {
         setUsedOptions(selectedList);
-    }
-
-    function isString(myVar) {
-        return typeof myVar === 'string' || myVar instanceof String;
     }
 
     function changeApplicantView(key, data = "") {
