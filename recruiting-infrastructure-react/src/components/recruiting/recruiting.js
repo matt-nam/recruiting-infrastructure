@@ -3,7 +3,7 @@ import "./recruiting.scss";
 import Sidebar from './components/sidebar';
 import ApplicantView from './components/applicant-view';
 
-// Mock data
+// Mock data for companies and talent pools
 import { companies, talentPools } from './mockData';
 
 export const Recruiting = () => {
