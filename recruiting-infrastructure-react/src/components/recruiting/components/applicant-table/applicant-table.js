@@ -1,25 +1,60 @@
 import React, { useState } from "react";
 import './applicant-table.scss';
 
-export const ApplicantTable = () => {
+// Mock data for applications
+import { applications } from './mockData';
+
+export const ApplicantTable = ({ displayProperties }) => {
+    
+    function renderHeader(prop) {
+        switch (prop) {
+            case "FirstName":
+                return "first name";
+            case "LastName":
+                return "last name";
+            case "Hours":
+                return "time commitment";
+            default:
+                return prop.toLowerCase();
+        }
+    }
+    function renderClassName(prop) {
+        switch (prop) {
+            case "Rating":
+                return "rating";
+            case "Status":
+                return "status";
+            default:
+                return "";
+        }
+    }
+    function renderTableRow(app, prop) {
+        switch (prop) {
+            case "Hours":
+                return app[prop] + " hours/week";
+            case "Rating":
+                return ""+app["RecruiterNotes"][prop];
+            default:
+                return app[prop];
+        }
+    }
+
     return (
         <table>
             <tr>
-                <th>name</th>
-                <th className="rating-header">rating</th>
-                <th>status</th>
-                <th>school</th>
-                <th>major</th>
-                <th>time commitment</th>
+                {displayProperties.map((prop) => (
+                    <th className={prop === "Rating" ? "rating-header" : ""}>{renderHeader(prop)}</th>
+                ))}
             </tr>
-            <tr>
-                <td>Matthew Nam</td>
-                <td><div className="rating">1</div></td>
-                <td><div className="status">interviewing</div></td>
-                <td>Yale</td>
-                <td>Computer Science</td>
-                <td>5-10 hours/week</td>
-            </tr>
+
+            {applications.map((app) => (
+                <tr>
+                    {displayProperties.map((prop) => (
+                        <td> <div className={ renderClassName(prop) }>{ renderTableRow(app, prop) }</div></td>
+                    ))}
+                </tr>
+            ))}
+
         </table>
     )
 };

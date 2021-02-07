@@ -6,6 +6,10 @@ import ApplicantTable from '../applicant-table';
 import { customStyles } from './customStyles';
 
 export const ApplicantView = () => {
+
+    // mock data for displaying properties
+    const displayProperties = ["FirstName", "LastName", "Rating", "University", "Major", "Hours"];
+
     return (
         <div className="applicant-container">
             <h3>General Talent Pool</h3>
@@ -37,7 +41,7 @@ export const ApplicantView = () => {
                 </div>
             </div>
             <div className="pool-container">
-                <ApplicantTable />
+                <ApplicantTable displayProperties={displayProperties}/>
             </div>
         </div>
     )
