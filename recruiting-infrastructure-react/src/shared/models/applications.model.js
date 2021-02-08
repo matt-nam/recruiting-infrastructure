@@ -12,7 +12,7 @@ export class Applications extends List {
     }
 
     posAt(index) {
-        return this.models.find(pos => pos.Index == index)
+        return this.models.find(pos => pos.Index === index)
     }
 }
 

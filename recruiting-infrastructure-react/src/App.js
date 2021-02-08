@@ -1,25 +1,24 @@
-import logo from './logo.svg';
+import React, {useState} from "react";
 import './App.css';
+import Routes from "./routes";
+import { BrowserRouter as Router } from "react-router-dom";
+import { AppContext } from "utils/contextLib";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [isAuthenticated, userHasAuthenticated] = useState(false);
+
+    return (
+      <Router>
+          <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
+              <div className="main-div">
+                  <Routes/>
+              </div>
+          </AppContext.Provider>
+      </Router>
+    );
+
 }
 
 export default App;
