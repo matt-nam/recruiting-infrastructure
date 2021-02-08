@@ -1,39 +1,39 @@
 import {
-    SET_OPTIONS,
-    FETCH_APPLICATIONS,
+    SET_APPLICATIONS_FILTER_OPTIONS,
+    FETCH_APPLICATIONS_SUCCESS,
     FETCHING_APPLICATIONS,
-    FETCH_APPLICATIONS_FAILED,
-    VIEW_APPLICATIONS
+    FETCH_APPLICATIONS_FAILED
 } from "./action-types";
-import client from "../services/api"
-import { applicationsFactory } from "../shared/models/applications.model";
+// import client from "../api"
+import { applicationsFactory } from "../../shared/models/applications.model";
+import mockData from "../../shared/models/tests/mock.js"
 
 // TODO: CHANGE CLIENT ENDPOINT
 
 // will need to include something involving batch size later on
-export const fetchApplications = (dispatch, getState) => {
+export const fetchApplications = (dispatch) => {
     dispatch({ type: FETCHING_APPLICATIONS })
-    client.get('catalog', '/catalog')
-        .then(r => {
-            let res = applicationsFactory(r)
-            dispatch({
-                type: FETCH_APPLICATIONS,
-                payload: res
-            })
-        })
-        .catch(err => {
-            console.error(err); // log since might be a render err
-            dispatch({
-                type: FETCH_APPLICATIONS_FAILED,
-                payload: err
-            });
-        })
+    var res = mockData.data
+    dispatch({
+        type: FETCH_APPLICATIONS_SUCCESS,
+        payload: res
+    })
+    // client.get('catalog', '/catalog')
+    //     .then(r => {
+    //         let res = applicationsFactory(r)
+    //         dispatch({
+    //             type: FETCH_APPLICATIONS,
+    //             payload: res
+    //         })
+    //     })
+    //     .catch(err => {
+    //         console.error(err); // log since might be a render err
+    //         dispatch({
+    //             type: FETCH_APPLICATIONS_FAILED,
+    //             payload: err
+    //         });
+    //     })
 }
 
-export const viewApplications = (id) => ({
-    type: VIEW_APPLICATIONS,
-    payload: { id }
-})
-
 // need to implement options action
-export const setOptions = options => ({ type: SET_OPTIONS, payload: { options } });
+export const setApplicationsFilterOptions = options => ({ type: SET_APPLICATIONS_FILTER_OPTIONS , payload: { ViewType: options.viewType, ViewValue: options.viewValue } });

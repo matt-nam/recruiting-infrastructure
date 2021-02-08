@@ -1,28 +1,27 @@
 import { Applications } from "../../shared/models/applications.model";
-import { FETCH_APPLICATIONS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, VIEW_APPLICATIONS, SET_OPTIONS } from "./action-types";
-import { LOADING, LOADED, FAILED } from "../../services/status-types";
+import { FETCH_APPLICATIONS_SUCCESS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, SET_APPLICATIONS_FILTER_OPTIONS  } from "./action-types";
+import { LOADING, LOADED, FAILED } from "../constants";
 
 const initialState = {
     data: new Applications(),
     status: LOADED,
-    options: 1, // place holder
-    current: 0,
-    indices: [],
-
-    // ids and byIds are deprecated
-    ids: [0, 1],
-    byIds: { // using mock data to develop front-end
-        0: {},
-        1: {}
+    options: {
+        current: 0,
+        FilterOptions: {}
     },
 }
 
 function applicationsReducer(state = initialState, action) {
     switch (action.type) {
-        case SET_OPTIONS: {
+        case SET_APPLICATIONS_FILTER_OPTIONS: {
             return {
                 ...state,
-                options: action.payload,
+                options: {
+                    FilterOptions: {
+                        ViewType: action.payload.ViewType,
+                        ViewValue: action.payload.ViewValue
+                    }
+                },
             };
         }
         case FETCHING_APPLICATIONS: {
@@ -31,11 +30,10 @@ function applicationsReducer(state = initialState, action) {
                 status: LOADING,
             }
         }
-        case FETCH_APPLICATIONS: {
+        case FETCH_APPLICATIONS_SUCCESS: {
             return {
                 ...state,
                 data: action.payload,
-                indices: action.payload.indices,
                 status: LOADED,
             };
         }
@@ -43,13 +41,6 @@ function applicationsReducer(state = initialState, action) {
             return {
                 ...state,
                 status: FAILED,
-            }
-        }
-        case VIEW_APPLICATIONS: {
-            const { id } = action.payload
-            return {
-                ...state,
-                current: id,
             }
         }
         default:

@@ -1,4 +1,4 @@
-import useApplications from "../../services/Applications/useApplications";
+import useApplications from "../../services/applications/useApplications";
 
 export {
     useApplications

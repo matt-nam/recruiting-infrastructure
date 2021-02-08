@@ -1,4 +1,4 @@
 import { combineReducers } from "redux";
-import applications from "./Applications/applicationReducer";
+import applications from "./applications/applicationReducer";
 
 export default combineReducers({ applications });
