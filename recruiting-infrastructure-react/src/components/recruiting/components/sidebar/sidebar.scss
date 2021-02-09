@@ -1,5 +1,31 @@
 @import "../../../../styles/variables";
 
+%blue-hover {
+    cursor: pointer;
+    color: $blue-color;
+    border: solid $blue-color;
+    opacity: 0.8;
+    padding-left: 7px;
+    border-width: 0px 0px 0px 7px;
+}
+
+li span {
+    transition: 0.20s ease-out;
+}
+
+li span:hover {
+    @extend %blue-hover;
+}
+
+.sidebar-item.clickable {
+    transition: 0.20s ease-out;
+}
+
+
+.sidebar-item.clickable:hover {
+    @extend %blue-hover;
+}
+
 .recruiting-sidebar {
     position: relative;
 

@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Multiselect } from 'multiselect-react-dropdown';
-// import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getApplicationFilterOptions } from 'services/applications/selectors';
+import { setApplicationsFilterOptions } from 'services/applications/actions';
+import { VIEW_COMPANY, VIEW_TALENT_POOL } from 'services/constants';
 import './option-selector.scss';
-
-// Helps differentiate which data is going to be dispatched
-const dispatchKeys = {
-    GENERAL_TALENT_POOL_KEY: 0,
-    COMPANY_KEY: 1,
-    TALENT_POOL_KEY: 2
-}
 
 function isString(myVar) {
     return typeof myVar === 'string' || myVar instanceof String;
@@ -24,6 +20,9 @@ function isString(myVar) {
  */
 
 export const OptionSelector = ({ title, items }) => {
+    const dispatch = useDispatch();
+    const filterOptions = useSelector(state => getApplicationFilterOptions(state));
+
     const [isOpen, setIsOpen] = useState(false);
     const [usedOptions, setUsedOptions] = useState([]);
     // const [isActive, setIsActive] = useState(false);
@@ -37,15 +36,7 @@ export const OptionSelector = ({ title, items }) => {
     }
 
     function changeApplicantView(key, data = "") {
-        if (key === dispatchKeys.GENERAL_TALENT_POOL_KEY) {
-            console.log("Dispatch action to show general talent pool");
-        }
-        else if (key === dispatchKeys.COMPANY_KEY) {
-            console.log("Dispatch action to show applicants with preference for company with id " + data);
-        }
-        else if (key === dispatchKeys.TALENT_POOL_KEY) {
-            console.log("Dispatch action to show applicants of talent pool " + data);
-        }
+        dispatch(setApplicationsFilterOptions({ viewType: key, viewValue: data }));
     }
 
     const s1 = useRef();
@@ -81,7 +72,8 @@ export const OptionSelector = ({ title, items }) => {
                 {/* <div className={`sidebar-dropdown-header ${isActive ? 'active' : 'inactive'}`} onClick={() => setIsActive(!isActive)}>— {title}</div> */}
                 <div className={`sidebar-dropdown-header`} >
                     {title === "talent pool" ?
-                        <span onClick={() => changeApplicantView(dispatchKeys.GENERAL_TALENT_POOL_KEY)}>— {title}</span>
+                        <span className={filterOptions.ViewType === VIEW_TALENT_POOL && filterOptions.ViewValue === "" ? "active" : ""}
+                            onClick={() => changeApplicantView(VIEW_TALENT_POOL)}>— {title}</span>
                         : `\u2014 ${title}`}
                 </div>
                 <button className="sidebar-dropdown-btn" onClick={() => setIsOpen(!isOpen)}>{isOpen ? '\u2212' : '+'}</button>
@@ -104,9 +96,17 @@ export const OptionSelector = ({ title, items }) => {
             <div ref={s2} className="accordion-container">
                 {usedOptions.length === 0 ? null : <ul >
                     {isString(items[0]) ? usedOptions.map((used, index) => (
-                        <li key={used}><span onClick={() => changeApplicantView(dispatchKeys.TALENT_POOL_KEY, used)}>{used}</span></li>
+                        <li key={used}>
+                            <span className={filterOptions.ViewType === VIEW_TALENT_POOL && filterOptions.ViewValue === used ? "active" : ""}
+                                onClick={() => changeApplicantView(VIEW_TALENT_POOL, used)}
+                            >{used}</span>
+                        </li>
                     )) : usedOptions.map((used, index) => (
-                        <li key={used.id}><span onClick={() => changeApplicantView(dispatchKeys.COMPANY_KEY, used.id)}>{used.name}</span></li>
+                        <li key={used.id}>
+                            <span className={filterOptions.ViewType === VIEW_COMPANY && filterOptions.ViewValue.id === used.id ? "active" : ""}
+                                onClick={() => changeApplicantView(VIEW_COMPANY, used)}
+                            >{used.name}</span>
+                        </li>
                     ))}
                 </ul>}
             </div>

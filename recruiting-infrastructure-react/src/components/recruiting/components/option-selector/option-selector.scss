@@ -10,21 +10,6 @@
     margin-top: 5px;
 }
 
-li span {
-    transition: 0.20s ease-out;
-}
-
-li span:hover {
-    cursor: pointer;
-    color: $blue-color;
-    border: solid $blue-color;
-    // border: solid rgba(50, 142, 246, 0.7);
-    opacity: 0.8;
-    padding-left: 7px;
-    border-width: 0px 0px 0px 7px;
-    // text-decoration: underline;
-}
-
 .search-wrapper {
     padding: 2.5px;
 }

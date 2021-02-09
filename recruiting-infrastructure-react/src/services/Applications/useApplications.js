@@ -11,11 +11,9 @@ export default function useApplications() {
     const status = useSelector(state => {
         return getApplicationsStatus(state)
     });
-    const dispatch = useDispatch();
     return {
         applications,
         currentApplication,
         status,
-        dispatch,
     }
 }

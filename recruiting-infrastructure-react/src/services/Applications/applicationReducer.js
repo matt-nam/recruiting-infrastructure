@@ -1,5 +1,5 @@
 import { Applications } from "../../shared/models/applications.model";
-import { FETCH_APPLICATIONS_SUCCESS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, SET_APPLICATIONS_FILTER_OPTIONS  } from "./action-types";
+import { FETCH_APPLICATIONS_SUCCESS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, SET_APPLICATIONS_FILTER_OPTIONS, SET_CURRENT_APPLICATION } from "./action-types";
 import { LOADING, LOADED, FAILED } from "../constants";
 
 const initialState = {
@@ -17,6 +17,7 @@ function applicationsReducer(state = initialState, action) {
             return {
                 ...state,
                 options: {
+                    ...state.options,
                     FilterOptions: {
                         ViewType: action.payload.ViewType,
                         ViewValue: action.payload.ViewValue
@@ -41,6 +42,15 @@ function applicationsReducer(state = initialState, action) {
             return {
                 ...state,
                 status: FAILED,
+            }
+        }
+        case SET_CURRENT_APPLICATION: {
+            return {
+                ...state,
+                options: {
+                    ...state.options,
+                    current: action.payload.ApplicationId
+                }
             }
         }
         default:

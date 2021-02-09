@@ -2,7 +2,8 @@ import {
     SET_APPLICATIONS_FILTER_OPTIONS,
     FETCH_APPLICATIONS_SUCCESS,
     FETCHING_APPLICATIONS,
-    FETCH_APPLICATIONS_FAILED
+    FETCH_APPLICATIONS_FAILED,
+    SET_CURRENT_APPLICATION
 } from "./action-types";
 // import client from "../api"
 import { applicationsFactory } from "../../shared/models/applications.model";
@@ -37,3 +38,6 @@ export const fetchApplications = (dispatch) => {
 
 // need to implement options action
 export const setApplicationsFilterOptions = options => ({ type: SET_APPLICATIONS_FILTER_OPTIONS , payload: { ViewType: options.viewType, ViewValue: options.viewValue } });
+
+export const setCurrentApplication = options => ({ type: SET_CURRENT_APPLICATION , payload: { ApplicationId: options.applicationId}})
+
