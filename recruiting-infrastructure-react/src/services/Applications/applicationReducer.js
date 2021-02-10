@@ -1,13 +1,14 @@
-import { Applications } from "../../shared/models/applications.model";
+import { ApplicationList } from "../../shared/models/applicationList.model";
+import { FilterOptions } from "../../shared/models/filterOptions.model";
 import { FETCH_APPLICATIONS_SUCCESS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, SET_APPLICATIONS_FILTER_OPTIONS, SET_CURRENT_APPLICATION } from "./action-types";
 import { LOADING, LOADED, FAILED } from "../constants";
 
 const initialState = {
-    data: new Applications(),
+    data: new ApplicationList(),
     status: LOADED,
     options: {
         current: 0,
-        FilterOptions: {}
+        FilterOptions: new FilterOptions
     },
 }
 
@@ -18,10 +19,10 @@ function applicationsReducer(state = initialState, action) {
                 ...state,
                 options: {
                     ...state.options,
-                    FilterOptions: {
+                    FilterOptions: new FilterOptions({
                         ViewType: action.payload.ViewType,
                         ViewValue: action.payload.ViewValue
-                    }
+                    })
                 },
             };
         }

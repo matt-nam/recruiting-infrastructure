@@ -58,10 +58,10 @@ export class ApplicationPosition extends Model {
 }
 
 export const compareApplicationPosition = (a, b) => {
-    if (a.Name < b.Name) {
+    if (a.LastName < b.LastName) {
         return -1;
     }
-    if (a.Name > b.Name) {
+    if (a.LastName > b.LastName) {
         return 1;
     }
     return 0;

@@ -6,15 +6,15 @@ import {
     SET_CURRENT_APPLICATION
 } from "./action-types";
 // import client from "../api"
-import { applicationsFactory } from "../../shared/models/applications.model";
-import mockData from "../../shared/models/tests/mock.js"
+import { applicationsFactory } from "../../shared/models/applicationList.model";
+import mockData from "../../shared/models/tests/mockApplications.js"
 
 // TODO: CHANGE CLIENT ENDPOINT
 
 // will need to include something involving batch size later on
 export const fetchApplications = (dispatch) => {
     dispatch({ type: FETCHING_APPLICATIONS })
-    var res = mockData.data
+    var res = applicationsFactory(mockData.data)
     dispatch({
         type: FETCH_APPLICATIONS_SUCCESS,
         payload: res
