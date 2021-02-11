@@ -9,7 +9,7 @@ export const getApplicationsStatus = store =>
 
 // TODO: Implement Other Selectors
 export const getApplicationListFiltered = store =>
-    getApplicationsState(store) ? getApplicationsState(store).data.sorted(getApplicationFilterOptions(store)) : new ApplicationList();
+    getApplicationsState(store) ? getApplicationsState(store).data.filtered(getApplicationFilterOptions(store)) : new ApplicationList();
     // store ? getApplicationsState(store).data.sorted(getApplicationFilterOptions()) : new ApplicationList();
 
 export const getApplicationFilterOptions = store =>
