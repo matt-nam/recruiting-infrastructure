@@ -1,0 +1,8 @@
+export const ATTEMPTING_LOGIN = "ATTEMPTING_LOGIN"
+export const ATTEMPT_LOGIN_SUCCESS = "ATTEMPT_LOGIN_SUCCESS"
+export const ATTEMPT_LOGIN_FAILED = "ATTEMPT_LOGIN_FAILED"
+
+// signout
+
+// signups
+
