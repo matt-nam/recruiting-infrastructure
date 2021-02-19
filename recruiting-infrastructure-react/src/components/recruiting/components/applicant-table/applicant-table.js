@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import './applicant-table.scss';
+import { getApplicationListFiltered } from 'services/applications/selectors';
+
 
 // Mock data for applications
-import mockData from 'shared/models/tests/mock';
+import mockData from 'shared/models/tests/mockApplications';
 
 const renderHeader = {
     "FirstName": "first name",
@@ -30,7 +33,7 @@ function renderTableRow(app, prop) {
 }
 
 export const ApplicantTable = ({ displayProperties }) => {
-    let applications = mockData.data;
+    let applications = useSelector(state => getApplicationListFiltered(state)).models;
     
     return (
         <table>

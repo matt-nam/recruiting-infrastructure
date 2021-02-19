@@ -32,13 +32,13 @@ export class ApplicationPosition extends Model {
             Disability: "",
             Acknowledgement: false,
 
-            Hours: "",
+            Hours: "", //Might do a custom sort based on lower bound
             ProfitType: "",
             Industry: [""],
             Funding: [""],
 
             Intro: "",
-            Startups: [""],
+            Startups: [""], //Custom Sort on Startup Rank
             MatchedLater: false,
             Rank1: "",
             Rank2: "",
@@ -55,14 +55,4 @@ export class ApplicationPosition extends Model {
             RecruiterNotes: new RecruiterNotes() // RecruiterNotes object
         };
     }
-}
-
-export const compareApplicationPosition = (a, b) => {
-    if (a.Name < b.Name) {
-        return -1;
-    }
-    if (a.Name > b.Name) {
-        return 1;
-    }
-    return 0;
 }

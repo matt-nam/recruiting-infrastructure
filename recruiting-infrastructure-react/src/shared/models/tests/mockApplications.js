@@ -79,7 +79,7 @@ export default
                     "Skills": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                     "Startups": [
                       "085b6261-520b-11eb-b13b-08d40c610f6b",
-                      "0b206356-520b-11eb-bcf2-08d40c610f6b",
+                      "080a6245-520b-11eb-a4c2-08d40c610f6b",
                       "0824d385-520b-11eb-bf5d-08d40c610f6b"
                     ],
                     "University": "Yale",
@@ -164,7 +164,7 @@ export default
                     "Startups": [
                         "085b6261-520b-11eb-b13b-08d40c610f6b",
                         "0b206356-520b-11eb-bcf2-08d40c610f6b",
-                        "0824d385-520b-11eb-bf5d-08d40c610f6b"
+                        "0ae0fa72-520b-11eb-8991-08d40c610f6b"
                     ],
                     "University": "Yale",
                     "Video": "S3 link to video (not filled yet)",
