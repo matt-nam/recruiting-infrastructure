@@ -16,7 +16,7 @@ export default function Login() {
 
     const handleSubmit = event => {
         event.preventDefault();
-        store.dispatch(attemptLogin(fields.email, fields.password, () => history.push("/login")))
+        store.dispatch(attemptLogin(fields.email, fields.password, () => history.push("/")))
     }
 
     const printAuth = () => { console.log(user, userHasAuthenticated) }
