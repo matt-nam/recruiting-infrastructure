@@ -23,6 +23,9 @@ export class ApplicationList extends List {
         let applications = new ApplicationList(this.models.filter(application => {
             switch (opt.ViewType) {
                 case VIEW_TALENT_POOL: {
+                    if (opt.ViewValue === "") {
+                        return application.RecruiterNotes.TalentPools.length > 0
+                    }
                     return application.RecruiterNotes.TalentPools.includes(opt.ViewValue)
                 }
                 case VIEW_COMPANY: {

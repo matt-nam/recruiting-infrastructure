@@ -8,7 +8,7 @@ const initialState = {
     status: LOADED,
     options: {
         current: 0,
-        FilterOptions: new FilterOptions
+        FilterOptions: new FilterOptions()
     },
 }
 
@@ -20,6 +20,7 @@ function applicationsReducer(state = initialState, action) {
                 options: {
                     ...state.options,
                     FilterOptions: new FilterOptions({
+                        ...state.options.FilterOptions,
                         ViewType: action.payload.ViewType,
                         ViewValue: action.payload.ViewValue
                     })
