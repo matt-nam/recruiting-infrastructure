@@ -23,6 +23,10 @@ tr {
     border-bottom: 1px solid $gray-color;
     th {
         background-color: lightgray;
+
+        span:hover {
+            cursor: pointer;
+        }
     }
 
     .rating-header {

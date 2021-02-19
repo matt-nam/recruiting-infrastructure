@@ -47,12 +47,6 @@ export const ApplicantView = () => {
                             placeholder={"Filter By"}
                             styles={customStyles} />
                     </div>
-                    <div className="dropdown">
-                        <Select
-                            options={[]}
-                            placeholder={"Sort By"}
-                            styles={customStyles} />
-                    </div>
                 </div>
                 <div className="search-bar-container">
                     <div className="search-input-container">
