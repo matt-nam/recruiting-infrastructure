@@ -1,0 +1,26 @@
+@import "../../../../styles/variables";
+
+  .popup-content {
+    background: rgb(255, 255, 255);
+    width: 80%;
+    height: 80%;
+    border-radius: 10px;
+    text-align: left;
+    overflow-y: auto;
+
+    .header {
+        padding: 40px;
+    }
+
+    .information {
+        padding: 120px;
+    }
+
+    .submit {
+        width: 10%;
+    }
+  }
+
+  .popup-overlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
