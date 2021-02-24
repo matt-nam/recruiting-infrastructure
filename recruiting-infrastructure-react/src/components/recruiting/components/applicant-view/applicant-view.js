@@ -1,16 +1,27 @@
 import React, { useState } from "react";
 import './applicant-view.scss';
-import Select from 'react-select';
+
 import Icon from 'static/search-icon.png'
 import ApplicantTable from '../applicant-table';
 import { customStyles } from './customStyles';
 import { useDispatch, useSelector } from "react-redux";
-import { getApplicationFilterOptions } from 'services/applications/selectors';
+import {
+    getApplicationFilterOptions,
+    getUniversities,
+    getOrganizations,
+    getMajors,
+    getYears,
+    getTimeCommitments,
+    getIndustries
+} from 'services/applications/selectors';
+import { getStartupsState } from 'services/startups/selectors';
+import FilterView from '../filter-view'
 import { VIEW_COMPANY, VIEW_TALENT_POOL, VIEW_ACCEPTED, VIEW_REJECTED, VIEW_ALL_APPLICANTS } from 'services/constants';
 
 export const ApplicantView = () => {
     const dispatch = useDispatch();
     const filterOptions = useSelector(state => getApplicationFilterOptions(state));
+    const [showFilterOptions, setShowFilterOptions] = useState(false);
 
     function renderTitle() {
         switch (filterOptions.ViewType) {
@@ -36,16 +47,21 @@ export const ApplicantView = () => {
     // mock data for displaying properties
     const displayProperties = ["FirstName", "LastName", "Rating", "University", "Major", "Hours"];
 
+    const universities = useSelector(state => getUniversities(state))
+    const organizations = useSelector(state => getOrganizations(state))
+    const majors = useSelector(state => getMajors(state))
+    const years = useSelector(state => getYears(state))
+    const timeCommitments = useSelector(state => getTimeCommitments(state))
+    const industries = useSelector(state => getIndustries(state))
+    const companies = useSelector(state => getStartupsState(state)).data.models;
+
     return (
         <div className="applicant-container">
             <h3>{renderTitle()}</h3>
             <div className="query-container">
                 <div className="dropdown-container">
                     <div className="dropdown">
-                        <Select
-                            options={[]}
-                            placeholder={"Filter By"}
-                            styles={customStyles} />
+                        <button className="filter-btn" onClick = {() => setShowFilterOptions(!showFilterOptions)}>Filter By</button>
                     </div>
                 </div>
                 <div className="search-bar-container">
@@ -60,8 +76,19 @@ export const ApplicantView = () => {
                     </div>
                 </div>
             </div>
+            <div className={"filter-container " + `${(showFilterOptions ? "" : "hide")}`}>
+                <FilterView
+                    university={universities}
+                    organization={organizations}
+                    major={majors}
+                    year={years}
+                    timeCommitment={timeCommitments}
+                    industry={industries}
+                    companies={companies}
+                />
+            </div>
             <div className="pool-container">
-                <ApplicantTable displayProperties={displayProperties}/>
+                <ApplicantTable displayProperties={displayProperties} />
             </div>
         </div>
     )

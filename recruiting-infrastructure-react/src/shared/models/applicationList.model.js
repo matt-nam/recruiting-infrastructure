@@ -2,11 +2,51 @@ import { List } from "./base";
 import { ApplicationPosition } from "./applicationPosition.model";
 import { RecruiterNotes } from "./recruiterNotes.model";
 import { VIEW_COMPANY, VIEW_TALENT_POOL } from 'services/constants';
+import { loadState, saveState } from "services/api";
+
+import { unique } from "utils/helper"
 
 // TODO: complete model defaults
 export class ApplicationList extends List {
     get model() {
         return ApplicationPosition
+    }
+
+    get universities() {
+        return unique(this.models.map(app => app.University))
+    }
+
+    get organizations() {
+        return unique(this.models.map(app => app.Organization))
+    }
+
+    get majors() {
+        return unique(this.models.map(app => app.Major))
+    }
+
+    get years() {
+        return unique(this.models.map(app => app.Year))
+    }
+
+    // Get time commitments
+    get timeCommitments() {
+        return [
+            "1-5 hrs/wk", 
+            "6-10 hrs/wk", 
+            "11-15 hrs/wk",
+            "16-20 hrs/wk",
+            "Fulltime"
+        ]
+    }
+
+    get industries() {
+        var ret = new Set()
+        this.models.forEach(app => {
+            app.Industry.forEach(industry =>
+                ret.add(industry.trim())
+            )
+        })
+        return Array.from(ret)
     }
 
     get indices() {
