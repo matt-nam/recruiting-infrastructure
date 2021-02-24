@@ -4,7 +4,12 @@ import {
     ATTEMPT_LOGIN_SUCCESS,
     ATTEMPT_LOGIN_FAILED,
     ATTEMPTING_LOGOUT,
-    ATTEMPT_LOGOUT_SUCCESS, ATTEMPT_LOGOUT_FAILED
+    ATTEMPT_LOGOUT_SUCCESS,
+    ATTEMPT_LOGOUT_FAILED,
+    ATTEMPTING_SIGN_UP,
+    ATTEMPT_SIGN_UP_SUCCESS,
+    ATTEMPT_SIGN_UP_FAILED,
+    ATTEMPTING_GET_CURRENT_USER, ATTEMPT_GET_CURRENT_USER_SUCCESS, ATTEMPT_GET_CURRENT_USER_FAILED
 } from "./action-types";
 import { LOADING, LOADED, FAILED } from "../constants";
 
@@ -16,6 +21,26 @@ const initialState = {
 
 function userReducer(state = initialState, action) {
     switch (action.type) {
+        case ATTEMPTING_GET_CURRENT_USER: {
+            return {
+                ...state,
+                status: LOADING
+            }
+        }
+        case ATTEMPT_GET_CURRENT_USER_SUCCESS: {
+            return {
+                ...state,
+                user: new User(action.payload),
+                userHasAuthenticated: true,
+                status: LOADED
+            }
+        }
+        case ATTEMPT_GET_CURRENT_USER_FAILED: {
+            return {
+                ...state,
+                status: FAILED
+            }
+        }
         case ATTEMPTING_LOGIN: {
             return {
                 ...state,
@@ -26,8 +51,8 @@ function userReducer(state = initialState, action) {
             return {
                 ...state,
                 user: new User(action.payload),
+                userHasAuthenticated: true,
                 status: LOADED,
-                userHasAuthenticated: true
             };
         }
         case ATTEMPT_LOGIN_FAILED: {
@@ -51,6 +76,25 @@ function userReducer(state = initialState, action) {
             }
         }
         case ATTEMPT_LOGOUT_FAILED: {
+            return {
+                ...state,
+                status: FAILED
+            }
+        }
+        case ATTEMPTING_SIGN_UP: {
+            return {
+                ...state,
+                status: LOADING
+            }
+        }
+        case ATTEMPT_SIGN_UP_SUCCESS: {
+            return {
+                ...state,
+                status: LOADED,
+                user: new User(action.payload)
+            }
+        }
+        case ATTEMPT_SIGN_UP_FAILED: {
             return {
                 ...state,
                 status: FAILED

@@ -7,34 +7,34 @@ import { attemptLogout } from "../services/user/actions";
 
 export default function Home() {
     const history = useHistory();
-    let { user, userHasAuthenticated } = useUser();
+    let { user } = useUser();
 
-    // This UI is buggy (React isn't reloading the component on state change)
-    // but the redux code works
+    // This UI is a little slow/buggy on logout
 
     const handleLogin = event => {
-        console.log(userHasAuthenticated, user);
         event.preventDefault();
-        userHasAuthenticated
+        user.userHasAuthenticated
             ? alert("Oops! Already logged in.")
             : history.push("/login");
     }
 
     const handleLogout = event => {
-        console.log(userHasAuthenticated, user);
         event.preventDefault();
-        userHasAuthenticated
+        user.userHasAuthenticated
             ? store.dispatch(attemptLogout(() => history.push("/")))
             : alert("Oops! Not logged in yet.")
     }
 
-    const printAuth = () => { console.log(user, userHasAuthenticated) }
+    const printAuth = () => { console.log(user) }
 
     return (
         <div>
             <h2>Welcome</h2>
-            <Button onClick={handleLogin}>Log in</Button>
-            <Button onClick={handleLogout}>Log out</Button>
+            { user.userHasAuthenticated ? (
+                <Button onClick={handleLogout}>Log out</Button>
+            ) : (
+                <Button onClick={handleLogin}>Log in</Button>
+            )}
             <Button onClick={printAuth}>Test</Button>
         </div>
     );

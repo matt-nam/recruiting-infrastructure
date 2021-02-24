@@ -1,12 +1,15 @@
 import actionTypes from "./actionTypes";
-import { attemptLogin as actions } from "./actions";
+import { attemptGetCurrentUser, attemptLogin, attemptLogout, attemptSignUp } from "./actions";
 import userReducer from "./userReducer";
 import { getUserState as selectors } from "./selectors";
 import useUser from "./useUser";
 
 export {
     actionTypes,
-    actions,
+    attemptGetCurrentUser,
+    attemptLogin,
+    attemptLogout,
+    attemptSignUp,
     userReducer,
     selectors,
     useUser
