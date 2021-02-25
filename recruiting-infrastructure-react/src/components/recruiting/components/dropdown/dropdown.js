@@ -51,13 +51,11 @@ export const Dropdown = ({ title, items, filterName }) => {
                 label: items[i].name
             };
             dropdownOptions.push(obj)
-            if (filterOptions[filterName].includes(items[i])) {
+            if (filterOptions[filterName].includes(items[i].id)) {
                 defaultOptions.push(obj);
             }
         }
     }
-    console.log(filterName);
-    console.log(defaultOptions);
 
     return (
         <div className="filter-dropdown">
