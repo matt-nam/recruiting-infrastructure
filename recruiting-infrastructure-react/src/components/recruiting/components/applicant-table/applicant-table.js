@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import './applicant-table.scss';
 import { useDispatch } from "react-redux";
-import { getApplicationListFiltered } from 'services/applications/selectors';
+import { getApplicationListFiltered, getApplicationFilterOptions } from 'services/applications/selectors';
 import { setApplicationsSortOptions } from 'services/applications/actions';
 
 // Mock data for applications
@@ -36,9 +36,11 @@ function renderTableRow(app, prop) {
 
 export const ApplicantTable = ({ displayProperties }) => {
     const dispatch = useDispatch();
-    const defaultAscendingToggle = { currentProp: "", asc: true };
-    const [ascendingToggle, setAscendingToggle] = useState(defaultAscendingToggle);
+
     let applications = useSelector(state => getApplicationListFiltered(state)).models;
+    let filterOptions = useSelector(state => getApplicationFilterOptions(state));
+    const defaultAscendingToggle = { currentProp: filterOptions.SortValue, asc: filterOptions.Ascending };
+    const [ascendingToggle, setAscendingToggle] = useState(defaultAscendingToggle);
 
     function sortApplications(prop) {
         var newAsc = true;

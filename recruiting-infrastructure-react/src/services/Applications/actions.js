@@ -17,6 +17,7 @@ import mockData from "../../shared/models/tests/mockApplications.js";
 export const fetchApplications = (dispatch) => {
     dispatch({ type: FETCHING_APPLICATIONS })
     var res = applicationsFactory(mockData.data);
+
     dispatch({
         type: FETCH_APPLICATIONS_SUCCESS,
         payload: res

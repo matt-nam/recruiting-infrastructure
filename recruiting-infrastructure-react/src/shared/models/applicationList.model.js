@@ -2,7 +2,6 @@ import { List } from "./base";
 import { ApplicationPosition } from "./applicationPosition.model";
 import { RecruiterNotes } from "./recruiterNotes.model";
 import { VIEW_COMPANY, VIEW_TALENT_POOL } from 'services/constants';
-import { loadState, saveState } from "services/api";
 
 import { unique } from "utils/helper"
 

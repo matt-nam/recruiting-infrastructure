@@ -30,7 +30,7 @@ Amplify.configure({
   // }
 });
 
-// Temporary testing to see if actions work properly
+
 store.dispatch(fetchApplications);
 store.dispatch(fetchStartups);
 // store.dispatch(setCurrentApplication({applicationId: 10}));
