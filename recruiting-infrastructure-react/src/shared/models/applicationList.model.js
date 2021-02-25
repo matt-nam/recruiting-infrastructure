@@ -6,6 +6,19 @@ import { loadState, saveState } from "services/api";
 
 import { unique } from "utils/helper"
 
+const timeCommitments = {
+    "1-5 hrs/wk": [1,5], 
+    "6-10 hrs/wk": [6, 10],
+    "11-15 hrs/wk": [11, 15],
+    "16-20 hrs/wk": [16, 20],
+    "Fulltime": [40, 40]
+}
+
+const overlap = (a, b) => {
+    if (a[1] == b[1] && a[0] == b[0]) return true
+    return Math.max(0, Math.min(a[1], b[1]) - Math.max(a[0], b[0])) > 0
+}
+
 // TODO: complete model defaults
 export class ApplicationList extends List {
     get model() {
@@ -13,15 +26,15 @@ export class ApplicationList extends List {
     }
 
     get universities() {
-        return unique(this.models.map(app => app.University))
+        return unique(this.models.filter(app => app.University.trim().length > 0).map(app => app.University.trim()))
     }
 
     get organizations() {
-        return unique(this.models.map(app => app.Organization))
+        return unique(this.models.filter(app => app.Organization.trim().length > 0).map(app => app.Organization.trim()))
     }
 
     get majors() {
-        return unique(this.models.map(app => app.Major))
+        return unique(this.models.filter(app => app.Major.trim().length > 0).map(app => app.Major.trim()))
     }
 
     get years() {
@@ -57,10 +70,67 @@ export class ApplicationList extends List {
         return this.models.find(pos => pos.Index === index)
     }
 
+    // Helper function for filtered
+    filteredByTableOptions(opt, application) {
+        if (opt.University.length > 0) {
+            if (!opt.University.includes(application.University.trim())) {
+                return false
+            }
+        }
+        if (opt.Organization.length > 0) {
+            if (!opt.Organization.includes(application.Organization.trim())) {
+                return false
+            }
+        }
+        if (opt.Major.length > 0) {
+            if (!opt.Major.includes(application.Major.trim())) {
+                return false
+            }
+        }
+        if (opt.Year.length > 0) {
+            if (!opt.Year.includes(application.Year)) {
+                return false
+            }
+        }
+        if (opt.International.length > 0) {
+            if (!opt.International.includes(application.International.trim())) {
+                return false
+            }
+        }
+        if (opt.Hours.length > 0) {
+            let tcs = opt.Hours.map(optTC => timeCommitments[optTC])
+            if (!tcs.some(tc => overlap(tc, application.Hours))) {
+                return false
+            }
+        }
+        if (opt.Industry.length > 0) {
+            if (!opt.Industry.some(industry => application.Industry.includes(industry.trim()))) {
+                return false
+            }
+        }
+        if (opt.Rank1.length > 0) {
+            if (!opt.Rank1.some(startupId => application.Startups[0] === startupId)) {
+                return false
+            }
+        }
+        if (opt.Rank2.length > 0) {
+            if (!opt.Rank2.some(startupId => application.Startups[1] === startupId)) {
+                return false
+            }
+        }
+        if (opt.Rank3.length > 0) {
+            if (!opt.Rank3.some(startupId => application.Startups[2] === startupId)) {
+                return false
+            }
+        }
+        return true
+    }
+
     filtered(opt) {
         // Filters each application by not including if it does not include
         // a filtering property
         let applications = new ApplicationList(this.models.filter(application => {
+            if (!this.filteredByTableOptions(opt, application)) { return false; }
             switch (opt.ViewType) {
                 case VIEW_TALENT_POOL: {
                     if (opt.ViewValue === "") {

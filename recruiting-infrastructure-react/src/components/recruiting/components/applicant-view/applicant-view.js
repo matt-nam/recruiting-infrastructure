@@ -77,6 +77,7 @@ export const ApplicantView = () => {
                 </div>
             </div>
             <div className={"filter-container " + `${(showFilterOptions ? "" : "hide")}`}>
+                <h4>Filter Options</h4>
                 <FilterView
                     university={universities}
                     organization={organizations}

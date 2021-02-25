@@ -18,7 +18,7 @@ export default
                       "Series A"
                     ],
                     "Gender": "Male",
-                    "Hours": "10-12",
+                    "Hours": [10,12],
                     "Industry": [
                       "SaaS"
                     ],
@@ -102,7 +102,7 @@ export default
                         "Series A"
                     ],
                     "Gender": "Male",
-                    "Hours": "10-12",
+                    "Hours": [10,12],
                     "Industry": [
                         "SaaS"
                     ],
@@ -186,7 +186,7 @@ export default
                         "Series B"
                     ],
                     "Gender": "Male",
-                    "Hours": "6-8",
+                    "Hours": [6,8],
                     "Industry": [
                         "IoT, Manufacturing"
                     ],

@@ -17,7 +17,7 @@ export const FilterView = ({university, organization, major, year, timeCommitmen
             <Dropdown title = "Major" items = {major} filterName="Major"/>
             <Dropdown title = "Year" items = {year} filterName="Year"/>
             <Dropdown title = "International" items = {["Yes","No"]} filterName="International"/>
-            <Dropdown title = "Time Commitment" items = {timeCommitment} filterName="TimeCommitment"/>
+            <Dropdown title = "Time Commitment" items = {timeCommitment} filterName="Hours"/>
             <Dropdown title = "Industry" items = {industry} filterName="Industry"/>
 
             <Dropdown title = "Ranked First" items = {companies} filterName="Rank1"/>

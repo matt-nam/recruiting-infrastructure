@@ -25,7 +25,8 @@ function renderTableRow(app, prop) {
     }
     switch (prop) {
         case "Hours":
-            return app[prop] + " hours/week";
+            // return app[prop] + " hours/week";
+            return app[prop][0] + "-" + app[prop][1] + " hours/week";
         case "Rating":
             return "" + app["RecruiterNotes"][prop];
         default:

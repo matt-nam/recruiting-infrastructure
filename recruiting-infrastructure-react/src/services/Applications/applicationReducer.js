@@ -1,6 +1,6 @@
 import { ApplicationList, applicationsFactory } from "../../shared/models/applicationList.model";
 import { FilterOptions } from "../../shared/models/filterOptions.model";
-import { FETCH_APPLICATIONS_SUCCESS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, SET_APPLICATIONS_FILTER_OPTIONS, SET_CURRENT_APPLICATION, SET_APPLICATIONS_SORT_OPTIONS } from "./action-types";
+import { SET_TABLE_FILTER_OPTIONS, FETCH_APPLICATIONS_SUCCESS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, SET_APPLICATIONS_FILTER_OPTIONS, SET_CURRENT_APPLICATION, SET_APPLICATIONS_SORT_OPTIONS } from "./action-types";
 import { LOADING, LOADED, FAILED } from "../constants";
 
 const initialState = {
@@ -25,6 +25,17 @@ function applicationsReducer(state = initialState, action) {
                         ViewValue: action.payload.ViewValue
                     })
                 },
+            };
+        }
+        case SET_TABLE_FILTER_OPTIONS: {
+            let newFilterOptions = new FilterOptions({ ...state.options.FilterOptions })
+            newFilterOptions[action.payload.Option] = action.payload.Value
+            return {
+                ...state,
+                options: {
+                    ...state.options,
+                    FilterOptions: newFilterOptions
+                }
             };
         }
         case SET_APPLICATIONS_SORT_OPTIONS: {

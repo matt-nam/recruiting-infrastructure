@@ -13,6 +13,7 @@ $recruiting-inner-margins: 20px;
 .applicant-container {
     @extend %border;
     float: left;
+    // position: absolute;
     margin-top: 5vh;
     margin-bottom: 3vh;
     width: $recruiting-width + $recruiting-margins;
@@ -45,11 +46,11 @@ $recruiting-inner-margins: 20px;
                 border-radius: 100%;
 
                 .filter-btn {
-                    // background-color: $blue-color;
-                    background-color: rgb(211,211,211);
+                    background-color: $blue-color;
+                    // background-color: rgb(211,211,211);
                     padding: 5px 8px;
                     margin: 0 2%;
-                    // color: white;
+                    color: white;
                     border-radius: 10px;
                     font-size: 14px;
                     height: 31px;
@@ -58,7 +59,8 @@ $recruiting-inner-margins: 20px;
                 }
 
                 .filter-btn:hover {
-                    background-color: rgba(211,211,211,0.7);
+                    background-color: rgba(50, 142, 246, 0.7);
+                    // background-color: rgba(211,211,211,0.7);
                 }
             }
         }

@@ -2,8 +2,8 @@ import React from 'react';
 import "./dropdown.scss";
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
-// import { setOptions } from "redux/actions"
-// import { useDispatch } from "react-redux";
+import { setTableFilterOptions } from "services/applications/actions"
+import { useDispatch } from "react-redux";
 
 const customStyles = {
     menuList: () => ({
@@ -16,16 +16,16 @@ const customStyles = {
 
 export const Dropdown = ({ title, items, filterName }) => {
 
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-    // const handleChange = (e) => {
-    //     // if item is being removed
-    //     if (e) {
-    //         dispatch(setOptions({ Option: filterName, Value: e.map(opt => opt.value) }));
-    //     } else {
-    //         dispatch(setOptions({ Option: filterName, Value: [] }));
-    //     }
-    // }
+    const handleChange = (e) => {
+        // if item is being removed
+        if (e) {
+            dispatch(setTableFilterOptions({ Option: filterName, Value: e.map(opt => opt.value) }));
+        } else {
+            dispatch(setTableFilterOptions({ Option: filterName, Value: [] }));
+        }
+    }
 
     const animatedComponents = makeAnimated();
     let dropdownOptions = [];
@@ -37,7 +37,6 @@ export const Dropdown = ({ title, items, filterName }) => {
             })
         }
     } else {
-        console.log(items)
         for (let i = 0; i < items.length; i++) {
             dropdownOptions.push({
                 value: items[i].id,
@@ -56,7 +55,7 @@ export const Dropdown = ({ title, items, filterName }) => {
                 className="basic-multi-select"
                 classNamePrefix="select"
                 components={animatedComponents}
-                // onChange={handleChange}
+                onChange={handleChange}
                 placeholder={title}
                 styles={customStyles} />
         </div>
