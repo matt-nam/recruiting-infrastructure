@@ -9,63 +9,73 @@
     border-width: 0px 0px 0px 7px;
 }
 
-li span {
-    transition: 0.20s ease-out;
-}
-
-li span:hover {
-    @extend %blue-hover;
-}
-
-.sidebar-item.clickable {
+.clickable {
     transition: 0.20s ease-out;
 }
 
 
-.sidebar-item.clickable:hover {
+.clickable:hover {
     @extend %blue-hover;
 }
 
 .recruiting-sidebar {
     position: relative;
+    overflow-y: auto;
+    
+    .recruiting-content {
+        margin: 0;
+        position: relative;
+        min-height: 100%;
 
-    .sidebar-item {
-        margin: 10px;
-
-        > ul {
-            list-style-type: none;
-            color: gray;
-
-            > li {
-                margin-left: -20px;
-            }
+        .filler {
+            margin-top: 0;
+            height: 10px;
         }
+        
+        .sidebar-item {
+            margin: 10px;
 
-        .option-selector {
-            .accordion-container > ul {
+            > ul {
                 list-style-type: none;
                 color: gray;
-    
+
                 > li {
                     margin-left: -20px;
                 }
             }
-        }
-    }
 
-    .refresh-btn {
-        padding: 2px;
-        width: 40px;
-        height: 40px;
-        border: 1px solid $gray-color;
-        vertical-align: middle;
-        position: absolute;
-        border-radius: 0px;
-        bottom: 0;
-        right: 0;
-        img {
-            width: 20px;
-            height: 20px;
+            .option-selector {
+                .accordion-container > ul {
+                    list-style-type: none;
+                    color: gray;
+        
+                    > li {
+                        margin-left: -20px;
+                    }
+                }
+            }
+        }
+
+        .larger-filler {
+            margin-top: 0;
+            height: 40px;
+        }
+
+        .refresh-btn {
+            padding: 2px;
+            width: 40px;
+            height: 40px;
+            border: 1px solid $gray-color;
+            vertical-align: middle;
+            border-radius: 0px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            img {
+                width: 20px;
+                height: 20px;
+            }
         }
     }
 }
+

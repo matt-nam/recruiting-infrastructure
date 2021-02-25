@@ -61,7 +61,7 @@ export const ApplicantView = () => {
             <div className="query-container">
                 <div className="dropdown-container">
                     <div className="dropdown">
-                        <button className="filter-btn" onClick = {() => setShowFilterOptions(!showFilterOptions)}>Filter By</button>
+                        <button className="filter-btn" onClick = {() => setShowFilterOptions(!showFilterOptions)}>Filter</button>
                     </div>
                 </div>
                 <div className="search-bar-container">
@@ -76,8 +76,16 @@ export const ApplicantView = () => {
                     </div>
                 </div>
             </div>
-            <div className={"filter-container " + `${(showFilterOptions ? "" : "hide")}`}>
-                <h4>Filter Options</h4>
+            <div className="pool-container">
+                <ApplicantTable displayProperties={displayProperties} />
+            </div>
+            <div className={"cover" + (showFilterOptions ? "": " hide")} onClick={() => setShowFilterOptions(!showFilterOptions)}></div>
+            <div className="filter-container" style={{width: (showFilterOptions ? "30%" : "0px"), padding: (showFilterOptions ? "2%" : "0px")}}>
+                <div className="filter-container-row">
+                    <h4>Filter Options</h4>
+                    <button className="filter-btn" onClick = {() => setShowFilterOptions(!showFilterOptions)}>Close</button>
+                </div>
+                
                 <FilterView
                     university={universities}
                     organization={organizations}
@@ -88,9 +96,8 @@ export const ApplicantView = () => {
                     companies={companies}
                 />
             </div>
-            <div className="pool-container">
-                <ApplicantTable displayProperties={displayProperties} />
-            </div>
+            
+            
         </div>
     )
 };

@@ -11,7 +11,7 @@ const customStyles = {
     menuList: () => ({
         // none of react-select's styles are passed to <Control />
         maxHeight: '120px',
-        overflow: 'scroll',
+        overflowY: 'auto',
         zIndex: 9999,
     }),
 }

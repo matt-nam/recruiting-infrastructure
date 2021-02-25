@@ -10,33 +10,37 @@ import './sidebar.scss';
 export const Sidebar = ({ companies, talentPools }) => {
     const dispatch = useDispatch();
     const filterOptions = useSelector(state => getApplicationFilterOptions(state));
-    
+
     function changeApplicantView(key) {
         // console.log("Dispatch action to show all applicants");
-        dispatch(setApplicationsFilterOptions({viewType: key, viewValue: ""}));
+        dispatch(setApplicationsFilterOptions({ viewType: key, viewValue: "" }));
     }
-    
+
     return (
         <div className="recruiting-sidebar">
-            <div className="sidebar-item">
-                <OptionSelector title="companies" items={companies} />
-            </div>
-            <div className="sidebar-item">
-                — applicant pool
+            <div className="recruiting-content">
+                <div className="filler"></div>
+                <div className="sidebar-item">
+                    <OptionSelector title="companies" items={companies} />
+                </div>
+                <div className="sidebar-item">
+                    — applicant pool
                 <ul>
-                    <li><span className={filterOptions.ViewType === VIEW_ALL_APPLICANTS ? "active" : ""} onClick={() => changeApplicantView(VIEW_ALL_APPLICANTS)}>all applicants</span></li>
-                    <li>
-                        <OptionSelector title="talent pool" items={talentPools} />
-                    </li>
-                </ul>
+                        <li><span className={filterOptions.ViewType === VIEW_ALL_APPLICANTS ? "active clickable" : "clickable"} onClick={() => changeApplicantView(VIEW_ALL_APPLICANTS)}>all applicants</span></li>
+                        <li>
+                            <OptionSelector title="talent pool" items={talentPools} />
+                        </li>
+                    </ul>
+                </div>
+                <div className={"sidebar-item clickable " + (filterOptions.ViewType === VIEW_ACCEPTED ? "active" : "")} onClick={() => changeApplicantView(VIEW_ACCEPTED)}>
+                    acceptance pool
+                    </div>
+                <div className={"sidebar-item clickable " + (filterOptions.ViewType === VIEW_REJECTED ? "active" : "")} onClick={() => changeApplicantView(VIEW_REJECTED)}>
+                    rejected pool
+                    </div>
+                <div className="larger-filler"></div>
+                <button className="refresh-btn"><img src={refreshIcon} alt="refresh" /></button>
             </div>
-            <div className={"sidebar-item clickable "+(filterOptions.ViewType === VIEW_ACCEPTED ? "active" : "")} onClick={() => changeApplicantView(VIEW_ACCEPTED)}>
-                acceptance pool
-                    </div>
-            <div className={"sidebar-item clickable "+(filterOptions.ViewType === VIEW_REJECTED ? "active" : "")} onClick={() => changeApplicantView(VIEW_REJECTED)}>
-                rejected pool
-                    </div>
-            <button className="refresh-btn"><img src={refreshIcon} alt="refresh" /></button>
         </div>
     )
 };
