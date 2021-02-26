@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import './applicant-view.scss';
-
 import Icon from 'static/search-icon.png'
 import ApplicantTable from '../applicant-table';
+import Listing from '../listing';
 import { customStyles } from './customStyles';
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -54,50 +54,55 @@ export const ApplicantView = () => {
     const timeCommitments = useSelector(state => getTimeCommitments(state))
     const industries = useSelector(state => getIndustries(state))
     const companies = useSelector(state => getStartupsState(state)).data.models;
-
+    let currentListing = companies.filter(startup => startup.id === filterOptions.ViewValue.id)[0];
     return (
-        <div className="applicant-container">
-            <h3>{renderTitle()}</h3>
-            <div className="query-container">
-                <div className="dropdown-container">
-                    <div className="dropdown">
-                        <button className="filter-btn" onClick = {() => setShowFilterOptions(!showFilterOptions)}>Filter</button>
+        <React.Fragment>
+            <div className="applicant-container">
+                <div className={"applicant-container-main"+(filterOptions.ViewType === VIEW_COMPANY ? " company-view" : "")}>
+                    <h3>{renderTitle()}</h3>
+                    <div className="query-container">
+                        <div className="dropdown-container">
+                            <div className="dropdown">
+                                <button className="filter-btn" onClick={() => setShowFilterOptions(!showFilterOptions)}>Filter</button>
+                            </div>
+                        </div>
+                        <div className="search-bar-container">
+                            <div className="search-input-container">
+                                <input
+                                    type="text"
+                                    placeholder="search keywords or skills"
+                                    autoComplete="off"></input>
+                            </div>
+                            <div className="icon-container">
+                                <img className="search-icon" src={Icon} alt="Search" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="pool-container">
+                        <ApplicantTable displayProperties={displayProperties} />
+                    </div>
+                    <div className={"cover" + (showFilterOptions ? "" : " hide")} onClick={() => setShowFilterOptions(!showFilterOptions)}></div>
+                    <div className="filter-container" style={{ width: (showFilterOptions ? "30%" : "0px"), padding: (showFilterOptions ? "2%" : "0px") }}>
+                        <div className="filter-container-row">
+                            <h4>Filter Options</h4>
+                            <button className="filter-btn" onClick={() => setShowFilterOptions(!showFilterOptions)}>Close</button>
+                        </div>
+
+                        <FilterView
+                            university={universities}
+                            organization={organizations}
+                            major={majors}
+                            year={years}
+                            timeCommitment={timeCommitments}
+                            industry={industries}
+                            companies={companies}
+                        />
                     </div>
                 </div>
-                <div className="search-bar-container">
-                    <div className="search-input-container">
-                        <input
-                            type="text"
-                            placeholder="search keywords or skills"
-                            autoComplete="off"></input>
-                    </div>
-                    <div className="icon-container">
-                        <img className="search-icon" src={Icon} alt="Search" />
-                    </div>
-                </div>
+                {filterOptions.ViewType === VIEW_COMPANY ? <div className="listing-div">
+                    <Listing listing={currentListing} />
+                </div> : null}
             </div>
-            <div className="pool-container">
-                <ApplicantTable displayProperties={displayProperties} />
-            </div>
-            <div className={"cover" + (showFilterOptions ? "": " hide")} onClick={() => setShowFilterOptions(!showFilterOptions)}></div>
-            <div className="filter-container" style={{width: (showFilterOptions ? "30%" : "0px"), padding: (showFilterOptions ? "2%" : "0px")}}>
-                <div className="filter-container-row">
-                    <h4>Filter Options</h4>
-                    <button className="filter-btn" onClick = {() => setShowFilterOptions(!showFilterOptions)}>Close</button>
-                </div>
-                
-                <FilterView
-                    university={universities}
-                    organization={organizations}
-                    major={majors}
-                    year={years}
-                    timeCommitment={timeCommitments}
-                    industry={industries}
-                    companies={companies}
-                />
-            </div>
-            
-            
-        </div>
+        </React.Fragment>
     )
 };

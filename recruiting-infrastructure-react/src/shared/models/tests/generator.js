@@ -1,5 +1,5 @@
 function generateApplication(univ, firstName, lastName, gender, industry, hours, international, major, org, rating, talentPool, appId, rank1, rank2, rank3, year) {
-    var obj = {
+    var generatedApp = {
         "Acknowledgement": true,
         "AdditionalFile": "S3 Link to additional file",
         "AdditionalInfo": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -79,7 +79,7 @@ function generateApplication(univ, firstName, lastName, gender, industry, hours,
         "Video": "S3 link to video (not filled yet)",
         "Year": year
     };
-    return obj;
+    return generatedApp;
 }
 
 function makeName(length) {
