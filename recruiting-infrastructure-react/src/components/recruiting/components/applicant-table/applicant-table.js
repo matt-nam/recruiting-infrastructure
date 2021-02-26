@@ -26,6 +26,9 @@ function renderTableRow(app, prop) {
     switch (prop) {
         case "Hours":
             // return app[prop] + " hours/week";
+            if (app[prop][0] == 40 && app[prop][1] == 40) {
+                return "Fulltime";
+            }
             return app[prop][0] + "-" + app[prop][1] + " hours/week";
         case "Rating":
             return "" + app["RecruiterNotes"][prop];
@@ -52,27 +55,29 @@ export const ApplicantTable = ({ displayProperties }) => {
 
         console.log(newAscendingToggle);
         setAscendingToggle(newAscendingToggle);
-        dispatch(setApplicationsSortOptions({sortValue: prop, ascending: newAsc}));
+        dispatch(setApplicationsSortOptions({ sortValue: prop, ascending: newAsc }));
     }
-    
+
     return (
-        <table>
-            <thead>
-                <tr>
-                    {displayProperties.map((prop) => (
-                        <th key={prop} className={prop === "Rating" ? "rating-header" : ""} ><span onClick={() => sortApplications(prop)}>{`${(prop in renderHeader) ? renderHeader[prop] : prop.toLowerCase()} `+`${ascendingToggle.currentProp !== prop ? "\u2B0D" : (ascendingToggle.asc ? "\u25B2" : "\u25BC")}`}</span></th>
-                    ))}
-                </tr>
-            </thead>
-            <tbody>
-                {applications.map((app, index) => (
-                    <tr key={index}>
+        <div className="table-responsive">
+            <table className="table applicant-table table-fixed">
+                <thead>
+                    <tr>
                         {displayProperties.map((prop) => (
-                            <td key={prop+("_"+index)}> <div className={(prop in renderClassName) ? renderClassName[prop] : ""}>{renderTableRow(app, prop)}</div></td>
+                            <th key={prop} className={prop === "Rating" ? "rating-header" : ""} ><span onClick={() => sortApplications(prop)}>{`${(prop in renderHeader) ? renderHeader[prop] : prop.toLowerCase()} ` + `${ascendingToggle.currentProp !== prop ? "\u2B0D" : (ascendingToggle.asc ? "\u25B2" : "\u25BC")}`}</span></th>
                         ))}
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {applications.map((app, index) => (
+                        <tr key={index}>
+                            {displayProperties.map((prop) => (
+                                <td key={prop + ("_" + index)}> <div className={(prop in renderClassName) ? renderClassName[prop] : ""}>{renderTableRow(app, prop)}</div></td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     )
 };

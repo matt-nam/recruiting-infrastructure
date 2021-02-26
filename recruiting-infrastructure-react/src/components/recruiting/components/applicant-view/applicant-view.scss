@@ -120,6 +120,8 @@ $recruiting-inner-margins: 20px;
     
     .pool-container {
         margin-right: $recruiting-margins;
+        position: relative;
+        height: calc(100% - 119px);
         font-size: 15px;
     }
 
@@ -130,5 +132,9 @@ $recruiting-inner-margins: 20px;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.4);
         margin-left: -20px;
+    }
+
+    .filter-container {
+        overflow-y: auto;
     }
 }

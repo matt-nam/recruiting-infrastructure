@@ -25,19 +25,19 @@ export class ApplicationList extends List {
     }
 
     get universities() {
-        return unique(this.models.filter(app => app.University.trim().length > 0).map(app => app.University.trim()))
+        return unique(this.models.filter(app => app.University.trim().length > 0).map(app => app.University.trim())).sort()
     }
 
     get organizations() {
-        return unique(this.models.filter(app => app.Organization.trim().length > 0).map(app => app.Organization.trim()))
+        return unique(this.models.filter(app => app.Organization.trim().length > 0).map(app => app.Organization.trim())).sort()
     }
 
     get majors() {
-        return unique(this.models.filter(app => app.Major.trim().length > 0).map(app => app.Major.trim()))
+        return unique(this.models.filter(app => app.Major.trim().length > 0).map(app => app.Major.trim())).sort()
     }
 
     get years() {
-        return unique(this.models.map(app => app.Year))
+        return unique(this.models.map(app => app.Year)).sort()
     }
 
     // Get time commitments
@@ -58,7 +58,7 @@ export class ApplicationList extends List {
                 ret.add(industry.trim())
             )
         })
-        return Array.from(ret)
+        return Array.from(ret).sort()
     }
 
     get indices() {

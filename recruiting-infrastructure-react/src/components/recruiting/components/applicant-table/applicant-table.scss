@@ -11,6 +11,10 @@
     border-radius: 5px;
 }
 
+.table-responsive {
+    height: 100%;
+}
+
 table {
     @extend %border;
     border-collapse: separate !important;

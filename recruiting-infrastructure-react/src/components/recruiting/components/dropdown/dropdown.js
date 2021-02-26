@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 const customStyles = {
     menuList: () => ({
         // none of react-select's styles are passed to <Control />
-        maxHeight: '120px',
+        maxHeight: '300px',
         overflowY: 'auto',
         zIndex: 9999,
     }),

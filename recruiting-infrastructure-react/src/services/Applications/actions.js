@@ -9,7 +9,8 @@ import {
 } from "./action-types";
 // import client from "../api"
 import { applicationsFactory } from "../../shared/models/applicationList.model";
-import mockData from "../../shared/models/tests/mockApplications.js";
+// import mockData from "../../shared/models/tests/mockApplications.js";
+import mockData from "../../shared/models/tests/mockApplicationsLarge.js";
 
 // TODO: CHANGE CLIENT ENDPOINT
 
