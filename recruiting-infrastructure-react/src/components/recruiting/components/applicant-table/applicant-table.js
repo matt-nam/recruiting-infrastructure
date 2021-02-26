@@ -2,11 +2,16 @@ import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import './applicant-table.scss';
 import { useDispatch } from "react-redux";
+import chroma from 'chroma-js';
 import { getApplicationListFiltered, getApplicationFilterOptions } from 'services/applications/selectors';
 import { setApplicationsSortOptions } from 'services/applications/actions';
 
 // Mock data for applications
 import mockData from 'shared/models/tests/mockApplications';
+
+export const ratingColormap = chroma
+    .scale(['#f8696b', '#ffeb84', '#63b37b'])
+    .domain([1, 5]);
 
 const renderHeader = {
     "FirstName": "first name",
@@ -68,7 +73,7 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
 
     useEffect(() => {
         tbodyRef.current.style.height = (divRef.current.offsetHeight - theadRef.current.offsetHeight - 2) + 'px';
-        
+
         window.addEventListener('resize', resizeListener);
         return () => {
             tbodyRef.current.style.height = (divRef.current.offsetHeight - theadRef.current.offsetHeight - 2) + 'px';
@@ -78,7 +83,7 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
 
     return (
         <div ref={divRef} className="table-responsive">
-            <table className="table applicant-table table-fixed">
+            <table className="applicant-table table-fixed">
                 <thead ref={theadRef}>
                     <tr>
                         {displayProperties.map((prop) => (
@@ -90,7 +95,16 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
                     {applications.map((app, index) => (
                         <tr key={index}>
                             {displayProperties.map((prop) => (
-                                <td key={prop + ("_" + index)} className="col-xs-2"> <div className={(prop in renderClassName) ? renderClassName[prop] : ""}>{renderTableRow(app, prop)}</div></td>
+                                <td key={prop + ("_" + index)} className="col-xs-2">
+                                    <div
+                                        className={(prop in renderClassName) ? renderClassName[prop] : ""}
+                                        style={prop === "Rating" ? {
+                                            backgroundColor: ratingColormap(app["RecruiterNotes"][prop]),
+                                            color: ratingColormap(app["RecruiterNotes"][prop]).darken(4)
+                                        } : {}}>
+                                        {renderTableRow(app, prop)}
+                                    </div>
+                                </td>
                             ))}
                         </tr>
                     ))}

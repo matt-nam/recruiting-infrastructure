@@ -48,7 +48,7 @@
         padding: 7px;
         .rating {
             @extend %table-label;
-            background-color: $light-green-color;
+            // background-color: $light-green-color;
             width: 25px;
             margin: auto;
         }
