@@ -15,14 +15,14 @@ export const FilterView = ({university, organization, major, year, timeCommitmen
             <Dropdown title = "University" items = {university} filterName="University"/>
             <Dropdown title = "Organization" items = {organization} filterName="Organization"/>
             <Dropdown title = "Major" items = {major} filterName="Major"/>
-            <Dropdown title = "Year" items = {year} filterName="Year"/>
+            <Dropdown title = "Graduating Year" items = {year} filterName="Year"/>
             <Dropdown title = "International" items = {["Yes","No"]} filterName="International"/>
             <Dropdown title = "Time Commitment" items = {timeCommitment} filterName="Hours"/>
             <Dropdown title = "Industry" items = {industry} filterName="Industry"/>
 
-            <Dropdown title = "Ranked First" items = {companies} filterName="Rank1"/>
-            <Dropdown title = "Ranked Second" items = {companies} filterName="Rank2"/>
-            <Dropdown title = "Ranked Third" items = {companies} filterName="Rank3"/>
+            <Dropdown title = "Ranked First Preference" items = {companies} filterName="Rank1"/>
+            <Dropdown title = "Ranked Second Preference" items = {companies} filterName="Rank2"/>
+            <Dropdown title = "Ranked Third Preference" items = {companies} filterName="Rank3"/>
         </React.Fragment>
     )
 };

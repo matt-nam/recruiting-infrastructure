@@ -162,6 +162,17 @@ export class ApplicationList extends List {
                 return (a.RecruiterNotes.Rating < b.RecruiterNotes.Rating) ? -1 : (a.RecruiterNotes.Rating > b.RecruiterNotes.Rating) ? 1 : 0;
             }
         }
+        else if (opt.SortValue === "Hours") {
+            var compareFunction = (a, b) => {
+                var aStart = a.Hours[0];
+                var aEnd = a.Hours[1];
+                var bStart = b.Hours[0];
+                var bEnd = b.Hours[1];
+                return (aEnd < bEnd) ? -1 : (aEnd > bEnd) ? 1 : (
+                    (aStart < bStart) ? -1 : (aStart > bStart) ? 1 : 0
+                );
+            }
+        }
         else {
             var property = opt.SortValue
             if (this.models.length > 0 && !(property in this.models[0])) { //If Value is not in Applicant schema, defaults to LastName
