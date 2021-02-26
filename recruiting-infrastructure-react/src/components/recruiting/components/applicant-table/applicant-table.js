@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import './applicant-table.scss';
 import { useDispatch } from "react-redux";
@@ -37,8 +37,12 @@ function renderTableRow(app, prop) {
     }
 }
 
-export const ApplicantTable = ({ displayProperties }) => {
+export const ApplicantTable = ({ displayProperties, viewValue }) => {
     const dispatch = useDispatch();
+
+    const divRef = useRef();
+    const theadRef = useRef();
+    const tbodyRef = useRef();
 
     let applications = useSelector(state => getApplicationListFiltered(state)).models;
     let filterOptions = useSelector(state => getApplicationFilterOptions(state));
@@ -58,21 +62,35 @@ export const ApplicantTable = ({ displayProperties }) => {
         dispatch(setApplicationsSortOptions({ sortValue: prop, ascending: newAsc }));
     }
 
+    const resizeListener = () => {
+        tbodyRef.current.style.height = (divRef.current.offsetHeight - theadRef.current.offsetHeight - 2) + 'px';
+    };
+
+    useEffect(() => {
+        tbodyRef.current.style.height = (divRef.current.offsetHeight - theadRef.current.offsetHeight - 2) + 'px';
+        
+        window.addEventListener('resize', resizeListener);
+        return () => {
+            tbodyRef.current.style.height = (divRef.current.offsetHeight - theadRef.current.offsetHeight - 2) + 'px';
+            window.removeEventListener('resize', resizeListener);
+        }
+    }, [viewValue]);
+
     return (
-        <div className="table-responsive">
+        <div ref={divRef} className="table-responsive">
             <table className="table applicant-table table-fixed">
-                <thead>
+                <thead ref={theadRef}>
                     <tr>
                         {displayProperties.map((prop) => (
-                            <th key={prop} className={prop === "Rating" ? "rating-header" : ""} ><span onClick={() => sortApplications(prop)}>{`${(prop in renderHeader) ? renderHeader[prop] : prop.toLowerCase()} ` + `${ascendingToggle.currentProp !== prop ? "\u2B0D" : (ascendingToggle.asc ? "\u25B2" : "\u25BC")}`}</span></th>
+                            <th key={prop} className={prop === "Rating" ? "rating-header col-xs-2" : "col-xs-2"} ><span onClick={() => sortApplications(prop)}>{`${(prop in renderHeader) ? renderHeader[prop] : prop.toLowerCase()} ` + `${ascendingToggle.currentProp !== prop ? "\u2B0D" : (ascendingToggle.asc ? "\u25B2" : "\u25BC")}`}</span></th>
                         ))}
                     </tr>
                 </thead>
-                <tbody>
+                <tbody ref={tbodyRef}>
                     {applications.map((app, index) => (
                         <tr key={index}>
                             {displayProperties.map((prop) => (
-                                <td key={prop + ("_" + index)}> <div className={(prop in renderClassName) ? renderClassName[prop] : ""}>{renderTableRow(app, prop)}</div></td>
+                                <td key={prop + ("_" + index)} className="col-xs-2"> <div className={(prop in renderClassName) ? renderClassName[prop] : ""}>{renderTableRow(app, prop)}</div></td>
                             ))}
                         </tr>
                     ))}

@@ -79,7 +79,7 @@ export const ApplicantView = () => {
                         </div>
                     </div>
                     <div className="pool-container">
-                        <ApplicantTable displayProperties={displayProperties} />
+                        <ApplicantTable displayProperties={displayProperties} viewValue={filterOptions.ViewValue} />
                     </div>
                     <div className={"cover" + (showFilterOptions ? "" : " hide")} onClick={() => setShowFilterOptions(!showFilterOptions)}></div>
                     <div className="filter-container" style={{ width: (showFilterOptions ? "30%" : "0px"), padding: (showFilterOptions ? "2%" : "0px") }}>
