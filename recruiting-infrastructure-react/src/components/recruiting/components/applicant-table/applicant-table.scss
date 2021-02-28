@@ -70,7 +70,7 @@
 .table-fixed td,
 .table-fixed th {
     display: block;
-    
+
 }
 .table-fixed tr:after {
 content: "";
@@ -81,4 +81,8 @@ content: "";
 .table-fixed tbody td,
 .table-fixed thead > tr > th {
     float: left;
+}
+
+tr:hover {
+    background-color: #ECF4FD;
 }
