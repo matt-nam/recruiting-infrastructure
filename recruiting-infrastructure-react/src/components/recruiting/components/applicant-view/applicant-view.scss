@@ -2,9 +2,10 @@
 
 %border {
     border: 1px solid $gray-color;
+    border-radius: 0 12px 12px 0;
 }
 
-$recruiting-height: 80vh;
+$recruiting-height: 92vh;
 $recruiting-width: 75%;
 $recruiting-margins: 3%;
 $sidebar-width: 100% - $recruiting-width - (3 * $recruiting-margins);
@@ -12,13 +13,9 @@ $recruiting-inner-margins: 20px;
 
 .applicant-container {
     @extend %border;
-    float: left;
     position: relative;
-    margin-top: 5vh;
-    margin-bottom: 3vh;
     width: $recruiting-width + $recruiting-margins;
     height: $recruiting-height;
-    border-left: none;
     margin-left: 0;
     justify-content: space-between;
     padding-left: $recruiting-inner-margins;
@@ -133,6 +130,7 @@ $recruiting-inner-margins: 20px;
             top: 0;
             width: 100%;
             height: 100%;
+            border-radius: 12px;
             background-color: rgba(0, 0, 0, 0.4);
             margin-left: -20px;
         }

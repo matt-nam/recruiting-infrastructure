@@ -27,10 +27,18 @@
     }
     .sidebar-dropdown-btn {
         color: black;
-        border-radius: 0;
-        width: 28px;
+        border-radius: 4px;
+        background-color: lightgrey;
+        border: none;
+        width: 30px;
         height: 28px;
-        border: 1px solid $gray-color;
+        outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .sidebar-dropdown-btn:hover {
+        opacity: 0.5;
     }
 
 }

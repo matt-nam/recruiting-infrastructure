@@ -1,6 +1,6 @@
 @import "../../styles/variables";
 
-$recruiting-height: 80vh;
+$recruiting-height: 92vh;
 $recruiting-width: 75%;
 $recruiting-margins: 3%;
 $sidebar-width: 100% - $recruiting-width - (3 * $recruiting-margins);
@@ -8,6 +8,7 @@ $recruiting-inner-margins: 20px;
 
 %border {
     border: 1px solid $gray-color;
+    border-radius: 12px 0 0 12px;
 }
 
 .active {
@@ -18,14 +19,24 @@ $recruiting-inner-margins: 20px;
     border-width: 0px 0px 0px 7px;
 }
 
+.recruiting-container-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.recruiting-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .recruiting-sidebar {
     @extend %border;
-    margin: $recruiting-margins;
-    float: left;
+    border-right: none;
     width: $sidebar-width;
-    margin-top: 5vh;
-    margin-right: 0;
-    margin-bottom: 3vh;
     height: $recruiting-height;
 }
 

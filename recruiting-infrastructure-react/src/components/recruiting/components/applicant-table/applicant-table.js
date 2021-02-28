@@ -14,9 +14,9 @@ export const ratingColormap = chroma
     .domain([1, 5]);
 
 const renderHeader = {
-    "FirstName": "first name",
-    "LastName": "last name",
-    "Hours": "time commitment"
+    "FirstName": "First name",
+    "LastName": "Last name",
+    "Hours": "Time commitment"
 }
 
 const renderClassName = {
@@ -54,6 +54,9 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
     const defaultAscendingToggle = { currentProp: filterOptions.SortValue, asc: filterOptions.Ascending };
     const [ascendingToggle, setAscendingToggle] = useState(defaultAscendingToggle);
 
+    console.log(applications)
+    console.log(filterOptions)
+
     function sortApplications(prop) {
         var newAsc = true;
         console.log(prop);
@@ -87,7 +90,7 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
                 <thead ref={theadRef}>
                     <tr>
                         {displayProperties.map((prop) => (
-                            <th key={prop} className={prop === "Rating" ? "rating-header col-xs-2" : "col-xs-2"} ><span onClick={() => sortApplications(prop)}>{`${(prop in renderHeader) ? renderHeader[prop] : prop.toLowerCase()} ` + `${ascendingToggle.currentProp !== prop ? "\u2B0D" : (ascendingToggle.asc ? "\u25B2" : "\u25BC")}`}</span></th>
+                            <th key={prop} className={prop === "Rating" ? "rating-header col-xs-2" : "col-xs-2"} ><span onClick={() => sortApplications(prop)}>{`${(prop in renderHeader) ? renderHeader[prop] : prop} ` + `${ascendingToggle.currentProp !== prop ? "\u2B0D" : (ascendingToggle.asc ? "\u25B2" : "\u25BC")}`}</span></th>
                         ))}
                     </tr>
                 </thead>

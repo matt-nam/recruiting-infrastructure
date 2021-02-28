@@ -11,11 +11,11 @@ import { companies, talentPools } from './mockData';
 export const Recruiting = () => {
     const companies = useSelector(state => getStartupsState(state)).data.models;
     return (
-        <React.Fragment>
+        <div className="recruiting-container-flex">
             <div className="recruiting-container">
                 <Sidebar companies={companies} talentPools={talentPools} />
                 <ApplicantView />
             </div>
-        </React.Fragment>
+            </div>
     )
 }
