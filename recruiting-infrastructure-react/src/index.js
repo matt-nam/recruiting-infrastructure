@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import store from "services/store";
 import { Amplify } from 'aws-amplify';
 import config from 'utils/amplify-config';
-import {fetchApplications, setApplicationsFilterOptions} from "./services/applications/actions"
+import {fetchApplications, setApplicationsFilterOptions} from "./services/Applications/actions"
 
 Amplify.configure({
   Auth: {

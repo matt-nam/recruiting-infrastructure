@@ -6,11 +6,13 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import Home from "./components/home";
 import Login from "./components/login";
 import Recruiting from "components/recruiting";
+import Email from "./shared/email-view";
 
 const routes = [
     // { path: '/', name: 'Home', Component: Home },
     { path: '/login', name: 'Home', Component: Login },
-    { path: '/', name: "Recruiting", Component: Recruiting}
+    { path: '/', name: "Recruiting", Component: Recruiting},
+    { path: '/email', name: 'Email', Component: Email}
 ]
 
 /**

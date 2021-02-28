@@ -1,0 +1,18 @@
+$container-height: 70vh;
+$container-margins: 5vw;
+$container-width: 90vw;
+
+@media screen and (max-width: 992px) {
+    .email-container {
+        width: 565px;
+    }
+}
+
+@media screen and (min-width: 990px) {
+    .email-container {
+        border-radius: 5px;
+        height: $container-height; 
+        width: 860px;
+        overflow: hidden;
+    }
+}
