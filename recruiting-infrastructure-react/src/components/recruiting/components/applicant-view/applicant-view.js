@@ -58,22 +58,24 @@ export const ApplicantView = () => {
     return (
         <div className="applicant-container">
             <div className={"applicant-container-main" + (filterOptions.ViewType === VIEW_COMPANY ? " company-view" : "")}>
-                <h3>{renderTitle()}</h3>
-                <div className="query-container">
-                    <div className="dropdown-container">
-                        <div className="dropdown">
-                            <button className="filter-btn" onClick={() => setShowFilterOptions(!showFilterOptions)}>Filter</button>
+                <div className="applicant-container-header">
+                    <h3>{renderTitle()}</h3>
+                    <div className="query-container">
+                        <div className="dropdown-container">
+                            <div className="dropdown">
+                                <button className="filter-btn" onClick={() => setShowFilterOptions(!showFilterOptions)}>Filter</button>
+                            </div>
                         </div>
-                    </div>
-                    <div className="search-bar-container">
-                        <div className="search-input-container">
-                            <input
-                                type="text"
-                                placeholder="search keywords or skills"
-                                autoComplete="off"></input>
-                        </div>
-                        <div className="icon-container">
-                            <img className="search-icon" src={Icon} alt="Search" />
+                        <div className="search-bar-container">
+                            <div className="search-input-container">
+                                <input
+                                    type="text"
+                                    placeholder="search keywords or skills"
+                                    autoComplete="off"></input>
+                            </div>
+                            <div className="icon-container">
+                                <img className="search-icon" src={Icon} alt="Search" />
+                            </div>
                         </div>
                     </div>
                 </div>
