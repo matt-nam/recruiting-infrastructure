@@ -21,4 +21,5 @@ export const getMajors = store => getApplicationsState(store) ? getApplicationsS
 export const getYears = store => getApplicationsState(store) ? getApplicationsState(store).data.years : [];
 export const getTimeCommitments = store => getApplicationsState(store) ? getApplicationsState(store).data.timeCommitments : [];
 export const getIndustries = store => getApplicationsState(store) ? getApplicationsState(store).data.industries : [];
+export const getTalentPools = store => getApplicationsState(store) ? getApplicationsState(store).data.talentPools : [];
 
