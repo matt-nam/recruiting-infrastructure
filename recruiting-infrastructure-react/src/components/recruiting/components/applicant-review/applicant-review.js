@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import { Modal } from 'react-bootstrap';
-import { Field } from 'redux-form';
 import './applicant-review.scss';
-import ApplicantTable from '../applicant-table'
+import { Modal, Grid, Row, Col } from 'react-bootstrap';
+import Form from './form';
+import { formData } from '../../../../shared/models/reviewView.model';
 
-export const ApplicantReview = (props) => {
+export const ApplicantReview = ({ fields }) => {
     const [isOpen, setIsOpen] = React.useState(false);
 
     const showModal = () => {
         setIsOpen(true);
-    }
+    };
 
     const hideModal = () => {
         setIsOpen(false);
-    }
+    };
+
 
     return (
       <>
@@ -23,12 +24,18 @@ export const ApplicantReview = (props) => {
                   Applicant Review
               </Modal.Header>
               <Modal.Body>
-                  Text
+                  <div class="row">
+                      <div class="col-md-6">
+                      </div>
+                      <div class="col-md-6">
+                          <Form formData={formData} />
+                      </div>
+                  </div>
               </Modal.Body>
               <Modal.Footer>
                   <button onClick={hideModal}> Close </button>
               </Modal.Footer>
           </Modal>
       </>
-    )
+    );
 };

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./recruiting.scss";
 import Sidebar from './components/sidebar';
 import ApplicantView from './components/applicant-view';
+import ApplicantReview from './components/applicant-review';
 import { getStartupsState } from 'services/startups/selectors';
 import { useDispatch, useSelector } from "react-redux";
 
