@@ -43,14 +43,14 @@ export default
                         {
                           "CreatedAt": "2/6/2021",
                           "Notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                          "RecruiterId": "1"
+                          "RecruiterEmail": "1"
                         }
                       ],
                       "InterviewNotes": [
                         {
                           "CreatedAt": "2/6/2021",
                           "Notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                          "RecruiterId": "2"
+                          "RecruiterEmail": "2"
                         }
                       ],
                       "NotableApplication": true,
@@ -127,14 +127,14 @@ export default
                         {
                             "CreatedAt": "2/6/2021",
                             "Notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                            "RecruiterId": "1"
+                            "RecruiterEmail": "1"
                         }
                         ],
                         "InterviewNotes": [
                         {
                             "CreatedAt": "2/6/2021",
                             "Notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                            "RecruiterId": "2"
+                            "RecruiterEmail": "2"
                         }
                         ],
                         "NotableApplication": true,
@@ -211,14 +211,14 @@ export default
                         {
                             "CreatedAt": "2/6/2021",
                             "Notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                            "RecruiterId": "1"
+                            "RecruiterEmail": "1"
                         }
                         ],
                         "InterviewNotes": [
                         {
                             "CreatedAt": "2/6/2021",
                             "Notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                            "RecruiterId": "2"
+                            "RecruiterEmail": "2"
                         }
                         ],
                         "NotableApplication": true,

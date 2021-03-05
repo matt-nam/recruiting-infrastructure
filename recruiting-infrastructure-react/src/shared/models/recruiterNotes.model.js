@@ -8,16 +8,16 @@ export class RecruiterNotes extends Model {
             ExtraMaterial: "",
 
             Rating: 0,
+            StartupPreferences: [true, true, true],
             StartupPairing: [""],
             PositionPairing: [""],
             TalentPools: [""],
-            RejectedPreferences: [""],
+            FinalPairing: "",
 
             Withdrawn: false,
             NotableApplication: false,
-            Readers: [""],
-            Interviewers: [ {RecruiterId: "", Status: ""} ], // Status: "Asked for interview" | "Interview"
-            Status: "",
+
+            Status: {},
             /*
                 Read
                 Accepted by us
@@ -26,7 +26,23 @@ export class RecruiterNotes extends Model {
                 Rejected by start-up
                 Received work-plan
              */
-            StatusDetails: ""
         };
+    }
+
+    editEntry(listName, element, isAdding) {
+        // listName is one of StartupPairing, PositionPairing, or TalentPools
+        // will either add or delete element from given list from this recruiter notes
+        if (isAdding) {
+            if (!this.listName.includes(element)) {
+                this.listName = this.listName.filter(item => item !== "Deleted: "+element)
+                this.listName.push(element)
+            }
+        }
+        else {
+            var i = this.listName.indexOf(element)
+            if (i >= 0) {
+                this.listName[i] = "Deleted: "+element
+            }
+        }
     }
 }

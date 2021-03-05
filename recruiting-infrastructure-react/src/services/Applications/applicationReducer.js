@@ -1,6 +1,6 @@
 import { ApplicationList, applicationsFactory } from "../../shared/models/applicationList.model";
 import { FilterOptions } from "../../shared/models/filterOptions.model";
-import { SET_TABLE_FILTER_OPTIONS, FETCH_APPLICATIONS_SUCCESS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, SET_APPLICATIONS_FILTER_OPTIONS, SET_CURRENT_APPLICATION, SET_APPLICATIONS_SORT_OPTIONS } from "./action-types";
+import { SET_TABLE_FILTER_OPTIONS, FETCH_APPLICATIONS_SUCCESS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, SET_APPLICATIONS_FILTER_OPTIONS, SET_CURRENT_APPLICATION, SET_APPLICATIONS_SORT_OPTIONS, SUBMITTING_NOTES, SUBMIT_NOTES_SUCCESS, SUBMIT_NOTES_FAILED } from "./action-types";
 import { LOADING, LOADED, FAILED } from "../constants";
 import { loadState, saveState } from "services/api";
 
@@ -128,6 +128,28 @@ function applicationsReducer(state = initialState, action) {
                     ...state.options,
                     current: action.payload.ApplicationId
                 }
+            }
+        }
+        case SUBMITTING_NOTES: {
+            return {
+                ...state,
+                status: LOADING,
+            }
+        }
+        case SUBMIT_NOTES_SUCCESS: {
+            var newApplications = new ApplicationList()
+            newApplications.models = [...state.data.models]
+            newApplications.models[action.payload.index].RecruiterNotes = action.payload.res
+            return {
+                ...state,
+                    data: newApplications,
+                status: LOADED
+            }
+        }
+        case SUBMIT_NOTES_FAILED: {
+            return {
+                ...state,
+                status: FAILED,
             }
         }
         default:
