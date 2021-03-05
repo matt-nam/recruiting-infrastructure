@@ -3,11 +3,18 @@ import React from "react";
 import { Route, Switch, useLocation } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
-import Recruiting from "components/recruiting"
+import Home from "./components/home";
+import Login from "./components/login";
+import SignUp from "./components/signup";
+import Confirm from "./components/confirm";
+import Recruiting from "components/recruiting";
 
 const routes = [
-    // { path: '/', name: 'Home', Component: Home },
-    { path: '/', name: "Recruiting", Component: Recruiting}
+    { path: '/', name: 'Home', Component: Home },
+    { path: '/login', name: 'Login', Component: Login },
+    { path: '/signup', name: 'Sign Up', Component: SignUp },
+    { path: '/confirm', name: 'Confirm sign up', Component: Confirm },
+    { path: '/recruiting', name: "Recruiting", Component: Recruiting}
 ]
 
 /**

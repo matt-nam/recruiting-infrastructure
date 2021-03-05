@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
-import { getCurrentApplication, getApplicationsStatus, getApplicationsByOptions } from "services/applications/selectors";
+import { getCurrentApplication, getApplicationsStatus, getApplicationsState } from "services/applications/selectors";
 
 export default function useApplications() {
     const applications = useSelector(state => {
-        return getApplicationsByOptions(state);
+        return getApplicationsState(state);
     });
     const currentApplication = useSelector(state => {
         return getCurrentApplication(state);

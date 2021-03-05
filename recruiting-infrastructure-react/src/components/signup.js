@@ -2,28 +2,24 @@ import React from 'react';
 import { useHistory } from "react-router-dom";
 import { FormGroup, FormControl, ControlLabel, Button } from "react-bootstrap";
 import { useFormFields } from "utils/hooksLib";
-import { attemptLogin } from "../services/user/actions";
-import { useUser } from "../shared/hooks";
+import { attemptSignUp } from "../services/user/actions";
 import store from "../services/store"
 
-export default function Login() {
+export default function SignUp() {
     const history = useHistory();
     const [fields, handleFieldChange] = useFormFields({
         email: "",
-        password: "",
+        password: ""
     });
-    const { user } = useUser();
 
     const handleSubmit = event => {
         event.preventDefault();
-        store.dispatch(attemptLogin(fields.email, fields.password, () => history.push("/")))
+        store.dispatch(attemptSignUp(fields.email, fields.password, () => { history.push("/confirm") }))
     }
-
-    const printAuth = () => { console.log(user) }
 
     return (
         <div>
-            <h2>Login</h2>
+            <h2>Sign up</h2>
             <form onSubmit={handleSubmit}>
                 <ControlLabel id="signup-text">yes internship program</ControlLabel>
                 <FormGroup controlId="email" bsSize="large">
@@ -43,8 +39,7 @@ export default function Login() {
                         onChange={handleFieldChange}
                     />
                 </FormGroup>
-                <Button type="submit">Log in</Button>
-                {/* <Button onClick={printAuth}>Test</Button> */}
+                <Button type="submit">Submit</Button>
             </form>
         </div>
     );
