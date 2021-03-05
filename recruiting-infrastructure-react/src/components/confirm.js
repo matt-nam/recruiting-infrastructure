@@ -26,7 +26,12 @@ export default function Confirm() {
     return (
         <div>
             <h2>Confirm sign up</h2>
-            <form onSubmit={handleSubmit}>
+
+            <h4>Thanks for signing up for the YES Internship Program!</h4>
+            <p>Matthew will confirm your registration shortly.</p> 
+
+            <a href="/">Back to home page</a>
+            {/* <form onSubmit={handleSubmit}>
                 <ControlLabel id="signup-text">yes internship program</ControlLabel>
                 <FormGroup controlId="confirmationCode" bsSize="large">
                     <FormControl
@@ -39,7 +44,7 @@ export default function Confirm() {
                 </FormGroup>
                 <Button type="submit">Submit</Button>
             </form>
-            <Button onClick={getCurrentUser}>Test</Button>
+            <Button onClick={getCurrentUser}>Test</Button> */}
         </div>
     );
 

@@ -43,8 +43,8 @@ export default function Login() {
                         onChange={handleFieldChange}
                     />
                 </FormGroup>
-                <Button type="submit">Submit</Button>
-                <Button onClick={printAuth}>Test</Button>
+                <Button type="submit">Log in</Button>
+                {/* <Button onClick={printAuth}>Test</Button> */}
             </form>
         </div>
     );

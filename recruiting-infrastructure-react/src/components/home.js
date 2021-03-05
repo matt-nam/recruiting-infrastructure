@@ -18,6 +18,13 @@ export default function Home() {
             : history.push("/login");
     }
 
+    const handleSignup = event => {
+        event.preventDefault();
+        user.userHasAuthenticated
+            ? alert("Oops! Already logged in.")
+            : history.push("/signup");
+    }
+
     const handleLogout = event => {
         event.preventDefault();
         user.userHasAuthenticated
@@ -35,7 +42,8 @@ export default function Home() {
             ) : (
                 <Button onClick={handleLogin}>Log in</Button>
             )}
-            <Button onClick={printAuth}>Test</Button>
+            <Button onClick={handleSignup}>Sign up</Button>
+            {/* <Button onClick={printAuth}>Test</Button> */}
         </div>
     );
 }
