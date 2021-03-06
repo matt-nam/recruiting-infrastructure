@@ -3,7 +3,8 @@ import "./email.scss";
 import { Modal, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-export const Email = () => {
+export const Email = (props) => {
+    const { closed, setClosed } = props
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
