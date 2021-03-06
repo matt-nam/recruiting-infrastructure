@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-// import { Field, connect } from "redux-form";
-import Input from "./input";
-import Select from "./select";
+import Input from "./components/input";
+import Select from "./components/select";
 // import ReviewView from "../../../../../shared/models/reviewView.model";
 import { useDispatch, useSelector } from "react-redux";
 import { getApplicationsState } from 'services/applications/selectors';
 
-export const Form = ({ appData, formData }) => {
+export const ReviewView = ({ appData, formData }) => {
     const [page, setPage] = useState(0);
     const [currentPage, setCurrentPage] = useState(formData[page]);
     const [values, setValues] = useState({});
@@ -63,4 +62,4 @@ export const Form = ({ appData, formData }) => {
     );
 };
 
-export default Form;
+export default ReviewView;

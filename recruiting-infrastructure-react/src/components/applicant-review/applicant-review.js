@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import './applicant-review.scss';
 import { Modal } from 'react-bootstrap';
-import Form from './components/form';
+
+import ReviewView from './components/review-view';
+import ApplicationView from './components/application-view'
+
 import { formData } from 'shared/models/reviewView.model';
 import mockData from 'shared/models/tests/mockApplications';
 import { getShowingModal, getCurrentApplication } from 'services/applications/selectors'
@@ -13,7 +16,7 @@ export const ApplicantReview = () => {
 
     const dispatch = useDispatch()
     const isOpen = useSelector(state => getShowingModal(state))
-    const currentId = useSelector(state => getCurrentApplication(state))
+    const currentApplication = useSelector(state => getCurrentApplication(state))
 
     const hideModal = () => {
         dispatch(setShowingModal({ showingModal: false }))
@@ -28,11 +31,12 @@ export const ApplicantReview = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="row">
-                        {/* <div className="col-md-6">
+                        <div className="col-md-6">
+                            <ApplicationView currentApplication={currentApplication}/>
                         </div>
                         <div className="col-md-6">
-                            <Form formData={mockData, formData} />
-                        </div> */}
+                            <ReviewView formData={mockData, formData} />
+                        </div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
