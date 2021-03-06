@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import store from "services/store";
 import { Amplify } from 'aws-amplify';
 import config from 'utils/amplify-config';
-import {fetchApplications, setApplicationsFilterOptions, setCurrentApplication } from "./services/applications/actions"
+import {fetchApplications, setApplicationsFilterOptions, setCurrentApplication, submitNotes } from "./services/applications/actions"
 import { fetchStartups } from 'services/startups/actions';
 
 Amplify.configure({
@@ -19,21 +19,21 @@ Amplify.configure({
       identityPoolId: config.cognito.IDENTITY_POOL_ID,
       userPoolWebClientId: config.cognito.APP_CLIENT_ID
   },
-  // API: {
-  //   endpoints: [
-  //     {
-  //       name: "catalog",
-  //       endpoint: config.apiGateway.URL,
-  //       region: config.apiGateway.REGION
-  //     },
-  //   ]
-  // }
+  API: {
+    endpoints: [
+      {
+        name: "main-app",
+        endpoint: config.apiGateway.URL,
+        region: config.apiGateway.REGION
+      },
+    ]
+  }
 });
 
 
 store.dispatch(fetchApplications);
 store.dispatch(fetchStartups);
-// store.dispatch(setCurrentApplication({applicationId: 10}));
+// store.dispatch(submitNotes(0));
 
 ReactDOM.render(
     <Provider store={store}>

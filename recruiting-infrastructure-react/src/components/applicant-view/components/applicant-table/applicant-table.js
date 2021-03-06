@@ -5,10 +5,7 @@ import { useDispatch } from "react-redux";
 import chroma from 'chroma-js';
 import { getApplicationListFiltered, getApplicationFilterOptions } from 'services/applications/selectors';
 import { getStartupsState } from 'services/startups/selectors';
-import { setApplicationsSortOptions } from 'services/applications/actions';
-
-// Mock data for applications
-import mockData from 'shared/models/tests/mockApplications';
+import { setApplicationsSortOptions,setCurrentApplication, setShowingModal } from 'services/applications/actions';
 
 export const ratingColormap = chroma
     .scale(['#f8696b', '#ffeb84', '#63b37b'])
@@ -65,7 +62,7 @@ function renderTableRow(app, prop, startupModels) {
             });
             return (<div className="rounded-info-container">
                 {names.map((name, index) =>
-                    <p className={"rounded-info "+(app["RecruiterNotes"]["StartupPreferences"][index] ? "" : "rounded-info-rejected")} key={name + index}>{name}</p>
+                    <p className={"rounded-info " + (app["RecruiterNotes"]["StartupPreferences"][index] ? "" : "rounded-info-rejected")} key={name + index}>{name}</p>
                 )}
             </div>);
         default:
@@ -87,6 +84,11 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
     const defaultAscendingToggle = { currentProp: filterOptions.SortValue, asc: filterOptions.Ascending };
     const [ascendingToggle, setAscendingToggle] = useState(defaultAscendingToggle);
 
+    const handleRowClick = (app) => {
+        dispatch(setCurrentApplication({applicationId: app.ApplicationId}))
+        dispatch(setShowingModal({showingModal: true}))
+    }
+
     function sortApplications(prop) {
         var newAsc = true;
         if (ascendingToggle.currentProp === prop) {
@@ -102,12 +104,16 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
     };
 
     useEffect(() => {
-        tbodyRef.current.style.height = (divRef.current.offsetHeight - theadRef.current.offsetHeight - 2) + 'px';
-
-        window.addEventListener('resize', resizeListener);
-        return () => {
+        if (tbodyRef.current && divRef.current && theadRef.current) {
             tbodyRef.current.style.height = (divRef.current.offsetHeight - theadRef.current.offsetHeight - 2) + 'px';
-            window.removeEventListener('resize', resizeListener);
+
+            window.addEventListener('resize', resizeListener);
+        }
+        return () => {
+            if (tbodyRef.current && divRef.current && theadRef.current) {
+                tbodyRef.current.style.height = (divRef.current.offsetHeight - theadRef.current.offsetHeight - 2) + 'px';
+                window.removeEventListener('resize', resizeListener);
+            }
         }
     }, [viewValue]);
 
@@ -125,7 +131,7 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
                 </thead>
                 <tbody ref={tbodyRef}>
                     {applications.map((app, index) => (
-                        <tr key={index}>
+                        <tr key={index} onClick={() => handleRowClick(app)}>
                             {displayProperties.map((prop) => (
                                 <td key={prop + ("_" + index)} className={prop === "Startups" || prop === "StartupPairing" ? "col-xs-3" : "col-xs-2"}>
                                     <div
