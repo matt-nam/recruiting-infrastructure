@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Routes from "./routes";
+import Routes from "./Routes";
 import { Auth } from "aws-amplify";
 import { BrowserRouter as Router } from "react-router-dom";
 import { AppContext } from "utils/contextLib";
