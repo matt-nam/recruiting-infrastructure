@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import "./recruiting.scss";
-import Sidebar from './components/sidebar';
-import ApplicantView from './components/applicant-view';
+import Sidebar from 'components/applicant-view/components/sidebar';
+import ApplicantView from 'components/applicant-view';
+import ApplicantReview from "components/applicant-review"
 import { useHistory } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { getStartupsState } from 'services/startups/selectors';
 import { useAppContext } from "utils/contextLib";
 import { getTalentPools } from 'services/applications/selectors';
 import { useUser } from "shared/hooks";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 // Mock data for companies and talent pools
 // import { companies, talentPools } from './mockData';
@@ -26,6 +27,7 @@ export const Recruiting = () => {
                 <div className="recruiting-container">
                     <Sidebar companies={companies} talentPools={talentPools} />
                     <ApplicantView />
+                    <ApplicantReview />
                 </div>
             </div> : <div className="login-message">
                 <h2>Not logged in!</h2>

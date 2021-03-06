@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import './applicant-view.scss';
 import Icon from 'static/search-icon.png'
 import { Button } from "react-bootstrap";
-import ApplicantTable from '../applicant-table';
-import Listing from '../listing';
+import ApplicantTable from './components/applicant-table';
+import Listing from './components/listing';
 import { customStyles } from './customStyles';
 import { useUser } from "shared/hooks";
 import { useAppContext } from "utils/contextLib";
@@ -20,7 +20,7 @@ import {
     getIndustries
 } from 'services/applications/selectors';
 import { getStartupsState } from 'services/startups/selectors';
-import FilterView from '../filter-view'
+import FilterView from './components/filter-view'
 import { VIEW_COMPANY, VIEW_TALENT_POOL, VIEW_ACCEPTED, VIEW_REJECTED, VIEW_ALL_APPLICANTS } from 'services/constants';
 
 export const ApplicantView = () => {

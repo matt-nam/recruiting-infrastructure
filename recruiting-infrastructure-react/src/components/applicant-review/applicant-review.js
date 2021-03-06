@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import './applicant-review.scss';
 import { Modal } from 'react-bootstrap';
-import Form from './form-components/form';
-import { formData } from '../../../../shared/models/reviewView.model';
+import Form from './components/form';
+import { formData } from 'shared/models/reviewView.model';
 import mockData from 'shared/models/tests/mockApplications';
 import { getShowingModal, getCurrentApplication } from 'services/applications/selectors'
 import { useDispatch, useSelector } from "react-redux";
@@ -19,22 +19,20 @@ export const ApplicantReview = () => {
         dispatch(setShowingModal({ showingModal: false }))
     };
 
-    console.log(currentId)
-
     return (
         <>
             {/* <button onClick={showModal}> Review Applicant </button> */}
-            <Modal show={isOpen} onHide={hideModal}>
+            <Modal size="lg" show={isOpen} onHide={hideModal}>
                 <Modal.Header>
                     Applicant Review
-              </Modal.Header>
+                </Modal.Header>
                 <Modal.Body>
                     <div className="row">
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                         </div>
                         <div className="col-md-6">
                             <Form formData={mockData, formData} />
-                        </div>
+                        </div> */}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

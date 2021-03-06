@@ -9,7 +9,7 @@ export const getApplicationsStatus = store =>
 
 export const getCurrentApplicationId = store => getApplicationsState(store) ? getApplicationsState(store).options.current : "";
 
-export const getCurrentApplication = store => getApplicationsState(store) ? getApplicationsState(store).options.current : "";
+export const getCurrentApplication = store => getApplicationsState(store) ? getApplicationsState(store).data.posWithId(getCurrentApplicationId(store)) : {};
 
 export const getShowingModal = store => getApplicationsState(store) ? getApplicationsState(store).showingModal : false;
 
