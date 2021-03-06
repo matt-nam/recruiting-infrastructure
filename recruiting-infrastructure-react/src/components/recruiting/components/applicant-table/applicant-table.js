@@ -5,11 +5,7 @@ import { useDispatch } from "react-redux";
 import chroma from 'chroma-js';
 import { getApplicationListFiltered, getApplicationFilterOptions } from 'services/applications/selectors';
 import { getStartupsState } from 'services/startups/selectors';
-import { setApplicationsSortOptions } from 'services/applications/actions';
-import ApplicantReview from '../applicant-review';
-
-// Mock data for applications
-import mockData from 'shared/models/tests/mockApplications';
+import { setApplicationsSortOptions,setCurrentApplication, setShowingModal } from 'services/applications/actions';
 
 export const ratingColormap = chroma
     .scale(['#f8696b', '#ffeb84', '#63b37b'])
@@ -88,11 +84,9 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
     const defaultAscendingToggle = { currentProp: filterOptions.SortValue, asc: filterOptions.Ascending };
     const [ascendingToggle, setAscendingToggle] = useState(defaultAscendingToggle);
 
-    console.log(applications)
-    console.log(filterOptions)
-
-    const handleRowClick = () => {
-        return <ApplicantReview />
+    const handleRowClick = (app) => {
+        dispatch(setCurrentApplication({applicationId: app.ApplicationId}))
+        dispatch(setShowingModal({showingModal: true}))
     }
 
     function sortApplications(prop) {
@@ -133,7 +127,7 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
                 </thead>
                 <tbody ref={tbodyRef}>
                     {applications.map((app, index) => (
-                        <tr key={index} onClick={handleRowClick}>
+                        <tr key={index} onClick={() => handleRowClick(app)}>
                             {displayProperties.map((prop) => (
                                 <td key={prop + ("_" + index)} className={prop === "Startups" || prop === "StartupPairing" ? "col-xs-3" : "col-xs-2"}>
                                     <div

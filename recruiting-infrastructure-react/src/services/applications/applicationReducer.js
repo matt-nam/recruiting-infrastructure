@@ -1,13 +1,13 @@
 import { ApplicationList, applicationsFactory } from "../../shared/models/applicationList.model";
 import { FilterOptions } from "../../shared/models/filterOptions.model";
-import { SET_TABLE_FILTER_OPTIONS, FETCH_APPLICATIONS_SUCCESS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, SET_APPLICATIONS_FILTER_OPTIONS, SET_CURRENT_APPLICATION, SET_APPLICATIONS_SORT_OPTIONS } from "./action-types";
+import { SET_TABLE_FILTER_OPTIONS, FETCH_APPLICATIONS_SUCCESS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, SET_APPLICATIONS_FILTER_OPTIONS, SET_CURRENT_APPLICATION, SET_APPLICATIONS_SORT_OPTIONS, SET_SHOWING_MODAL } from "./action-types";
 import { LOADING, LOADED, FAILED } from "../constants";
 import { loadState, saveState } from "services/api";
 
 const initialState = {
     data: new ApplicationList(),
     status: LOADED,
-    popUpShowing: false,
+    showingModal: false,
     currentId: "",
     options: {
         current: 0,
@@ -130,6 +130,12 @@ function applicationsReducer(state = initialState, action) {
                     ...state.options,
                     current: action.payload.ApplicationId
                 }
+            }
+        }
+        case SET_SHOWING_MODAL: {
+            return {
+                ...state,
+                showingModal: action.payload.showingModal
             }
         }
         default:

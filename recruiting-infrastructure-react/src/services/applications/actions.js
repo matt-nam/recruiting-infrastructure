@@ -5,7 +5,8 @@ import {
     FETCH_APPLICATIONS_FAILED,
     SET_CURRENT_APPLICATION,
     SET_APPLICATIONS_SORT_OPTIONS,
-    SET_TABLE_FILTER_OPTIONS
+    SET_TABLE_FILTER_OPTIONS,
+    SET_SHOWING_MODAL
 } from "./action-types";
 // import client from "../api"
 import { applicationsFactory } from "../../shared/models/applicationList.model";
@@ -45,6 +46,8 @@ export const fetchApplications = (dispatch) => {
 export const setApplicationsFilterOptions = options => ({ type: SET_APPLICATIONS_FILTER_OPTIONS, payload: { ViewType: options.viewType, ViewValue: options.viewValue } });
 
 export const setCurrentApplication = options => ({ type: SET_CURRENT_APPLICATION, payload: { ApplicationId: options.applicationId } });
+
+export const setShowingModal = options => ({ type: SET_SHOWING_MODAL, payload: { showingModal: options.showingModal } });
 
 export const setApplicationsSortOptions = options => ({type: SET_APPLICATIONS_SORT_OPTIONS, payload: { SortValue: options.sortValue, Ascending: options.ascending }});
 

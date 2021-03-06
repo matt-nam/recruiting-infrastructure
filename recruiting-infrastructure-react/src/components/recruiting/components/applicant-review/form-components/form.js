@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Field, connect } from "redux-form";
+// import { Field, connect } from "redux-form";
 import Input from "./input";
 import Select from "./select";
-import ReviewView from "../../../../../shared/models/reviewView.model";
+// import ReviewView from "../../../../../shared/models/reviewView.model";
 import { useDispatch, useSelector } from "react-redux";
 import { getApplicationsState } from 'services/applications/selectors';
 

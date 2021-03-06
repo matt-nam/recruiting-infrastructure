@@ -7,7 +7,11 @@ export const getApplicationsState = store => store.applications;
 export const getApplicationsStatus = store =>
     getApplicationsState(store) ? getApplicationsState(store).status : FAILED;
 
-export const getCurrentApplication = (store) => {};
+export const getCurrentApplicationId = store => getApplicationsState(store) ? getApplicationsState(store).options.current : "";
+
+export const getCurrentApplication = store => getApplicationsState(store) ? getApplicationsState(store).options.current : "";
+
+export const getShowingModal = store => getApplicationsState(store) ? getApplicationsState(store).showingModal : false;
 
 // TODO: Implement Other Selectors
 export const getApplicationListFiltered = store =>
