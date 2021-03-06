@@ -6,6 +6,7 @@ import chroma from 'chroma-js';
 import { getApplicationListFiltered, getApplicationFilterOptions } from 'services/applications/selectors';
 import { getStartupsState } from 'services/startups/selectors';
 import { setApplicationsSortOptions } from 'services/applications/actions';
+import ApplicantReview from '../applicant-review';
 
 // Mock data for applications
 import mockData from 'shared/models/tests/mockApplications';
@@ -87,6 +88,13 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
     const defaultAscendingToggle = { currentProp: filterOptions.SortValue, asc: filterOptions.Ascending };
     const [ascendingToggle, setAscendingToggle] = useState(defaultAscendingToggle);
 
+    console.log(applications)
+    console.log(filterOptions)
+
+    const handleRowClick = () => {
+        return <ApplicantReview />
+    }
+
     function sortApplications(prop) {
         var newAsc = true;
         if (ascendingToggle.currentProp === prop) {
@@ -125,7 +133,7 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
                 </thead>
                 <tbody ref={tbodyRef}>
                     {applications.map((app, index) => (
-                        <tr key={index}>
+                        <tr key={index} onClick={handleRowClick}>
                             {displayProperties.map((prop) => (
                                 <td key={prop + ("_" + index)} className={prop === "Startups" || prop === "StartupPairing" ? "col-xs-3" : "col-xs-2"}>
                                     <div

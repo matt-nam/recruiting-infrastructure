@@ -1,8 +1,33 @@
 import { Model, List } from "./base";
+import { ApplicationPosition } from "./applicationPosition.model";
 import { RecruiterNotes } from "./recruiterNotes.model";
 
 export class ReviewView extends Model {
+    defaults() {
+        return {
+            name: "",
+            submitData: new RecruiterNotes,
+        };
+    }
 }
+
+/*
+    To add a new field for the Recruiter Notes form, use the following code:
+
+    component: "input" or "select"
+    name: "name of field"
+    label: "text that appears in the form"
+
+    If "select" is chosen, add:
+
+    options" [
+        {
+            component: "options"
+            label: "text that appears in the dropdown menu"
+        },
+        { and so on }
+    ]
+*/
 
 export const formData = [
     {

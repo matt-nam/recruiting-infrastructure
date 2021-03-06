@@ -1,15 +1,18 @@
 import React, { useState } from "react";
+import { Field, connect } from "redux-form";
 import Input from "./input";
 import Select from "./select";
+import ReviewView from "../../../../../shared/models/reviewView.model";
+import { useDispatch, useSelector } from "react-redux";
+import { getApplicationsState } from 'services/applications/selectors';
 
-export const Form = ({ formData }) => {
+export const Form = ({ appData, formData }) => {
     const [page, setPage] = useState(0);
     const [currentPage, setCurrentPage] = useState(formData[page]);
     const [values, setValues] = useState({});
 
-    const submitForm = (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(values);
     };
 
     const fieldChanged = (name, value) => {
@@ -28,8 +31,10 @@ export const Form = ({ formData }) => {
         select: Select
     };
 
+    let application = useSelector(state => getApplicationsState(state));
+
     return (
-        <form onSubmit={submitForm}>
+        <form onSubmit={handleSubmit}>
             <h2>{currentPage.label}</h2>
             {currentPage.fields.map((field) => {
                 switch (field.component) {
