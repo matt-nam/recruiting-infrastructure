@@ -62,7 +62,7 @@ function renderTableRow(app, prop, startupModels) {
             });
             return (<div className="rounded-info-container">
                 {names.map((name, index) =>
-                    <p className={"rounded-info "+(app["RecruiterNotes"]["StartupPreferences"][index] ? "" : "rounded-info-rejected")} key={name + index}>{name}</p>
+                    <p className={"rounded-info " + (app["RecruiterNotes"]["StartupPreferences"][index] ? "" : "rounded-info-rejected")} key={name + index}>{name}</p>
                 )}
             </div>);
         default:
@@ -104,12 +104,16 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
     };
 
     useEffect(() => {
-        tbodyRef.current.style.height = (divRef.current.offsetHeight - theadRef.current.offsetHeight - 2) + 'px';
-
-        window.addEventListener('resize', resizeListener);
-        return () => {
+        if (tbodyRef.current && divRef.current && theadRef.current) {
             tbodyRef.current.style.height = (divRef.current.offsetHeight - theadRef.current.offsetHeight - 2) + 'px';
-            window.removeEventListener('resize', resizeListener);
+
+            window.addEventListener('resize', resizeListener);
+        }
+        return () => {
+            if (tbodyRef.current && divRef.current && theadRef.current) {
+                tbodyRef.current.style.height = (divRef.current.offsetHeight - theadRef.current.offsetHeight - 2) + 'px';
+                window.removeEventListener('resize', resizeListener);
+            }
         }
     }, [viewValue]);
 

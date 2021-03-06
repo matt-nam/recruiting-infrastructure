@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import './applicant-view.scss';
 import Icon from 'static/search-icon.png'
+import { Button } from "react-bootstrap";
 import ApplicantTable from '../applicant-table';
 import Listing from '../listing';
 import { customStyles } from './customStyles';
+import { useUser } from "shared/hooks";
+import { useAppContext } from "utils/contextLib";
+import { attemptLogout } from "services/user/actions";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
     getApplicationFilterOptions,
@@ -49,9 +54,9 @@ export const ApplicantView = () => {
     if (filterOptions.ViewType !== VIEW_COMPANY) {
         displayProperties = ["FirstName", "LastName", "Rating", "University", "Major", "Hours"];
     } else {
-        displayProperties = ["FirstName", "LastName", "Rating", "Startups","StartupPairing"]
+        displayProperties = ["FirstName", "LastName", "Rating", "Startups", "StartupPairing"]
     }
-    
+
 
     const universities = useSelector(state => getUniversities(state))
     const organizations = useSelector(state => getOrganizations(state))
@@ -61,6 +66,21 @@ export const ApplicantView = () => {
     const industries = useSelector(state => getIndustries(state))
     const companies = useSelector(state => getStartupsState(state)).data.models;
     let currentListing = companies.filter(startup => startup.id === filterOptions.ViewValue.id)[0];
+
+    const { isAuthenticated, userHasAuthenticated } = useAppContext();
+    let { user } = useUser();
+    const history = useHistory();
+
+    const handleLogout = event => {
+        event.preventDefault();
+        if (user.userHasAuthenticated || isAuthenticated) {
+            userHasAuthenticated(false);
+            dispatch(attemptLogout(() => history.push("/")));
+        } else {
+            alert("Oops! Not logged in yet.")
+        }
+    }
+
     return (
         <div className="applicant-container">
             <div className={"applicant-container-main" + (filterOptions.ViewType === VIEW_COMPANY ? " company-view" : "")}>
@@ -82,6 +102,7 @@ export const ApplicantView = () => {
                             <div className="icon-container">
                                 <img className="search-icon" src={Icon} alt="Search" />
                             </div>
+                            <Button className="applicant-view-logout-btn" onClick={handleLogout}>Log out</Button>
                         </div>
                     </div>
                 </div>

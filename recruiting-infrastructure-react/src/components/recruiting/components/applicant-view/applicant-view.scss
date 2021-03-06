@@ -76,7 +76,7 @@ $recruiting-inner-margins: 20px;
                 margin-bottom: 20px;
                 background-color: none;
                 position: relative;
-                margin-right: $recruiting-margins;
+                // margin-right: $recruiting-margins;
             
                 box-sizing: border-box;
                 border-radius: 14px;
@@ -109,8 +109,9 @@ $recruiting-inner-margins: 20px;
                     align-items: center;
                     cursor: pointer;
                     border-radius: 0px 8px 8px 0px;
-                    width: 40px;
+                    width: 50px;
                     height: inherit;
+                    margin-right: 10px;
                 
                     .search-icon {
                         width: 20px;
@@ -118,6 +119,10 @@ $recruiting-inner-margins: 20px;
                         margin-left: -3px;
                         color: white;
                     }
+                }
+
+                .applicant-view-logout-btn {
+                    margin-right: $recruiting-margins;
                 }
             }
         }
