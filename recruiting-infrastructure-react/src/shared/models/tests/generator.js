@@ -1,114 +1,117 @@
-function generateApplication(univ, firstName, lastName, gender, industry, hours, international, major, org, rating, talentPool, appId, rank1, rank2, rank3, year) {
-    var generatedApp = {
-        "Acknowledgement": true,
-        "AdditionalFile": "S3 Link to additional file",
-        "AdditionalInfo": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        "ApplicationId": appId,
-        "Aspirations": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        "Authorization": "",
-        "CreatedAt": "2021-01-08, 17:41:22",
-        "Disability": "None",
-        "Email": firstName+"@gmail.com",
-        "Ethnicity": "",
-        "FirstName": firstName,
-        "Funding": [
-          "Series A"
-        ],
-        "Gender": gender,
-        "Hours": hours,
-        "Industry": industry,
-        "Interests": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        "International": international,
-        "Intro": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        "LastName": lastName,
-        "LinkedIn": "LinkedIn Link",
-        "Major": major,
-        "MatchedLater": true,
-        "Organization": org,
-        "PhoneNumber": "",
-        "pk": "APPLICATION#"+appId,
-        "Portfolio": "This is my portfolio",
-        "ProfitType": "Any",
-        "Rank1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        "Rank2": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        "Rank3": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        "RecruiterNotes": {
-          "ExtraMaterial": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-          "GeneralNotes": [
-            {
-              "CreatedAt": "2/6/2021",
-              "Notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-              "RecruiterId": "1"
-            }
-          ],
-          "InterviewNotes": [
-            {
-              "CreatedAt": "2/6/2021",
-              "Notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-              "RecruiterId": "2"
-            }
-          ],
-          "NotableApplication": true,
-          "PositionPairing": [
-            "1"
-          ],
-          "Rating": rating,
-          "StartupPairing": [
-            "1"
-          ],
-          "TalentPools": talentPool,
-          "Withdrawn": false
-        },
-        "Reference": "From a friend",
-        "Responses": [
+function generateApplication(univ, firstName, lastName, gender, industry, hours, international, major, org, rating, talentPool, appId, rank1, rank2, rank3, year, prefs, pairings) {
+  var generatedApp = {
+      "Acknowledgement": true,
+      "AdditionalFile": "S3 Link to additional file",
+      "AdditionalInfo": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "ApplicationId": appId,
+      "Aspirations": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "Authorization": false,
+      "AuthorizationType": "",
+      "CreatedAt": "2021-01-08, 17:41:22",
+      "Disability": "None",
+      "Email": firstName+"@gmail.com",
+      "Ethnicity": "",
+      "FirstName": firstName,
+      "Funding": [
+        "Series A"
+      ],
+      "Gender": gender,
+      "HasInternship": false,
+      "Hours": hours,
+      "IdealPosition": "Coding Positions",
+      "Industry": industry,
+      "International": international,
+      "InternationalLocation": false,
+      "LastName": lastName,
+      "LinkedIn": "LinkedIn Link",
+      "Major": major,
+      "MatchedLater": true,
+      "Organization": org,
+      "OtherStartups": "",
+      "PhoneNumber": "",
+      "pk": "APPLICATION#"+appId,
+      "Portfolio": "This is my portfolio",
+      "ProfitType": "Any",
+      "Rank1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "Rank2": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "Rank3": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "RecruiterNotes": {
+        "ExtraMaterial": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+        "GeneralNotes": [
           {
-            "Question": "What kind of role do you play on a team?",
-            "Response": "I help people"
+            "CreatedAt": "2/6/2021",
+            "Notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+            "RecruiterId": "1"
           }
         ],
-        "Resume": "S3 link to resume (not filled yet)",
-        "Round": 2,
-        "sk": "#APPLICATION#"+appId,
-        "Skills": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        "Startups": [
-          rank1,
-          rank2,
-          rank3
+        "InterviewNotes": [
+          {
+            "CreatedAt": "2/6/2021",
+            "Notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+            "RecruiterId": "2"
+          }
         ],
-        "University": univ,
-        "Video": "S3 link to video (not filled yet)",
-        "Year": year
-    };
-    return generatedApp;
+        "NotableApplication": true,
+        "PositionPairing": [
+          "1"
+        ],
+        "Rating": rating,
+        "StartupPreferences": prefs,
+        "StartupPairing": pairings,
+        "TalentPools": talentPool,
+        "Withdrawn": false
+      },
+      "Reference": "From a friend",
+      "Responses": [
+        {
+          "Question": "What kind of role do you play on a team?",
+          "Response": "I help people"
+        }
+      ],
+      "Resume": "S3 link to resume (not filled yet)",
+      "Round": 2,
+      "sk": "#APPLICATION#"+appId,
+      "Skills": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "Startups": [
+        rank1,
+        rank2,
+        rank3
+      ],
+      "ToFall": false,
+      "University": univ,
+      "Video": "S3 link to video (not filled yet)",
+      "Year": year
+  };
+  return generatedApp;
 }
 
 function makeName(length) {
-    var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+  var result = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 } // use for FirstName, LastName, Email
 
 function getRandom(arr, n) {
-    var result = new Array(n),
-        len = arr.length,
-        taken = new Array(len);
-    if (n > len)
-        throw new RangeError("getRandom: more elements taken than available");
-    while (n--) {
-        var x = Math.floor(Math.random() * len);
-        result[n] = arr[x in taken ? taken[x] : x];
-        taken[x] = --len in taken ? taken[len] : len;
-    }
-    return result;
+  var result = new Array(n),
+      len = arr.length,
+      taken = new Array(len);
+  if (n > len)
+      throw new RangeError("getRandom: more elements taken than available");
+  while (n--) {
+      var x = Math.floor(Math.random() * len);
+      result[n] = arr[x in taken ? taken[x] : x];
+      taken[x] = --len in taken ? taken[len] : len;
+  }
+  return result;
 }
 
 function randomIntFromInterval(min, max) { // min and max included 
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
 var universities = ["Princeton University", "Harvard University", "Columbia University", "Massachusetts Institute of Technology", "Yale University", "Stanford University", "University of Chicago", "University of Pennsylvania", "California Institute of Technology", "Johns Hopkins University", "Northwestern University", "Duke University", "Dartmouth College", "Brown University", "Vanderbilt University", "Rice University", "Washington University in St. Louis", "Cornell University", "University of Notre Dame", "University of California--Los Angeles", "Emory University", "University of California--Berkeley", "Georgetown University", "University of Michigan--Ann Arbor", "University of Southern California", "Carnegie Mellon University", "University of Virginia", "University of North Carolina--Chapel Hill", "Wake Forest University", "New York University", "Tufts University", "University of California--Santa Barbara", "University of Florida", "University of Rochester", "Boston College", "Georgia Institute of Technology", "University of California--Irvine", "University of California--San Diego", "University of California--Davis"];
 
@@ -130,36 +133,42 @@ var numOfApps = 500;
 var generatedApps = [];
 
 for (var i = 0; i < numOfApps; i++) {
-    var univ = getRandom(universities, 1)[0];
-    var firstName = makeName(10);
-    var lastName = makeName(10);
-    var gender = getRandom(genders, 1)[0];
-    var industry = getRandom(industries, 3);
-    var hours;
-    if (getRandom(possibleHours,1)[0] > 15) {
-        hours = [40,40];
-    } else {
-        var h = getRandom(possibleHours,2);
-        hours = [Math.min(...h), Math.max(...h)];
-    }
-    var international = getRandom(internationals, 1)[0];
-    var major = getRandom(majors, 1)[0];
-    var org = univ + " Entrepreneurial Club";
-    var rating = randomIntFromInterval(1,5);
-    var talentPool = getRandom(talentPools, 2);
-    var appId = randomIntFromInterval(1000000000,9999999999);
-    var s = getRandom(startupIDs, 3);
-    var rank1 = s[0];
-    var rank2 = s[1];
-    var rank3 = s[2];
-    var year = getRandom(years, 1)[0];
-    generatedApps[i] = generateApplication(univ, firstName, lastName, gender, industry, hours, international, major, org, rating, talentPool, appId, rank1, rank2, rank3, year);
+  var univ = getRandom(universities, 1)[0];
+  var firstName = makeName(10);
+  var lastName = makeName(10);
+  var gender = getRandom(genders, 1)[0];
+  var industry = getRandom(industries, 3);
+  var hours;
+  if (getRandom(possibleHours,1)[0] > 15) {
+      hours = [40,40];
+  } else {
+      var h = getRandom(possibleHours,2);
+      hours = [Math.min(...h), Math.max(...h)];
+  }
+  var international = getRandom(internationals, 1)[0];
+  var major = getRandom(majors, 1)[0];
+  var org = univ + " Entrepreneurial Club";
+  var rating = randomIntFromInterval(1,5);
+  var talentPool = getRandom(talentPools, 2);
+  var appId = randomIntFromInterval(1000000000,9999999999);
+  var s = getRandom(startupIDs, 3);
+  var rank1 = s[0];
+  var rank2 = s[1];
+  var rank3 = s[2];
+  var year = getRandom(years, 1)[0];
+  var prefs = Array(3);
+  var pairings = getRandom(startupIDs, randomIntFromInterval(2,7));
+  for (var j = 0; j < 3; j++) {
+    prefs[j] = randomIntFromInterval(1,2) === 1 ? true : false;
+  }
+  generatedApps[i] = generateApplication(univ, firstName, lastName, gender, industry, hours, international, major, org, rating, talentPool, appId, rank1, rank2, rank3, year, prefs, pairings);
 }
 
-// var fs = require('fs');
-// var x = JSON.stringify(generatedApps);
-// fs.writeFile('apps.js', x, function(err) {
-//     if (err) throw err;
-// });
-
-// console.log(generatedApps);
+var fs = require('fs');
+var x = JSON.stringify(generatedApps);
+var y = `export default
+{
+  data: `+x+'}';
+fs.writeFile('mockApplicationsLarge.js', y, function(err) {
+  if (err) throw err;
+});

@@ -21,28 +21,32 @@ import mockData from "../../shared/models/tests/mockApplicationsLarge.js";
 // will need to include something involving batch size later on
 export const fetchApplications = (dispatch) => {
     dispatch({ type: FETCHING_APPLICATIONS })
-    var res = applicationsFactory(mockData.data);
-    // console.log(res)
-    dispatch({
-        type: FETCH_APPLICATIONS_SUCCESS,
-        payload: res
-    })
 
-    // client.get('catalog', '/catalog')
-    //     .then(r => {
-    //         let res = applicationsFactory(r)
-    //         dispatch({
-    //             type: FETCH_APPLICATIONS,
-    //             payload: res
-    //         })
-    //     })
-    //     .catch(err => {
-    //         console.error(err); // log since might be a render err
-    //         dispatch({
-    //             type: FETCH_APPLICATIONS_FAILED,
-    //             payload: err
-    //         });
-    //     })
+    // USING MOCK DATA
+    // var res = applicationsFactory(mockData.data);
+    // console.log(res)
+    // dispatch({
+    //     type: FETCH_APPLICATIONS_SUCCESS,
+    //     payload: res
+    // })
+
+    // CALLING API FOR APPLICATIONS
+    client.get('main-app', '/applications')
+        .then(r => {
+            console.log(r)
+            let res = applicationsFactory(r)
+            dispatch({
+                type: FETCH_APPLICATIONS_SUCCESS,
+                payload: res
+            })
+        })
+        .catch(err => {
+            console.error(err); // log since might be a render err
+            dispatch({
+                type: FETCH_APPLICATIONS_FAILED,
+                payload: err
+            });
+        })
 }
 
 export const submitNotes = (index) => {
