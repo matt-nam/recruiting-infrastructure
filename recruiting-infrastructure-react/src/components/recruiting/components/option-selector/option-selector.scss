@@ -6,23 +6,12 @@
     transition: max-height 0.25s ease-out;
 }
 
+.searchBox {
+    font-size: 16px;
+}
+
 .multiselect-container {
     margin-top: 5px;
-}
-
-li span {
-    transition: 0.20s ease-out;
-}
-
-li span:hover {
-    cursor: pointer;
-    color: $blue-color;
-    border: solid $blue-color;
-    // border: solid rgba(50, 142, 246, 0.7);
-    opacity: 0.8;
-    padding-left: 7px;
-    border-width: 0px 0px 0px 7px;
-    // text-decoration: underline;
 }
 
 .search-wrapper {
@@ -38,10 +27,18 @@ li span:hover {
     }
     .sidebar-dropdown-btn {
         color: black;
-        border-radius: 0;
-        width: 28px;
+        border-radius: 4px;
+        background-color: lightgrey;
+        border: none;
+        width: 30px;
         height: 28px;
-        border: 1px solid $gray-color;
+        outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .sidebar-dropdown-btn:hover {
+        opacity: 0.5;
     }
 
 }

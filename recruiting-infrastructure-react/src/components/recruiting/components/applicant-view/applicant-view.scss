@@ -2,105 +2,157 @@
 
 %border {
     border: 1px solid $gray-color;
+    border-radius: 0 12px 12px 0;
 }
 
-$recruiting-height: 80vh;
-$recruiting-width: 70%;
+$recruiting-height: 92vh;
+$recruiting-width: 75%;
 $recruiting-margins: 3%;
 $sidebar-width: 100% - $recruiting-width - (3 * $recruiting-margins);
 $recruiting-inner-margins: 20px;
 
 .applicant-container {
     @extend %border;
-    float: left;
-    margin-top: 5vh;
-    margin-bottom: 3vh;
+    position: relative;
     width: $recruiting-width + $recruiting-margins;
     height: $recruiting-height;
-    border-left: none;
     margin-left: 0;
     justify-content: space-between;
-    margin-right: $recruiting-margins;
-    padding-left: $recruiting-inner-margins;
 
-    h3 {
-        font-size: 2em;
-    }
-
-    .query-container {
-        margin-right: inherit;
-        display: flex;
-        justify-content: space-between;
-        height: 30px;
-        margin-bottom: $recruiting-inner-margins;
-
-        .dropdown-container {
-            display: flex;
-            width: auto;
-
-            .dropdown {
-                width: 150px;
-                margin-left: 0;
-                margin-right: $recruiting-margins;
-                border-radius: 100%;
-            }
-        }
-        
-        
-        .search-bar-container {
-            margin-left: 10px;
-            margin-bottom: 20px;
-            background-color: none;
-            position: relative;
-        
-            box-sizing: border-box;
-            border-radius: 14px;
-            display: flex;
-            float: right;
-            height: 30px;
-        
-            .search-input-container {
-                width: auto;
-                height: inherit;
-                position: relative;
-                float: right;
-                font-size: 15px;
-        
-                input {
-                    height: inherit;
-                    padding: 14px;
-                    box-sizing: inherit;
-                    border-width: 1px;
-                    border-radius: 8px 0px 0px 8px;
-                    overflow: hidden;
-                }
-            }
-        
-            .icon-container {
-                background-color: $blue-color;
-                display: flex;
-                justify-content: center;
-                float: right;
-                align-items: center;
-                cursor: pointer;
-                border-radius: 0px 8px 8px 0px;
-                width: 40px;
-                height: inherit;
-            
-                .search-icon {
-                    width: 20px;
-                    height: 20px;
-                    margin-left: -3px;
-                    color: white;
-                }
-            }
-        }
+    .applicant-container-header {
+        padding-left: $recruiting-inner-margins;
     }
     
-    .pool-container {
-        margin-right: $recruiting-margins;
-        font-size: 15px;
+    .applicant-container-main {
+        height: calc(100%);
 
+        .filter-btn {
+            background-color: $blue-color;
+            // background-color: rgb(211,211,211);
+            padding: 5px 8px;
+            margin: 0 2%;
+            color: white;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            height: 31px;
+            width: 70px;
+            // outline: none;
+            border: none;
+        }
+
+        .filter-btn:hover {
+            background-color: rgba(50, 142, 246, 0.7);
+            // background-color: rgba(211,211,211,0.7);
+        }
+
+        h3 {
+            font-size: 2em;
+        }
+
+        .query-container {
+            margin-right: inherit;
+            display: flex;
+            justify-content: space-between;
+            height: 30px;
+            margin-bottom: $recruiting-inner-margins;
+
+            .dropdown-container {
+                display: flex;
+                width: auto;
+
+                .dropdown {
+                    width: 150px;
+                    margin-left: 0;
+                    margin-right: $recruiting-margins;
+                    border-radius: 100%;
+
+                    
+                }
+            }
+            
+            .search-bar-container {
+                margin-left: 10px;
+                margin-bottom: 20px;
+                background-color: none;
+                position: relative;
+                margin-right: $recruiting-margins;
+            
+                box-sizing: border-box;
+                border-radius: 14px;
+                display: flex;
+                float: right;
+                height: 30px;
+            
+                .search-input-container {
+                    width: auto;
+                    height: inherit;
+                    position: relative;
+                    float: right;
+                    font-size: 15px;
+            
+                    input {
+                        height: inherit;
+                        padding: 14px;
+                        box-sizing: inherit;
+                        border-width: 1px;
+                        border-radius: 8px 0px 0px 8px;
+                        overflow: hidden;
+                    }
+                }
+            
+                .icon-container {
+                    background-color: $blue-color;
+                    display: flex;
+                    justify-content: center;
+                    float: right;
+                    align-items: center;
+                    cursor: pointer;
+                    border-radius: 0px 8px 8px 0px;
+                    width: 40px;
+                    height: inherit;
+                
+                    .search-icon {
+                        width: 20px;
+                        height: 20px;
+                        margin-left: -3px;
+                        color: white;
+                    }
+                }
+            }
+        }
         
+        .pool-container {
+            position: relative;
+            height: calc(100% - 119px);
+            font-size: 15px;
+        }
+
+        .cover {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .filter-container {
+            overflow-y: auto;
+        }
     }
+}
+
+.company-view {
+    width: 60%;
+    float: left;
+    border-right: 1px solid $gray-color;
+}
+
+.listing-div {
+    width: 40%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px;
+    float: right;
 }

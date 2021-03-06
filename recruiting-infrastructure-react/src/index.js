@@ -8,7 +8,8 @@ import { Provider } from 'react-redux';
 import store from "services/store";
 import { Amplify } from 'aws-amplify';
 import config from 'utils/amplify-config';
-import {fetchApplications, setApplicationsFilterOptions} from "./services/Applications/actions"
+import {fetchApplications, setApplicationsFilterOptions, setCurrentApplication } from "./services/applications/actions"
+import { fetchStartups } from 'services/startups/actions';
 
 Amplify.configure({
   Auth: {
@@ -29,9 +30,10 @@ Amplify.configure({
   // }
 });
 
-// Temporary testing to see if actions work properly
+
 store.dispatch(fetchApplications);
-store.dispatch(setApplicationsFilterOptions({viewType: "TalentPool", viewValue: "SWE"}));
+store.dispatch(fetchStartups);
+// store.dispatch(setCurrentApplication({applicationId: 10}));
 
 ReactDOM.render(
     <Provider store={store}>

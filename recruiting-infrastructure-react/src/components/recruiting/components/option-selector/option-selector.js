@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Multiselect } from 'multiselect-react-dropdown';
-// import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getApplicationFilterOptions } from 'services/applications/selectors';
+import { setApplicationsFilterOptions, setApplicationsSortOptions } from 'services/applications/actions';
+import { VIEW_COMPANY, VIEW_TALENT_POOL } from 'services/constants';
+import { loadState, saveState } from "services/api";
 import './option-selector.scss';
-
-// Helps differentiate which data is going to be dispatched
-const dispatchKeys = {
-    GENERAL_TALENT_POOL_KEY: 0,
-    COMPANY_KEY: 1,
-    TALENT_POOL_KEY: 2
-}
 
 function isString(myVar) {
     return typeof myVar === 'string' || myVar instanceof String;
@@ -24,55 +21,63 @@ function isString(myVar) {
  */
 
 export const OptionSelector = ({ title, items }) => {
+    const dispatch = useDispatch();
+    const filterOptions = useSelector(state => getApplicationFilterOptions(state));
+
     const [isOpen, setIsOpen] = useState(false);
-    const [usedOptions, setUsedOptions] = useState([]);
-    // const [isActive, setIsActive] = useState(false);
+    var defaultOptions = [];
+    var loadedOptions;
+    if (isString(items[0])) {
+        loadedOptions = loadState('talentPoolOptions');
+    } else {
+        loadedOptions = loadState('companyOptions');
+    }
+    if (loadedOptions) {
+        defaultOptions = loadedOptions;
+    }
+    const [usedOptions, setUsedOptions] = useState(defaultOptions);
+    const [accordionMaxHeight, setAccordionMaxHeight] = useState(0);
 
     function onSelect(selectedList, selectedItem) {
+        setAccordionMaxHeight(s1.current.scrollHeight);
         setUsedOptions(selectedList);
+        if (isString(items[0])) {
+            saveState('talentPoolOptions', selectedList);
+        } else {
+            saveState('companyOptions', selectedList);
+        }
     }
 
     function onRemove(selectedList, removedItem) {
+        setAccordionMaxHeight(s1.current.scrollHeight);
         setUsedOptions(selectedList);
+        if (isString(items[0])) {
+            saveState('talentPoolOptions', selectedList);
+        } else {
+            saveState('companyOptions', selectedList);
+        }
     }
 
     function changeApplicantView(key, data = "") {
-        if (key === dispatchKeys.GENERAL_TALENT_POOL_KEY) {
-            console.log("Dispatch action to show general talent pool");
-        }
-        else if (key === dispatchKeys.COMPANY_KEY) {
-            console.log("Dispatch action to show applicants with preference for company with id " + data);
-        }
-        else if (key === dispatchKeys.TALENT_POOL_KEY) {
-            console.log("Dispatch action to show applicants of talent pool " + data);
-        }
+        dispatch(setApplicationsFilterOptions({ viewType: key, viewValue: data }));
+        dispatch(setApplicationsSortOptions({ sortValue: filterOptions.SortValue, ascending: filterOptions.Ascending}));
+        // dispatch(setApplicationsSortOptions({ sortValue: key, ascending: data}));
     }
 
     const s1 = useRef();
     const s2 = useRef();
 
-    function transitionEndCallback(evt) {
-        evt.currentTarget.style.overflow = (isOpen ? "visible" : "hidden");
-    }
-
     useEffect(() => {
         const c1 = s1.current;
         const c2 = s2.current;
-        c1.addEventListener('transitionend', transitionEndCallback);
-        setTimeout(() => {
-            if (isOpen) { // show search bar
-                c1.style.maxHeight = (c1.scrollHeight + 50) + "px";
-                c2.style.maxHeight = null;
-            } else {
-                c1.style.maxHeight = null;
-                c1.style.overflow = "hidden";
-                c2.style.maxHeight = c2.scrollHeight + "px";
-            }
-        }, 0)
-
-        return () => {
-            c1.removeEventListener('transitionend', transitionEndCallback);
-        };
+        if (isOpen) { // show search bar
+            c2.style.maxHeight = null;
+            setTimeout(function(){ if (isOpen) { c1.style.overflow = "visible"; } }, 250);
+        } else {
+            c1.style.maxHeight = null;
+            c1.style.overflow = "hidden";
+            c2.style.maxHeight = c2.scrollHeight + "px";
+        }
     });
 
     return (
@@ -81,22 +86,29 @@ export const OptionSelector = ({ title, items }) => {
                 {/* <div className={`sidebar-dropdown-header ${isActive ? 'active' : 'inactive'}`} onClick={() => setIsActive(!isActive)}>— {title}</div> */}
                 <div className={`sidebar-dropdown-header`} >
                     {title === "talent pool" ?
-                        <span onClick={() => changeApplicantView(dispatchKeys.GENERAL_TALENT_POOL_KEY)}>— {title}</span>
+                        <span className={filterOptions.ViewType === VIEW_TALENT_POOL && filterOptions.ViewValue === "" ? "active clickable" : "clickable"}
+                            onClick={() => changeApplicantView(VIEW_TALENT_POOL)}>— {title}</span>
                         : `\u2014 ${title}`}
                 </div>
-                <button className="sidebar-dropdown-btn" onClick={() => setIsOpen(!isOpen)}>{isOpen ? '\u2212' : '+'}</button>
+                <button className="sidebar-dropdown-btn" onClick={() => {setIsOpen(!isOpen); setAccordionMaxHeight(s1.current.scrollHeight);}}>{isOpen ? '\u2212' : '+'}</button>
             </div>
-            <div ref={s1} className="accordion-container">
+            <div ref={s1} className="accordion-container" style={{maxHeight: accordionMaxHeight }}>
                 {isString(items[0]) ? <Multiselect
                     options={items}
                     isObject={false}
                     onSelect={onSelect}
+                    closeOnSelect={false}
+                    avoidHighlightFirstOption={true}
+                    selectedValues={usedOptions}
                     onRemove={onRemove}
                     placeholder="Select talent pools"
                 /> : <Multiselect
                         options={items}
                         displayValue="name"
                         onSelect={onSelect}
+                        closeOnSelect={false}
+                        avoidHighlightFirstOption={true}
+                        selectedValues={usedOptions}
                         onRemove={onRemove}
                         placeholder="Select companies"
                     />}
@@ -104,9 +116,17 @@ export const OptionSelector = ({ title, items }) => {
             <div ref={s2} className="accordion-container">
                 {usedOptions.length === 0 ? null : <ul >
                     {isString(items[0]) ? usedOptions.map((used, index) => (
-                        <li key={used}><span onClick={() => changeApplicantView(dispatchKeys.TALENT_POOL_KEY, used)}>{used}</span></li>
+                        <li key={used}>
+                            <span className={filterOptions.ViewType === VIEW_TALENT_POOL && filterOptions.ViewValue === used ? "active clickable" : "clickable"}
+                                onClick={() => changeApplicantView(VIEW_TALENT_POOL, used)}
+                            >{used}</span>
+                        </li>
                     )) : usedOptions.map((used, index) => (
-                        <li key={used.id}><span onClick={() => changeApplicantView(dispatchKeys.COMPANY_KEY, used.id)}>{used.name}</span></li>
+                        <li key={used.id}>
+                            <span className={filterOptions.ViewType === VIEW_COMPANY && filterOptions.ViewValue.id === used.id ? "active clickable" : "clickable"}
+                                onClick={() => changeApplicantView(VIEW_COMPANY, used)}
+                            >{used.name}</span>
+                        </li>
                     ))}
                 </ul>}
             </div>

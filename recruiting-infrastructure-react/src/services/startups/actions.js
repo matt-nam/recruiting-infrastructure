@@ -1,21 +1,20 @@
 import {
-    SET_APPLICATIONS_FILTER_OPTIONS,
-    FETCH_APPLICATIONS_SUCCESS,
-    FETCHING_APPLICATIONS,
-    FETCH_APPLICATIONS_FAILED
+    FETCH_STARTUPS_SUCCESS,
+    FETCHING_STARTUPS,
+    FETCH_STARTUPS_FAILED,
 } from "./action-types";
 // import client from "../api"
-import { applicationsFactory } from "../../shared/models/applications.model";
-import mockData from "../../shared/models/tests/mock.js"
+import mockData from "../../shared/models/tests/mockStartups.js"
+import { catalogFactory } from "../../shared/models/catalog.model.js";
 
 // TODO: CHANGE CLIENT ENDPOINT
 
 // will need to include something involving batch size later on
-export const fetchApplications = (dispatch) => {
-    dispatch({ type: FETCHING_APPLICATIONS })
-    var res = mockData.data
+export const fetchStartups = (dispatch) => {
+    dispatch({ type: FETCHING_STARTUPS })
+    var res = catalogFactory(mockData.data)
     dispatch({
-        type: FETCH_APPLICATIONS_SUCCESS,
+        type: FETCH_STARTUPS_SUCCESS,
         payload: res
     })
     // client.get('catalog', '/catalog')
@@ -35,5 +34,4 @@ export const fetchApplications = (dispatch) => {
     //     })
 }
 
-// need to implement options action
-export const setApplicationsFilterOptions = options => ({ type: SET_APPLICATIONS_FILTER_OPTIONS , payload: { ViewType: options.viewType, ViewValue: options.viewValue } });
+

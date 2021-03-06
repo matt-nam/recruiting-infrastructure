@@ -1,29 +1,25 @@
 import React from 'react';
-import { useAppContext } from "../utils/contextLib";
 import { useHistory } from "react-router-dom";
-import {FormGroup, FormControl, ControlLabel, Button} from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel, Button } from "react-bootstrap";
 import { useFormFields } from "utils/hooksLib";
-import  { Auth } from "aws-amplify";
+import { attemptLogin } from "../services/user/actions";
+import { useUser } from "../shared/hooks";
+import store from "../services/store"
 
 export default function Login() {
     const history = useHistory();
-    const { userHasAuthenticated } = useAppContext();
     const [fields, handleFieldChange] = useFormFields({
         email: "",
         password: "",
     });
+    const { user } = useUser();
 
-    async function handleSubmit(event) {
+    const handleSubmit = event => {
         event.preventDefault();
-
-        try {
-            await Auth.signIn(fields.email, fields.password);
-            userHasAuthenticated(true);
-            history.push("/");
-        } catch (e) {
-            alert(e.message);
-        }
+        store.dispatch(attemptLogin(fields.email, fields.password, () => history.push("/")))
     }
+
+    const printAuth = () => { console.log(user) }
 
     return (
         <div>
@@ -47,7 +43,8 @@ export default function Login() {
                         onChange={handleFieldChange}
                     />
                 </FormGroup>
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Log in</Button>
+                {/* <Button onClick={printAuth}>Test</Button> */}
             </form>
         </div>
     );
