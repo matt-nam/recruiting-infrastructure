@@ -16,6 +16,7 @@ export const Recruiting = () => {
             <div className="recruiting-container">
                 <Sidebar companies={companies} talentPools={talentPools} />
                 <ApplicantView />
+                <ApplicantReview />
             </div>
             </div>
     )
