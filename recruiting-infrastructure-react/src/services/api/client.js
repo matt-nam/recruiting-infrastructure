@@ -12,7 +12,7 @@ export async function client(endpoint, path, method, { body, ...customConfig } =
     }
 
     if (body) {
-        config.body = JSON.stringify(body)
+        config.body = body
     }
 
     let data
@@ -24,6 +24,9 @@ export async function client(endpoint, path, method, { body, ...customConfig } =
                 break;
             case APICallMethods.POST:
                 response = await API.post(endpoint, path, config);
+                break;
+            case APICallMethods.PUT:
+                response = await API.put(endpoint, path, config);
                 break;
             default:
                 response = await API.get(endpoint, path);
@@ -50,4 +53,8 @@ client.get = function (endpoint, path, customConfig = {}) {
 
 client.post = function (endpoint, path, body, customConfig = {}) {
     return client(endpoint, path, APICallMethods.POST, { ...customConfig, body })
+}
+
+client.put = function (endpoint, path, body, customConfig = {}) {
+    return client(endpoint, path, APICallMethods.PUT, { ...customConfig, body })
 }

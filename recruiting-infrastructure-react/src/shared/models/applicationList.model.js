@@ -79,6 +79,10 @@ export class ApplicationList extends List {
         return this.models.find(pos => pos.Index === index)
     }
 
+    posWithId(id) {
+        return this.models.find(pos => pos.ApplicationId === id)
+    }
+
     // Helper function for filtered
     filteredByTableOptions(opt, application) {
         if (opt.University.length > 0) {
@@ -134,6 +138,8 @@ export class ApplicationList extends List {
         }
         return true
     }
+
+
 
     filtered(opt) {
         // Filters each application by not including if it does not include

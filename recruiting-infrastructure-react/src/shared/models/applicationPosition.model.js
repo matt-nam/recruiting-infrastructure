@@ -7,50 +7,54 @@ export class ApplicationPosition extends Model {
         return {
             Index: 0,
             ApplicationId: "",
-            Round: 0,
+            Round: 3,
             FirstName: "",
             LastName: "",
             Email: "",
             PhoneNumber: "",
             CreatedAt: "",
+            International: false,
+            InternationalLocation: "",
+            Authorization: false,
+            AuthorizationType: false,
 
             University: "",
             Organization: "",
             Major: "",
-            Year: 0,
+            Year: 2024,
+            
+            Responses: [], // list of Response object {Question: "", Response: ""}
+            
+            Startups: [""], //Custom Sort on Startup Rank
+            IdealPosition: "",
+            Rank1: "",
+            Rank2: "",
+            Rank3: "",
+            Skills: "",
+            OtherStartups: "",
+            
+            ProfitType: "",
+            Industry: [""],
+            Funding: [""],
+            
+            Aspirations: "",
+            AdditionalInfo: "",
+            AdditionalFile: "",
+            
+            Hours: "", //Might do a custom sort based on lower bound
+            HasInternship: false,
+            ToFall: false,
+            
             LinkedIn: "",
             Resume: "",
             Portfolio: "",
-            Video: "",
-
-            Reference: "",
-
-            International: "",
-            Authorization: "",
+            
             Gender: "",
             Ethnicity: "",
             Disability: "",
             Acknowledgement: false,
-
-            Hours: "", //Might do a custom sort based on lower bound
-            ProfitType: "",
-            Industry: [""],
-            Funding: [""],
-
-            Intro: "",
-            Startups: [""], //Custom Sort on Startup Rank
-            MatchedLater: false,
-            Rank1: "",
-            Rank2: "",
-            Rank3: "",
-
-            Responses: [new Response()], // list of Response object {Question: "", Response: ""}
-
-            Interests: "",
-            Aspirations: "",
-            AdditionalInfo: "",
-            AdditionalFile: "",
-            Skills: "",
+            
+            Reference: "",
 
             RecruiterNotes: new RecruiterNotes() // RecruiterNotes object
         };
