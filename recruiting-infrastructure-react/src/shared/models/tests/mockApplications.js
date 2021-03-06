@@ -58,8 +58,9 @@ export default
                         "1"
                       ],
                       "Rating": 2,
+                      "StartupPreferences": [true, true, false],
                       "StartupPairing": [
-                        "1"
+                        "0d5fb28d-520b-11eb-a14f-08d40c610f6b", "0d97b25a-520b-11eb-bcb6-08d40c610f6b", "0dd02768-520b-11eb-91d9-08d40c610f6b"
                       ],
                       "TalentPools": [
                         "SWE"
@@ -142,8 +143,9 @@ export default
                         "1"
                         ],
                         "Rating": 4,
+                        "StartupPreferences": [false, true, true],
                         "StartupPairing": [
-                        "1"
+                          "07ee52ee-520b-11eb-ad3f-08d40c610f6b", "08969ff0-520b-11eb-8ca9-08d40c610f6b", "042791e5-520b-11eb-b7e4-08d40c610f6b"
                         ],
                         "TalentPools": [
                         "NLP"
@@ -226,8 +228,9 @@ export default
                         "1"
                         ],
                         "Rating": 5,
+                        "StartupPreferences": [true, false, true],
                         "StartupPairing": [
-                        "1"
+                          "0fbc011a-520b-11eb-af83-08d40c610f6b", "0ac31271-520b-11eb-8929-08d40c610f6b", "04c28397-520b-11eb-85e9-08d40c610f6b"
                         ],
                         "TalentPools": [
                         "SWE", 

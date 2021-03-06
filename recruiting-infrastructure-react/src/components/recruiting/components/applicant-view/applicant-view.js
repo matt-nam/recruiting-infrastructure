@@ -45,7 +45,13 @@ export const ApplicantView = () => {
     }
 
     // mock data for displaying properties
-    const displayProperties = ["FirstName", "LastName", "Rating", "University", "Major", "Hours"];
+    var displayProperties = [];
+    if (filterOptions.ViewType !== VIEW_COMPANY) {
+        displayProperties = ["FirstName", "LastName", "Rating", "University", "Major", "Hours"];
+    } else {
+        displayProperties = ["FirstName", "LastName", "Rating", "Startups","StartupPairing"]
+    }
+    
 
     const universities = useSelector(state => getUniversities(state))
     const organizations = useSelector(state => getOrganizations(state))

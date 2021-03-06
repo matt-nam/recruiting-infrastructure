@@ -4,6 +4,7 @@ import './applicant-table.scss';
 import { useDispatch } from "react-redux";
 import chroma from 'chroma-js';
 import { getApplicationListFiltered, getApplicationFilterOptions } from 'services/applications/selectors';
+import { getStartupsState } from 'services/startups/selectors';
 import { setApplicationsSortOptions } from 'services/applications/actions';
 
 // Mock data for applications
@@ -16,7 +17,9 @@ export const ratingColormap = chroma
 const renderHeader = {
     "FirstName": "First name",
     "LastName": "Last name",
-    "Hours": "Time commitment"
+    "Hours": "Time commitment",
+    "StartupPairing": "Startup Pairing",
+    "Startups": "Startup Rankings"
 }
 
 const renderClassName = {
@@ -24,7 +27,7 @@ const renderClassName = {
     "Status": "status"
 }
 
-function renderTableRow(app, prop) {
+function renderTableRow(app, prop, startupModels) {
     if (!(prop in app || prop in app["RecruiterNotes"])) {
         return "";
     }
@@ -37,6 +40,34 @@ function renderTableRow(app, prop) {
             return app[prop][0] + "-" + app[prop][1] + " hours/week";
         case "Rating":
             return "" + app["RecruiterNotes"][prop];
+        case "StartupPairing":
+            var unsorted_names = [];
+            startupModels.forEach(startup => {
+                if (app["RecruiterNotes"][prop].includes(startup.StartupInfo.StartupId)) {
+                    unsorted_names.push(startup.StartupInfo.StartupName);
+                }
+            });
+            var names = unsorted_names.sort();
+            return (<div className="rounded-info-container">
+                {names.map((name, index) =>
+                    <p className="rounded-info" key={name + index}>{name}</p>
+                )}
+            </div>)
+        case "Startups":
+            const numStartups = app[prop].length;
+            var names = Array(numStartups);
+            startupModels.forEach(startup => {
+                for (var i = 0; i < numStartups; i++) {
+                    if (startup.StartupInfo.StartupId === app[prop][i]) {
+                        names[i] = startup.StartupInfo.StartupName;
+                    }
+                }
+            });
+            return (<div className="rounded-info-container">
+                {names.map((name, index) =>
+                    <p className={"rounded-info "+(app["RecruiterNotes"]["StartupPreferences"][index] ? "" : "rounded-info-rejected")} key={name + index}>{name}</p>
+                )}
+            </div>);
         default:
             return app[prop];
     }
@@ -51,21 +82,17 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
 
     let applications = useSelector(state => getApplicationListFiltered(state)).models;
     let filterOptions = useSelector(state => getApplicationFilterOptions(state));
+    let startupModels = useSelector(state => getStartupsState(state)).data.models;
+
     const defaultAscendingToggle = { currentProp: filterOptions.SortValue, asc: filterOptions.Ascending };
     const [ascendingToggle, setAscendingToggle] = useState(defaultAscendingToggle);
 
-    console.log(applications)
-    console.log(filterOptions)
-
     function sortApplications(prop) {
         var newAsc = true;
-        console.log(prop);
         if (ascendingToggle.currentProp === prop) {
             newAsc = !ascendingToggle.asc;
         }
         const newAscendingToggle = { currentProp: prop, asc: newAsc };
-
-        console.log(newAscendingToggle);
         setAscendingToggle(newAscendingToggle);
         dispatch(setApplicationsSortOptions({ sortValue: prop, ascending: newAsc }));
     }
@@ -90,7 +117,9 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
                 <thead ref={theadRef}>
                     <tr>
                         {displayProperties.map((prop) => (
-                            <th key={prop} className={prop === "Rating" ? "rating-header col-xs-2" : "col-xs-2"} ><span onClick={() => sortApplications(prop)}>{`${(prop in renderHeader) ? renderHeader[prop] : prop} ` + `${ascendingToggle.currentProp !== prop ? "\u2B0D" : (ascendingToggle.asc ? "\u25B2" : "\u25BC")}`}</span></th>
+                            <th key={prop} className={(prop === "Startups" || prop === "StartupPairing" ? "col-xs-3" : "col-xs-2") + (prop === "Rating" ? " rating-header" : "")} >
+                                <span onClick={() => sortApplications(prop)}>{`${(prop in renderHeader) ? renderHeader[prop] : prop} ` + `${ascendingToggle.currentProp !== prop ? "\u2B0D" : (ascendingToggle.asc ? "\u25B2" : "\u25BC")}`}</span>
+                            </th>
                         ))}
                     </tr>
                 </thead>
@@ -98,14 +127,14 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
                     {applications.map((app, index) => (
                         <tr key={index}>
                             {displayProperties.map((prop) => (
-                                <td key={prop + ("_" + index)} className="col-xs-2">
+                                <td key={prop + ("_" + index)} className={prop === "Startups" || prop === "StartupPairing" ? "col-xs-3" : "col-xs-2"}>
                                     <div
                                         className={(prop in renderClassName) ? renderClassName[prop] : ""}
                                         style={prop === "Rating" ? {
                                             backgroundColor: ratingColormap(app["RecruiterNotes"][prop]),
                                             color: ratingColormap(app["RecruiterNotes"][prop]).darken(4)
                                         } : {}}>
-                                        {renderTableRow(app, prop)}
+                                        {renderTableRow(app, prop, startupModels)}
                                     </div>
                                 </td>
                             ))}

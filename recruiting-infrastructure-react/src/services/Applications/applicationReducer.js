@@ -7,6 +7,8 @@ import { loadState, saveState } from "services/api";
 const initialState = {
     data: new ApplicationList(),
     status: LOADED,
+    popUpShowing: false,
+    currentId: "",
     options: {
         current: 0,
         FilterOptions: new FilterOptions()

@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Multiselect } from 'multiselect-react-dropdown';
 import { useDispatch, useSelector } from "react-redux";
 import { getApplicationFilterOptions } from 'services/applications/selectors';
-import { setApplicationsFilterOptions } from 'services/applications/actions';
+import { setApplicationsFilterOptions, setApplicationsSortOptions } from 'services/applications/actions';
 import { VIEW_COMPANY, VIEW_TALENT_POOL } from 'services/constants';
+import { loadState, saveState } from "services/api";
 import './option-selector.scss';
 
 function isString(myVar) {
@@ -24,21 +25,43 @@ export const OptionSelector = ({ title, items }) => {
     const filterOptions = useSelector(state => getApplicationFilterOptions(state));
 
     const [isOpen, setIsOpen] = useState(false);
-    const [usedOptions, setUsedOptions] = useState([]);
+    var defaultOptions = [];
+    var loadedOptions;
+    if (isString(items[0])) {
+        loadedOptions = loadState('talentPoolOptions');
+    } else {
+        loadedOptions = loadState('companyOptions');
+    }
+    if (loadedOptions) {
+        defaultOptions = loadedOptions;
+    }
+    const [usedOptions, setUsedOptions] = useState(defaultOptions);
     const [accordionMaxHeight, setAccordionMaxHeight] = useState(0);
 
     function onSelect(selectedList, selectedItem) {
         setAccordionMaxHeight(s1.current.scrollHeight);
         setUsedOptions(selectedList);
+        if (isString(items[0])) {
+            saveState('talentPoolOptions', selectedList);
+        } else {
+            saveState('companyOptions', selectedList);
+        }
     }
 
     function onRemove(selectedList, removedItem) {
         setAccordionMaxHeight(s1.current.scrollHeight);
         setUsedOptions(selectedList);
+        if (isString(items[0])) {
+            saveState('talentPoolOptions', selectedList);
+        } else {
+            saveState('companyOptions', selectedList);
+        }
     }
 
     function changeApplicantView(key, data = "") {
         dispatch(setApplicationsFilterOptions({ viewType: key, viewValue: data }));
+        dispatch(setApplicationsSortOptions({ sortValue: filterOptions.SortValue, ascending: filterOptions.Ascending}));
+        // dispatch(setApplicationsSortOptions({ sortValue: key, ascending: data}));
     }
 
     const s1 = useRef();
@@ -76,6 +99,7 @@ export const OptionSelector = ({ title, items }) => {
                     onSelect={onSelect}
                     closeOnSelect={false}
                     avoidHighlightFirstOption={true}
+                    selectedValues={usedOptions}
                     onRemove={onRemove}
                     placeholder="Select talent pools"
                 /> : <Multiselect
@@ -84,6 +108,7 @@ export const OptionSelector = ({ title, items }) => {
                         onSelect={onSelect}
                         closeOnSelect={false}
                         avoidHighlightFirstOption={true}
+                        selectedValues={usedOptions}
                         onRemove={onRemove}
                         placeholder="Select companies"
                     />}

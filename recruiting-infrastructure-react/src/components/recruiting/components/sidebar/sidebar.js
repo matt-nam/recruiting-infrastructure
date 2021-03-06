@@ -12,7 +12,6 @@ export const Sidebar = ({ companies, talentPools }) => {
     const filterOptions = useSelector(state => getApplicationFilterOptions(state));
 
     function changeApplicantView(key) {
-        // console.log("Dispatch action to show all applicants");
         dispatch(setApplicationsFilterOptions({ viewType: key, viewValue: "" }));
     }
 

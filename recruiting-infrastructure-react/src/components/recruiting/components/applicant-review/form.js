@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Field } from "redux-form";
 import Input from "./input";
 import Select from "./select";
 

@@ -6,7 +6,7 @@ import { VIEW_COMPANY, VIEW_TALENT_POOL } from 'services/constants';
 import { unique } from "utils/helper"
 
 const timeCommitments = {
-    "1-5 hrs/wk": [1,5], 
+    "1-5 hrs/wk": [1, 5],
     "6-10 hrs/wk": [6, 10],
     "11-15 hrs/wk": [11, 15],
     "16-20 hrs/wk": [16, 20],
@@ -43,8 +43,8 @@ export class ApplicationList extends List {
     // Get time commitments
     get timeCommitments() {
         return [
-            "1-5 hrs/wk", 
-            "6-10 hrs/wk", 
+            "1-5 hrs/wk",
+            "6-10 hrs/wk",
             "11-15 hrs/wk",
             "16-20 hrs/wk",
             "Fulltime"
@@ -56,6 +56,16 @@ export class ApplicationList extends List {
         this.models.forEach(app => {
             app.Industry.forEach(industry =>
                 ret.add(industry.trim())
+            )
+        })
+        return Array.from(ret).sort()
+    }
+
+    get talentPools() {
+        var ret = new Set()
+        this.models.forEach(app => {
+            app.RecruiterNotes.TalentPools.forEach(talentPool =>
+                ret.add(talentPool.trim())
             )
         })
         return Array.from(ret).sort()
@@ -173,26 +183,76 @@ export class ApplicationList extends List {
                 );
             }
         }
+        else if (opt.SortValue === "Startups" && opt.hasOwnProperty('ViewValue')) {
+            if (opt.ViewValue.hasOwnProperty('id')) {
+                const startupId = opt.ViewValue.id;
+                var compareFunction = (a, b) => {
+                    const numStartups = a.Startups.length;
+                    for (var i = 0; i < numStartups; i++) {
+                        if (a.Startups[i] === startupId && b.Startups[i] !== startupId) {
+                            return -1;
+                        }
+                        else if (a.Startups[i] !== startupId && b.Startups[i] === startupId) {
+                            return 1;
+                        }
+                        else if (a.Startups[i] === startupId && b.Startups[i] === startupId) {
+                            if (a.RecruiterNotes.StartupPreferences[i] === true && b.RecruiterNotes.StartupPreferences[i] === false) {
+                                return -1;
+                            }
+                            if (a.RecruiterNotes.StartupPreferences[i] === false && b.RecruiterNotes.StartupPreferences[i] === true) {
+                                return 1;
+                            }
+                            return 0;
+                        }
+                    }
+                    return 0;
+                }
+            } else {
+                var compareFunction = (a, b) => {
+                    return (a["LastName"] < b["LastName"]) ? -1 : (a["LastName"] > b["LastName"]) ? 1 : 0;
+                }
+            }
+        }
+        else if (opt.SortValue === "StartupPairing" && opt.hasOwnProperty('ViewValue')) {
+            if (opt.ViewValue.hasOwnProperty('id')) {
+                const startupId = opt.ViewValue.id;
+                var compareFunction = (a, b) => {
+                    var aHas = a.RecruiterNotes.StartupPairing.includes(startupId);
+                    var bHas = b.RecruiterNotes.StartupPairing.includes(startupId);
+                    if (aHas && !bHas) {
+                        return -1;
+                    }
+                    if (!aHas && bHas) {
+                        return 1;
+                    }
+                    return 0;
+                }
+            } else {
+                var compareFunction = (a, b) => {
+                    return (a["LastName"] < b["LastName"]) ? -1 : (a["LastName"] > b["LastName"]) ? 1 : 0;
+                }
+            }
+        }
         else {
             var property = opt.SortValue
             if (this.models.length > 0 && !(property in this.models[0])) { //If Value is not in Applicant schema, defaults to LastName
                 property = "LastName"
-            } 
+            }
             var compareFunction = (a, b) => {
                 return (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
             }
         }
-        return [...this.models].sort((a, b) => opt.Ascending !== false ? compareFunction(a, b) : -1*compareFunction(a, b))
+        return [...this.models].sort((a, b) => opt.Ascending !== false ? compareFunction(a, b) : -1 * compareFunction(a, b))
     }
 }
 
 function dynamicSort(property) {
     var sortOrder = 1;
-    if(property[0] === "-") {
+    if (property[0] === "-") {
         sortOrder = -1;
         property = property.substr(1);
     }
-    return function (a,b) {
+    return function (a, b) {
         /* next line works with strings and numbers, 
          * and you may want to customize it to your needs
          */

@@ -1,4 +1,4 @@
-function generateApplication(univ, firstName, lastName, gender, industry, hours, international, major, org, rating, talentPool, appId, rank1, rank2, rank3, year) {
+function generateApplication(univ, firstName, lastName, gender, industry, hours, international, major, org, rating, talentPool, appId, rank1, rank2, rank3, year, prefs, pairings) {
     var generatedApp = {
         "Acknowledgement": true,
         "AdditionalFile": "S3 Link to additional file",
@@ -53,9 +53,8 @@ function generateApplication(univ, firstName, lastName, gender, industry, hours,
             "1"
           ],
           "Rating": rating,
-          "StartupPairing": [
-            "1"
-          ],
+          "StartupPreferences": prefs,
+          "StartupPairing": pairings,
           "TalentPools": talentPool,
           "Withdrawn": false
         },
@@ -153,13 +152,19 @@ for (var i = 0; i < numOfApps; i++) {
     var rank2 = s[1];
     var rank3 = s[2];
     var year = getRandom(years, 1)[0];
-    generatedApps[i] = generateApplication(univ, firstName, lastName, gender, industry, hours, international, major, org, rating, talentPool, appId, rank1, rank2, rank3, year);
+    var prefs = Array(3);
+    var pairings = getRandom(startupIDs, randomIntFromInterval(2,7));
+    for (var j = 0; j < 3; j++) {
+      prefs[j] = randomIntFromInterval(1,2) === 1 ? true : false;
+    }
+    generatedApps[i] = generateApplication(univ, firstName, lastName, gender, industry, hours, international, major, org, rating, talentPool, appId, rank1, rank2, rank3, year, prefs, pairings);
 }
 
-// var fs = require('fs');
-// var x = JSON.stringify(generatedApps);
-// fs.writeFile('apps.js', x, function(err) {
-//     if (err) throw err;
-// });
-
-// console.log(generatedApps);
+var fs = require('fs');
+var x = JSON.stringify(generatedApps);
+var y = `export default
+{
+    data: `+x+'}';
+fs.writeFile('mockApplicationsLarge.js', y, function(err) {
+    if (err) throw err;
+});

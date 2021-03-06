@@ -19,8 +19,6 @@ export const fetchApplications = (dispatch) => {
     dispatch({ type: FETCHING_APPLICATIONS })
     var res = applicationsFactory(mockData.data);
 
-    console.log(res)
-
     dispatch({
         type: FETCH_APPLICATIONS_SUCCESS,
         payload: res
