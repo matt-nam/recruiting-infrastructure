@@ -2,6 +2,8 @@
 
 .application-view {
     padding: 20px;
+    height: 100%;
+    overflow-y: scroll;
     text-align: left;
     p {
         margin-top: 4px;

@@ -2,6 +2,7 @@ import React from "react";
 import { getStartupsState } from 'services/startups/selectors';
 import { useSelector } from "react-redux";
 import './application-view.scss';
+import { valid } from "chroma-js";
 
 function isString(myVar) {
     return typeof myVar === 'string' || myVar instanceof String;
@@ -11,7 +12,7 @@ export const ApplicationView = (prop) => {
     let app = prop.currentApplication;
     let startupModels = useSelector(state => getStartupsState(state)).data.models;
     let excluded = ["RecruiterNotes", "Index", "sk", "Rank1", "Rank2", "Rank3", "pk", "FirstName", "LastName"];
-
+    const valid_google_drive_link = new RegExp('https://drive.google.com/file/d/[^/]+');
     return (
         <div className="application-view">
             <h3>{app.FirstName} {app.LastName}</h3>
@@ -60,6 +61,18 @@ export const ApplicationView = (prop) => {
                                     </React.Fragment>))}
                                 </React.Fragment>
                             )
+                        }
+                        return null;
+                    case "Resume":
+                    case "Video":
+                    case "AdditionalFile":
+                        if (valid_google_drive_link.test(attr[1])) {
+                            return (
+                                <React.Fragment>
+                                    <p>{attr[0].replace(/([a-z0-9])([A-Z])/g, '$1 $2')}</p>
+                                    <iframe src={attr[1] + "/preview"} width="100%" height="480"></iframe>
+                                </React.Fragment>
+                            );
                         }
                         return null;
                     default:

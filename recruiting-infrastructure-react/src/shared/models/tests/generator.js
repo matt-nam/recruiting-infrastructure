@@ -1,7 +1,7 @@
 function generateApplication(univ, firstName, lastName, gender, industry, hours, international, major, org, rating, talentPool, appId, rank1, rank2, rank3, year, prefs, pairings) {
   var generatedApp = {
       "Acknowledgement": true,
-      "AdditionalFile": "S3 Link to additional file",
+      "AdditionalFile": "https://drive.google.com/file/d/1kJFXakNRylfiokMaEOa8e7Z8wl1jpsWK",
       "AdditionalInfo": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "ApplicationId": appId,
       "Aspirations": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -68,7 +68,7 @@ function generateApplication(univ, firstName, lastName, gender, industry, hours,
           "Response": "I help people"
         }
       ],
-      "Resume": "S3 link to resume (not filled yet)",
+      "Resume": "https://drive.google.com/file/d/0B13jKrWD6-BlWFlkbjJHRC1tUDQ",
       "Round": 2,
       "sk": "#APPLICATION#"+appId,
       "Skills": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -79,7 +79,7 @@ function generateApplication(univ, firstName, lastName, gender, industry, hours,
       ],
       "ToFall": false,
       "University": univ,
-      "Video": "S3 link to video (not filled yet)",
+      "Video": "https://drive.google.com/file/d/0B0JMGMGgxp9WMEdWb1hyQUhlOWs",
       "Year": year
   };
   return generatedApp;
