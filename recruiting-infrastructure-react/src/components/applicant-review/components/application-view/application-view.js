@@ -10,15 +10,21 @@ function isString(myVar) {
 export const ApplicationView = (prop) => {
     let app = prop.currentApplication;
     let startupModels = useSelector(state => getStartupsState(state)).data.models;
-    let excluded = ["RecruiterNotes", "Index", "sk", "Rank1", "Rank2", "Rank3","pk", "FirstName","LastName"];
+    let excluded = ["RecruiterNotes", "Index", "sk", "Rank1", "Rank2", "Rank3", "pk", "FirstName", "LastName"];
 
     return (
         <div className="application-view">
             <h3>{app.FirstName} {app.LastName}</h3>
-            {/* { Object.entries(app).map(attr => (
-                <p key={attr[0]}>{attr[0]}: {JSON.stringify(attr[1])}</p>
-            )) } */}
-            { Object.entries(app).map(attr => {
+
+            { Object.entries(app).sort(function (attr1, attr2) {
+                if (app.priority[attr1[0]] < app.priority[attr2[0]]) {
+                    return -1;
+                }
+                if (app.priority[attr1[0]] > app.priority[attr2[0]]) {
+                    return 1;
+                }
+                return 0;
+            }).map(attr => {
                 switch (attr[0]) {
                     case "Startups":
                         if (attr[1].length > 0) {
@@ -27,9 +33,9 @@ export const ApplicationView = (prop) => {
                             startupModels.forEach(startup => {
                                 for (var i = 0; i < numStartups; i++) {
                                     if (startup.StartupInfo.StartupId === attr[1][i]) {
-                                        ranks[3*i] = (<p className="str-label">#{i+1}: {startup.StartupInfo.StartupName}</p>);
-                                        ranks[3*i+1] = (<p className="str-label">Why are you interested in {startup.StartupInfo.StartupName}?</p>);
-                                        ranks[3*i+2] = (<p className="str-label-2">{app["Rank"+(i+1)]}</p>)
+                                        ranks[3 * i] = (<p className="str-label">#{i + 1}: {startup.StartupInfo.StartupName}</p>);
+                                        ranks[3 * i + 1] = (<p className="str-label">Why are you interested in {startup.StartupInfo.StartupName}?</p>);
+                                        ranks[3 * i + 2] = (<p className="str-label-2">{app["Rank" + (i + 1)]}</p>)
                                     }
                                 }
                             })
@@ -66,11 +72,11 @@ export const ApplicationView = (prop) => {
                                     <React.Fragment>
                                         <p>{
                                             attr[0] === "LinkedIn" ? attr[0] : (
-                                            attr[0] === "Aspirations" ? "Where do you see yourself in the near future?" : (
-                                            attr[0] === "AdditionalInfo" ? "Anything else you would like us to know?" : (
-                                            attr[0] === "AdditionalFile" ? "Anything else you would like us to see?" : (
-                                                attr[0].replace(/([a-z0-9])([A-Z])/g, '$1 $2'))
-                                            )))
+                                                attr[0] === "Aspirations" ? "Where do you see yourself in the near future?" : (
+                                                    attr[0] === "AdditionalInfo" ? "Anything else you would like us to know?" : (
+                                                        attr[0] === "AdditionalFile" ? "Anything else you would like us to see?" : (
+                                                            attr[0].replace(/([a-z0-9])([A-Z])/g, '$1 $2'))
+                                                    )))
                                         }</p>
                                         <p className="str-label">{attr[1]}</p>
                                     </React.Fragment>
