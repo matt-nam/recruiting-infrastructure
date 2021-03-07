@@ -2,7 +2,7 @@ import React from "react";
 import { getStartupsState } from 'services/startups/selectors';
 import { useSelector } from "react-redux";
 import './application-view.scss';
-
+ 
 function isString(myVar) {
     return typeof myVar === 'string' || myVar instanceof String;
 }
