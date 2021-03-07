@@ -50,7 +50,6 @@ export const ReviewView = ({ currentApplication, formData }) => {
             notes[index].Notes = value
             notes[index].CreatedAt = n
         }
-        console.log(notes)
         var res = recruiterNotes
         res[keyValue] = notes
         setRecruiterNotes({
@@ -148,8 +147,29 @@ export const ReviewView = ({ currentApplication, formData }) => {
         }
     }
 
+    const renderStartupPreferences = () => {
+        const numStartups = currentApplication.Startups.length;
+        var names = Array(numStartups);
+        startupData.models.forEach(startup => {
+            for (var i = 0; i < numStartups; i++) {
+                if (startup.StartupInfo.StartupId === currentApplication.Startups[i]) {
+                    names[i] = startup.StartupInfo.StartupName;
+                }
+            }
+        });
+        return (<div className="rounded-info-container">
+            {names.map((name, index) =>
+                <p className={"rounded-info " + (currentApplication.RecruiterNotes.StartupPreferences[index] ? "" : "rounded-info-rejected")} key={name + index}>{name}</p>
+            )}
+        </div>);
+    }
+
     return (
         <div className="review-view-container">
+            <h3>General Info</h3>
+            <p>Skills: {currentApplication.Skills}</p>
+            <h5>Applicant's Start-up Preferences</h5>
+            {renderStartupPreferences()}
             <Form onSubmit={handleSubmit}>
                 {formData.fields.map((field, index) =>
                     <FormGroup key={index} controlId={field.name}>

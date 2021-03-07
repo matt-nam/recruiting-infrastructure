@@ -42,7 +42,8 @@ export class ApplicationPosition extends Model {
             AdditionalFile: "",
             
             Hours: "", //Might do a custom sort based on lower bound
-            HasInternship: false,
+            IsPriority: false,
+            StudentLocation: "",
             ToFall: false,
             
             LinkedIn: "",

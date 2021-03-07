@@ -26,6 +26,7 @@
 
 .applicant-table tr {
     border-bottom: 1px solid $gray-color;
+    cursor: pointer;
     th {
         background-color: lightgray;
         border-bottom: 0px !important;
@@ -57,6 +58,10 @@
     tr:last-child {
         border-bottom: none;
     }
+}
+
+.applicant-table tr:hover {
+    background-color: #eeeeee;
 }
 
 .table-fixed tbody {

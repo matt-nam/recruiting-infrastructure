@@ -22,14 +22,6 @@ export const formData = {
             numRow: 6,
         },
         {
-            component: "input",
-            name: "ExtraMaterial",
-            label: "Extra material to add to applicants (e.g. portfolio links)",
-            inputType: "regular",
-            valueType: "regular",
-            numRow: 1,
-        },
-        {
             component: "number",
             name: "Rating",
             label: "How would you rate this applicant?",
@@ -59,6 +51,14 @@ export const formData = {
             inputType: "regular",
             valueType: "talentpools",
             multiValueType: "talentpools"
+        },
+        {
+            component: "input",
+            name: "ExtraMaterial",
+            label: "Extra material to add to applicants (e.g. portfolio links)",
+            inputType: "regular",
+            valueType: "regular",
+            numRow: 1,
         },
         {
             component: "select",
