@@ -1,6 +1,18 @@
 import { ApplicationList, applicationsFactory } from "../../shared/models/applicationList.model";
 import { FilterOptions } from "../../shared/models/filterOptions.model";
-import { SET_TABLE_FILTER_OPTIONS, FETCH_APPLICATIONS_SUCCESS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, SET_APPLICATIONS_FILTER_OPTIONS, SET_CURRENT_APPLICATION, SET_APPLICATIONS_SORT_OPTIONS, SUBMITTING_NOTES, SUBMIT_NOTES_SUCCESS, SUBMIT_NOTES_FAILED, SET_SHOWING_MODAL } from "./action-types";
+import {
+    SET_TABLE_FILTER_OPTIONS,
+    FETCH_APPLICATIONS_SUCCESS,
+    FETCHING_APPLICATIONS,
+    FETCH_APPLICATIONS_FAILED,
+    SET_APPLICATIONS_FILTER_OPTIONS,
+    SET_CURRENT_APPLICATION,
+    SET_APPLICATIONS_SORT_OPTIONS,
+    SUBMITTING_NOTES,
+    SUBMIT_NOTES_SUCCESS,
+    SUBMIT_NOTES_FAILED,
+    SET_SHOWING_MODAL,
+} from "./action-types";
 import { LOADING, LOADED, FAILED } from "../constants";
 import { loadState, saveState } from "services/api";
 
@@ -8,7 +20,6 @@ const initialState = {
     data: new ApplicationList(),
     status: LOADED,
     showingModal: false,
-    currentId: "",
     options: {
         current: 0,
         FilterOptions: new FilterOptions()
@@ -59,7 +70,7 @@ function applicationsReducer(state = initialState, action) {
                 SortValue: action.payload.SortValue,
                 Ascending: action.payload.Ascending
             });
-            saveState('sortOptions',{
+            saveState('sortOptions', {
                 Ascending: newFilterOptions.Ascending,
                 SortValue: newFilterOptions.SortValue
             })
@@ -150,7 +161,7 @@ function applicationsReducer(state = initialState, action) {
             newApplications.models[action.payload.index].RecruiterNotes = action.payload.res
             return {
                 ...state,
-                    data: newApplications,
+                data: newApplications,
                 status: LOADED
             }
         }

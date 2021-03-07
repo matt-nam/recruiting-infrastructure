@@ -9,13 +9,14 @@ import {
     SET_SHOWING_MODAL,
     SUBMITTING_NOTES,
     SUBMIT_NOTES_SUCCESS,
-    SUBMIT_NOTES_FAILED
+    SUBMIT_NOTES_FAILED,
 } from "./action-types";
 import client from "../api"
-import { applicationsFactory } from "../../shared/models/applicationList.model";
-import { RecruiterNotes } from "../../shared/models/recruiterNotes.model";
+import { applicationsFactory } from "shared/models/applicationList.model";
+import { recruiterNotesFactory } from "shared/models/recruiterNotes.model"
+import { RecruiterNotes } from "shared/models/recruiterNotes.model";
 // import mockData from "../../shared/models/tests/mockApplications.js";
-import mockData from "../../shared/models/tests/mockApplicationsLarge.js";
+import mockData from "shared/models/tests/mockApplicationsLarge.js";
 
 // TODO: CHANGE CLIENT ENDPOINT
 
@@ -63,7 +64,7 @@ export const submitNotes = (index) => {
         }
         client.post('main-app', '/notes/submit', body)
             .then(r => {
-                let res = new RecruiterNotes(r)
+                let res = new RecruiterNotes(recruiterNotesFactory(r))
                 console.log(res)
                 dispatch({
                     type: SUBMIT_NOTES_SUCCESS,

@@ -1,64 +1,164 @@
 import React, { useState } from "react";
 import Input from "./components/input";
+import Number from "./components/number"
 import Select from "./components/select";
-// import ReviewView from "../../../../../shared/models/reviewView.model";
+import MultiSelect from "./components/multiselect"
 import { useDispatch, useSelector } from "react-redux";
-import { getApplicationsState } from 'services/applications/selectors';
+import { getStartups, getPotentialPositions, getStartupData } from 'services/startups/selectors'
+import { getRecruiterNotes } from 'shared/models/recruiterNotes.model'
+import { getTalentPools } from 'services/applications/selectors'
+import { Form, FormGroup } from 'react-bootstrap'
 
-export const ReviewView = ({ appData, formData }) => {
-    const [page, setPage] = useState(0);
-    const [currentPage, setCurrentPage] = useState(formData[page]);
-    const [values, setValues] = useState({});
+import "./review-view.scss"
+
+export const ReviewView = ({ currentApplication, formData }) => {
+
+    const dispatch = useDispatch()
+
+    const [recruiterNotes, setRecruiterNotes] = useState({ ...currentApplication.RecruiterNotes })
+    const startupData = useSelector(state => getStartupData(state))
+    const startups = useSelector(state => getStartups(state))
+    const positions = useSelector(state => getPotentialPositions(state, recruiterNotes.NewStartupPairing))
+    const talentpools = useSelector(state => getTalentPools(state)).map(tp => { return { Name: tp, Id: tp } })
+    var email = "1"
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(recruiterNotes)
     };
 
-    const fieldChanged = (name, value) => {
-        setValues((currentValues) => {
-            currentValues[name] = value;
-            return currentValues;
-        });
+    const updateApplicationNotes = (keyValue, value) => {
+        var res = recruiterNotes
+        res[keyValue] = value
+        setRecruiterNotes({
+            ...res
+        })
+    }
 
-        setCurrentPage((currentPage) => {
-            return Object.assign({}, currentPage)
-        });
-    };
+    const updateRecruiterNotes = (keyValue, value) => {
+        var notes = recruiterNotes[keyValue]
+        const index = notes.findIndex(notes => notes.RecruiterEmail == email)
+        const d = new Date();
+        const n = d.getTime();
+        if (index === -1) {
+            notes.push({
+                Notes: value,
+                RecruiterEmail: email,
+                CreatedAt: n,
+            })
+        } else {
+            notes[index].Notes = value
+            notes[index].CreatedAt = n
+        }
+        console.log(notes)
+        var res = recruiterNotes
+        res[keyValue] = notes
+        setRecruiterNotes({
+            ...res
+        })
+    }
 
-    const stringToComponent = {
-        input: Input,
-        select: Select
-    };
+    const setStartupPairing = (keyValue, value) => {
+        updateApplicationNotes(keyValue, value)
+        const newValidPositions = startupData.getPositionsFor(value)
+        const validPositions = recruiterNotes.NewPositionPairing.filter(pairing => newValidPositions.some(pos => pos.Id === pairing))
+        updateApplicationNotes("NewPositionPairing", validPositions)
+    }
 
-    let application = useSelector(state => getApplicationsState(state));
+    const getChangedFunction = (inputType) => {
+        switch (inputType) {
+            case "regular": return (name, value) => updateApplicationNotes(name, value)
+            case "startups": return (name, value) => setStartupPairing(name, value)
+            case "recruiter": return (name, value) => updateRecruiterNotes(name, value)
+            default: return () => { }
+        }
+    }
+
+    const getCurrentValue = (valueType, name, emailValue) => {
+        switch (valueType) {
+            case "regular": return recruiterNotes[name]
+            case "multiselect": return recruiterNotes[name]
+            case "startups": return startups.filter(startup => recruiterNotes[name].includes(startup.Id))
+            case "positions": return positions.filter(position => recruiterNotes[name].includes(position.Id))
+            case "talentpools": return talentpools.filter(talentpool => recruiterNotes[name].includes(talentpool.Id))
+            case "recruiter": return getRecruiterNotes(recruiterNotes, name, emailValue)
+            default: return ""
+        }
+    }
+
+    const getMultiSelectOptions = (multiValueType) => {
+        switch (multiValueType) {
+            case "startups": return startups
+            case "positions": return positions
+            case "talentpools": return talentpools
+            default: return []
+        }
+    }
+
+    const getFormInput = (field) => {
+        switch (field.component) {
+            case "select":
+                return (
+                    <Select
+                        keyValue={field.name}
+                        field={field}
+                        fieldChanged={getChangedFunction(field.inputType)}
+                        values={getCurrentValue(field.valueType, field.name)}
+                        classProp={field.class}
+                    />
+                )
+            case "multiselect":
+                return (
+                    <MultiSelect
+                        keyValue={field.name}
+                        field={field}
+                        fieldChanged={getChangedFunction(field.inputType)}
+                        values={getCurrentValue(field.valueType, field.name)}
+                        options={getMultiSelectOptions(field.multiValueType)}
+                        classProp={field.class}
+                    />
+                )
+            case "input":
+                return (
+                    <React.Fragment>
+                        {field.valueType == "recruiter" ?
+                            recruiterNotes[field.name].map((notes, index) => <p key={index}>{notes.RecruiterEmail}: {notes.Notes}</p>) : <></>}
+                        <Input
+                            keyValue={field.name}
+                            field={field}
+                            fieldChanged={getChangedFunction(field.inputType)}
+                            values={getCurrentValue(field.valueType, field.name, email)}
+                            classProp={field.class}
+                            numRow={field.numRow}
+                        />
+                    </React.Fragment>
+                )
+            case "number":
+                return (
+                    <Number
+                        keyValue={field.name}
+                        field={field}
+                        fieldChanged={getChangedFunction(field.inputType)}
+                        values={getCurrentValue(field.valueType, field.name)}
+                        classProp={field.class}
+                    />
+                )
+            default:
+                return <></>
+        }
+    }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>{currentPage.label}</h2>
-            {currentPage.fields.map((field) => {
-                switch (field.component) {
-                    case "select":
-                        return (
-                            <Select
-                                key={field.name}
-                                field={field}
-                                fieldChanged={fieldChanged}
-                                values={values[field.name]}
-                            />
-                        )
-                    default:
-                        return (
-                            <Input
-                                key={field.name}
-                                field={field}
-                                fieldChanged={fieldChanged}
-                                values={values[field.name]}
-                            />
-                        )
-                }
-            })}
-            <input type="submit" />
-        </form>
+        <div className="review-view-container">
+            <Form onSubmit={handleSubmit}>
+                {formData.fields.map((field, index) =>
+                    <FormGroup key={index} controlId={field.name}>
+                        {getFormInput(field)}
+                    </FormGroup>
+                )}
+                <input type="submit" />
+            </Form>
+        </div>
     );
 };
 

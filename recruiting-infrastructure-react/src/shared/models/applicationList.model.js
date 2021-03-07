@@ -2,6 +2,7 @@ import { List } from "./base";
 import { ApplicationPosition } from "./applicationPosition.model";
 import { RecruiterNotes } from "./recruiterNotes.model";
 import { VIEW_COMPANY, VIEW_TALENT_POOL } from 'services/constants';
+import { recruiterNotesFactory } from './recruiterNotes.model'
 
 import { unique } from "utils/helper"
 
@@ -49,16 +50,6 @@ export class ApplicationList extends List {
             "16-20 hrs/wk",
             "Fulltime"
         ]
-    }
-
-    get industries() {
-        var ret = new Set()
-        this.models.forEach(app => {
-            app.Industry.forEach(industry =>
-                ret.add(industry.trim())
-            )
-        })
-        return Array.from(ret).sort()
     }
 
     get talentPools() {
@@ -271,9 +262,9 @@ export const applicationsFactory = (res) => {
     let idCounter = 0
     return new ApplicationList(res.map((listing) => {
         return new ApplicationPosition({
-            RecruiterNotes: new RecruiterNotes(listing.RecruiterNotes),
+            ...listing,
+            RecruiterNotes: new RecruiterNotes(recruiterNotesFactory(listing.RecruiterNotes)),
             Index: idCounter++,
-            ...listing
         })
     }))
 }

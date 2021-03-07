@@ -16,10 +16,9 @@ import {
     getOrganizations,
     getMajors,
     getYears,
-    getTimeCommitments,
-    getIndustries
+    getTimeCommitments
 } from 'services/applications/selectors';
-import { getStartupsState } from 'services/startups/selectors';
+import { getStartupsState, getIndustries  } from 'services/startups/selectors';
 import FilterView from './components/filter-view'
 import { VIEW_COMPANY, VIEW_TALENT_POOL, VIEW_ACCEPTED, VIEW_REJECTED, VIEW_ALL_APPLICANTS } from 'services/constants';
 

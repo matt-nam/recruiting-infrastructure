@@ -3,16 +3,20 @@ import { Model } from "./base";
 export class RecruiterNotes extends Model {
     defaults() {
         return {
-            GeneralNotes: [{ Notes: "", RecruiterId: "", CreatedAt: "" }],
-            InterviewNotes: [{ Notes: "", RecruiterId: "", CreatedAt: "" }],
+            GeneralNotes: [{ Notes: "", RecruiterEmail: "", CreatedAt: "" }],
+            InterviewNotes: [{ Notes: "", RecruiterEmail: "", CreatedAt: "" }],
             ExtraMaterial: "",
 
             Rating: 0,
             StartupPreferences: [true, true, true],
-            StartupPairing: [""],
-            PositionPairing: [""],
-            TalentPools: [""],
+            StartupPairing: [],
+            PositionPairing: [],
+            TalentPools: [],
             FinalPairing: "",
+
+            NewStartupPairing: [],
+            NewPositionPairing: [],
+            NewTalentPools: [],
 
             Withdrawn: false,
             NotableApplication: false,
@@ -44,5 +48,23 @@ export class RecruiterNotes extends Model {
                 this.listName[i] = "Deleted: "+element
             }
         }
+    }
+}
+
+export const recruiterNotesFactory = (res) => {
+    return {
+        ...res,
+        NewStartupPairing: res.StartupPairing,
+        NewPositionPairing: res.PositionPairing,
+        NewTalentPools: res.TalentPools,
+    }
+}
+
+export const getRecruiterNotes = (recruiterNotes, keyValue, emailValue) => {
+    const index = recruiterNotes[keyValue].findIndex(notes => notes.RecruiterEmail == emailValue)
+    if (index === -1) {
+        return ""
+    } else {
+        return recruiterNotes[keyValue][index].Notes
     }
 }

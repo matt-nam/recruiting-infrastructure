@@ -2,13 +2,17 @@
 
 .modal-header {
     margin: 0;
-    font-size: 30px;
+    font-size: 12px;
     text-align: center;
 }
 
+.modal-dialog {
+    height: 90%;
+}
+
 .modal-body {
-    margin-top: 12px;
     text-align: center;
+    height: 100%;
 }
 
 .modal-dialog {
