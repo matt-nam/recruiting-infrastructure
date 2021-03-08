@@ -12,6 +12,7 @@ import { getTalentPools } from 'services/applications/selectors'
 import { Form, FormGroup } from 'react-bootstrap'
 import "./review-view.scss"
 import { submitNotes } from "services/applications/actions";
+import { List } from "react-bootstrap/lib/Media";
 
 export const ReviewView = ({ currentApplication, formData }) => {
 
@@ -28,7 +29,8 @@ export const ReviewView = ({ currentApplication, formData }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        dispatch(submitNotes(currentApplication.Index, currentApplication.ApplicationId, email, processSubmittedRecruiterNotes(recruiterNotes)))
+        console.log(processSubmittedRecruiterNotes(recruiterNotes))
+        // dispatch(submitNotes(currentApplication.Index, currentApplication.ApplicationId, email, processSubmittedRecruiterNotes(recruiterNotes)))
     };
 
     const updateApplicationNotes = (keyValue, value) => {
@@ -71,12 +73,13 @@ export const ReviewView = ({ currentApplication, formData }) => {
             case "startups": return (name, value) => setStartupPairing(name, value)
             case "recruiter": return (name, value) => updateRecruiterNotes(name, value)
             default: return () => { }
-        }
+        }   
     }
 
     const getCurrentValue = (valueType, name, emailValue) => {
         switch (valueType) {
             case "regular": return recruiterNotes[name]
+            case "status": return (typeof(recruiterNotes[name]) != typeof("") ? recruiterNotes[name][0]["Status"] : recruiterNotes[name])
             case "multiselect": return recruiterNotes[name]
             case "startups": return startups.filter(startup => recruiterNotes[name].includes(startup.Id))
             case "positions": return positions.filter(position => recruiterNotes[name].includes(position.Id))

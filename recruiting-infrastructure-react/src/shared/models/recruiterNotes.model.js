@@ -3,8 +3,8 @@ import { Model } from "./base";
 export class RecruiterNotes extends Model {
     defaults() {
         return {
-            GeneralNotes: [{ Notes: "", RecruiterEmail: "", CreatedAt: "" }],
-            InterviewNotes: [{ Notes: "", RecruiterEmail: "", CreatedAt: "" }],
+            GeneralNotes: [],
+            InterviewNotes: [],
             ExtraMaterial: "",
 
             Rating: 0,

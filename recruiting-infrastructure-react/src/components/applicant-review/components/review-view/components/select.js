@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap'
 
-export const Select = ({ field, fieldChanged, value, classProp }) => {
+export const Select = ({ field, fieldChanged, values, classProp }) => {
     const handleChange = event => {
-        let fieldName = event.target.name;
+        let fieldName = field.name;
         let fieldVal = event.target.value;
         fieldChanged(fieldName, fieldVal)
     }
     return (
         <>
             <ControlLabel>{field.label}</ControlLabel>
-            <FormControl className={classProp} componentClass="select" value={value} onChange={handleChange}>
-                {field.options.map(({ option, label }, index) => (
-                    <option value={value} key={`${value}_${index}`}>
+            <FormControl className={classProp} componentClass="select" value={values} onChange={handleChange}>
+                {field.options.map(({ label }, index) => (
+                    <option value={label} key={`${values}_${index}`}>
                         {label}
                     </option>
                 ))}
