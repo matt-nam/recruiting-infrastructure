@@ -91,15 +91,17 @@ export const ApplicantView = () => {
 
     return (
         <div className="applicant-container">
+            <div className={"cover" + (showFilterOptions ? "" : " hide")} onClick={() => setShowFilterOptions(!showFilterOptions)}></div>
             <div
                 className={"applicant-container-main" + (filterOptions.ViewType === VIEW_COMPANY ? " company-view" : "")}
                 style={{ width: (minimizedListing ? (filterOptions.ViewType === VIEW_COMPANY ? "100%" : "") : (filterOptions.ViewType === VIEW_COMPANY ? (100 - listingPercentage)+"%" : "")),
-                borderRight: (minimizedListing && filterOptions.ViewType === VIEW_COMPANY ? "0px" : "") }}>
+                borderRight: (minimizedListing && filterOptions.ViewType === VIEW_COMPANY ? "0px" : ""), 
+                paddingTop: (filterOptions.ViewType === VIEW_COMPANY ? "" : "20px")}}>
                 {filterOptions.ViewType === VIEW_COMPANY && minimizedListing ? <div className="reveal-btn-container">
                     <Button onClick={toggleListing}>&lt;</Button>
                 </div> : null}
                 <div className="applicant-container-header">
-                    <h3>{renderTitle()}</h3>
+                    <h3 style={{marginTop: (filterOptions.ViewType === VIEW_COMPANY ? "" : "-4px")}}>{renderTitle()}</h3>
                     <div className="query-container">
                         <div className="dropdown-container">
                             <div className="dropdown">
@@ -124,11 +126,10 @@ export const ApplicantView = () => {
                 <div className="pool-container">
                     <ApplicantTable displayProperties={displayProperties} viewValue={filterOptions.ViewValue} />
                 </div>
-                <div className={"cover" + (showFilterOptions ? "" : " hide")} onClick={() => setShowFilterOptions(!showFilterOptions)}></div>
                 <div
                     className="filter-container"
                     style={{
-                        width: (showFilterOptions ? "30%" : "0px"),
+                        width: (showFilterOptions ? "400px" : "0px"),
                         padding: (showFilterOptions ? "2%" : "0px")
                     }}>
                     <div className="filter-container-row">
