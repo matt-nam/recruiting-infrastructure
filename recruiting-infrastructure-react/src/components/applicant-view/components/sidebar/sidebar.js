@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import OptionSelector from '../option-selector'
 import refreshIcon from "../../images/refresh-icon.svg";
-import { setApplicationsFilterOptions } from 'services/applications/actions';
+import { setApplicationsFilterOptions, fetchApplications } from 'services/applications/actions';
 import { getApplicationFilterOptions } from 'services/applications/selectors';
 import { useDispatch, useSelector } from "react-redux";
 import { VIEW_ALL_APPLICANTS, VIEW_ACCEPTED, VIEW_REJECTED } from 'services/constants';
@@ -38,7 +38,7 @@ export const Sidebar = ({ companies, talentPools }) => {
                     rejected pool
                     </div>
                 <div className="larger-filler"></div>
-                <button className="refresh-btn"><img src={refreshIcon} alt="refresh" /></button>
+                <button onClick={() => dispatch(fetchApplications)} className="refresh-btn"><img src={refreshIcon} alt="refresh" /></button>
             </div>
         </div>
     )

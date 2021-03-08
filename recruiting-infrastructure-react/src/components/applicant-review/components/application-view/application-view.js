@@ -12,7 +12,7 @@ export const ApplicationView = (prop) => {
     let app = prop.currentApplication;
     let startupModels = useSelector(state => getStartupsState(state)).data.models;
     let excluded = ["RecruiterNotes", "Index", "sk", "Rank1", "Rank2", "Rank3", "pk", "FirstName", "LastName"];
-    const valid_google_drive_link = new RegExp('https://drive.google.com/file/d/[^/]+');
+    const valid_google_drive_link = new RegExp('https://drive.google.com/open?id=[^/]+');
     return (
         <div className="application-view">
             <h3>{app.FirstName} {app.LastName}</h3>

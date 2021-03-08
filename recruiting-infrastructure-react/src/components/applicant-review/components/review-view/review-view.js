@@ -26,6 +26,8 @@ export const ReviewView = ({ currentApplication, formData }) => {
 
     const wereChanges = !deepEqual(currentApplication.RecruiterNotes, recruiterNotes)
 
+    console.log(currentApplication)
+
     const handleSubmit = (event) => {
         event.preventDefault();
         dispatch(submitNotes(currentApplication.Index, currentApplication.ApplicationId, email, processSubmittedRecruiterNotes(recruiterNotes)))
@@ -158,6 +160,7 @@ export const ReviewView = ({ currentApplication, formData }) => {
                 }
             }
         });
+        console.log(names)
         return (<div className="rounded-info-container">
             {names.map((name, index) =>
                 <p onClick={() => {
