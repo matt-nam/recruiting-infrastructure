@@ -76,6 +76,12 @@ export class ApplicationList extends List {
 
     // Helper function for filtered
     filteredByTableOptions(opt, application) {
+        if (opt.KeywordSearch && opt.KeywordSearch != "") {
+            let search = opt.KeywordSearch.trim().toLowerCase()
+            if (!application.FirstName.toLowerCase().includes(search)) {
+                return false
+            }
+        }
         if (opt.University.length > 0) {
             if (!opt.University.includes(application.University.trim())) {
                 return false

@@ -17,7 +17,8 @@ export class FilterOptions extends Model {
             Industry: [], // list of strings
             Rank1: [], // list of strings
             Rank2: [], // list of strings
-            Rank3: [] // list of strings
+            Rank3: [], // list of strings
+            KeywordSearch: ""
         };
     }
 }

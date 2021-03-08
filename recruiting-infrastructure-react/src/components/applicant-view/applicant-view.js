@@ -9,6 +9,7 @@ import { useUser } from "shared/hooks";
 import { useAppContext } from "utils/contextLib";
 import { attemptLogout } from "services/user/actions";
 import { useHistory } from "react-router-dom";
+import { setTableFilterOptions } from "services/applications/actions"
 import { useDispatch, useSelector } from "react-redux";
 import {
     getApplicationFilterOptions,
@@ -95,8 +96,9 @@ export const ApplicantView = () => {
                             <div className="search-input-container">
                                 <input
                                     type="text"
-                                    placeholder="search keywords or skills"
-                                    autoComplete="off"></input>
+                                    placeholder="search first name"
+                                    autoComplete="off"
+                                    onChange={e => dispatch(setTableFilterOptions({ Option: "KeywordSearch", Value: e.target.value }))}></input>
                             </div>
                             <div className="icon-container">
                                 <img className="search-icon" src={Icon} alt="Search" />
