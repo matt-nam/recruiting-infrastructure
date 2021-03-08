@@ -1,0 +1,6 @@
+export const SET_EMAIL = "SET_EMAIL";
+export const FETCH_EMAIL = "FETCH_EMAIL";
+export const FETCHING_EMAIL = "FETCHING_EMAIL";
+export const FETCH_EMAIL_FAILED = "FETCH_EMAIL";
+export const SEND_EMAIL = "SEND_EMAIL";
+export const SEND_EMAIL_FAILED = "SEND_EMAIL_FAILED";

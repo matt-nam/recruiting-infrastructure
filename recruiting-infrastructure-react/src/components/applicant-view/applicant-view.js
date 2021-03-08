@@ -22,6 +22,7 @@ import {
 import { getStartupsState } from 'services/startups/selectors';
 import FilterView from './components/filter-view'
 import { VIEW_COMPANY, VIEW_TALENT_POOL, VIEW_ACCEPTED, VIEW_REJECTED, VIEW_ALL_APPLICANTS } from 'services/constants';
+import Email from 'shared/email';
 
 export const ApplicantView = () => {
     const dispatch = useDispatch();
@@ -91,6 +92,7 @@ export const ApplicantView = () => {
                             <div className="dropdown">
                                 <button className="filter-btn" onClick={() => setShowFilterOptions(!showFilterOptions)}>Filter</button>
                             </div>
+                            <Email></Email>
                         </div>
                         <div className="search-bar-container">
                             <div className="search-input-container">

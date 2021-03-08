@@ -15,12 +15,15 @@ export async function client(endpoint, path, method, { body, ...customConfig } =
         config.body = body
     }
 
+    console.log(body)
+    console.log(customConfig)
+    console.log(config)
     let data
     try {
         let response
         switch (method) {
             case APICallMethods.GET:
-                response = await API.get(endpoint, path);
+                response = await API.get(endpoint, path, config);
                 break;
             case APICallMethods.POST:
                 response = await API.post(endpoint, path, config);
