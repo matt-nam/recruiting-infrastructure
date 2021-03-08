@@ -38,7 +38,7 @@ export class ApplicationList extends List {
     }
 
     get years() {
-        return unique(this.models.map(app => app.Year)).sort()
+        return unique(this.models.map(app => String(app.Year))).sort()
     }
 
     // Get time commitments
@@ -98,7 +98,7 @@ export class ApplicationList extends List {
             }
         }
         if (opt.Year.length > 0) {
-            if (!opt.Year.includes(application.Year)) {
+            if (!opt.Year.includes(String(application.Year))) {
                 return false
             }
         }
