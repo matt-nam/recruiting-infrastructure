@@ -35,7 +35,7 @@ export class ApplicationPosition extends Model {
 
             ProfitType: "",
             Industry: [""],
-            Funding: [""],
+            Funding: "",
 
             Aspirations: "",
             AdditionalInfo: "",
