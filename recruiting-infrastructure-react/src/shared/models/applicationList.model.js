@@ -151,7 +151,7 @@ export class ApplicationList extends List {
                     return application.RecruiterNotes.TalentPools.includes(opt.ViewValue)
                 }
                 case VIEW_COMPANY: {
-                    return application.Startups.includes(opt.ViewValue.id)
+                    return application.Startups.includes(opt.ViewValue.id) || application.RecruiterNotes.StartupPairing.includes(opt.ViewValue.id);
                 }
                 default:
                     return true;
