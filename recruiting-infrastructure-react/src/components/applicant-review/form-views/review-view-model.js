@@ -63,10 +63,14 @@ export const formData = {
         {
             component: "select",
             name: "Status",
-            label: "What should the status of this applicantion be?",
+            label: "What should the status of this application be?",
             inputType: "regular",
-            valueType: "regular",
+            valueType: "status",
             options: [
+                {
+                    component: "option",
+                    label: "NO_STATUS",
+                },
                 {
                     component: "option",
                     label: "READ",
