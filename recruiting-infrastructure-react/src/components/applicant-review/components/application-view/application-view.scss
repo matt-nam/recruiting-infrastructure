@@ -1,0 +1,20 @@
+@import "../../../../styles/variables";
+
+.application-view {
+    padding: 20px;
+    height: 100%;
+    overflow-y: scroll;
+    text-align: left;
+    p {
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+    .str-label {
+        color: rgb(106, 106, 106);
+        margin-left: 20px;
+    }
+    .str-label-2 {
+        color: gray;
+        margin-left: 40px;
+    }
+}

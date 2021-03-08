@@ -8,7 +8,8 @@ import { Provider } from 'react-redux';
 import store from "services/store";
 import { Amplify } from 'aws-amplify';
 import config from 'utils/amplify-config';
-import {fetchApplications, setApplicationsFilterOptions} from "./services/applications/actions"
+import {fetchApplications, setApplicationsFilterOptions, setCurrentApplication, submitNotes } from "./services/applications/actions"
+import { fetchStartups } from 'services/startups/actions';
 
 Amplify.configure({
   Auth: {
@@ -18,20 +19,21 @@ Amplify.configure({
       identityPoolId: config.cognito.IDENTITY_POOL_ID,
       userPoolWebClientId: config.cognito.APP_CLIENT_ID
   },
-  // API: {
-  //   endpoints: [
-  //     {
-  //       name: "catalog",
-  //       endpoint: config.apiGateway.URL,
-  //       region: config.apiGateway.REGION
-  //     },
-  //   ]
-  // }
+  API: {
+    endpoints: [
+      {
+        name: "main-app",
+        endpoint: config.apiGateway.URL,
+        region: config.apiGateway.REGION
+      },
+    ]
+  }
 });
 
-// Temporary testing to see if actions work properly
+
 store.dispatch(fetchApplications);
-store.dispatch(setApplicationsFilterOptions({viewType: "TalentPool", viewValue: "SWE"}));
+store.dispatch(fetchStartups);
+// store.dispatch(submitNotes(0));
 
 ReactDOM.render(
     <Provider store={store}>

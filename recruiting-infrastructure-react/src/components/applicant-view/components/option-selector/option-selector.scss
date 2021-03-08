@@ -1,0 +1,46 @@
+@import "../../../../styles/variables";
+
+.accordion-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease-out;
+}
+
+.searchBox {
+    font-size: 16px;
+}
+
+.multiselect-container {
+    margin-top: 5px;
+}
+
+.search-wrapper {
+    padding: 2.5px;
+}
+
+.sidebar-dropdown {
+    display: flex;
+    justify-content: space-between;
+
+    .sidebar-dropdown-header {
+        width: 100%;
+    }
+    .sidebar-dropdown-btn {
+        color: black;
+        border-radius: 4px;
+        background-color: lightgrey;
+        border: none;
+        width: 30px;
+        height: 28px;
+        outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .sidebar-dropdown-btn:hover {
+        opacity: 0.5;
+    }
+
+}
+
+

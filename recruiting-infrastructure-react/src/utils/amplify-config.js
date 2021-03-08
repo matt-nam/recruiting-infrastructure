@@ -1,8 +1,8 @@
 const config = {
-    // apiGateway: {
-    //     REGION: "us-east-2",
-    //     URL: "API_GATEWAY_URL",
-    // },
+    apiGateway: {
+        REGION: "us-east-2",
+        URL: "https://nfd9vi0dv3.execute-api.us-east-2.amazonaws.com/dev/api",
+    },
     cognito: {
         REGION: "us-east-2",
         USER_POOL_ID: "us-east-2_rtKxtWSiU",

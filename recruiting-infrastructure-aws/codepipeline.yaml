@@ -1,0 +1,395 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+
+  ApplicationName:
+    Type: String
+    Default: YESInternshipsRecruiting
+    AllowedPattern: ".+"
+  GitRepo:
+    Type: String
+    Default: recruiting-infrastructure
+    AllowedPattern: ".+"
+  GitBranch:
+    Type: String
+    Description: "The git branch that will trigger the pipeline"
+    AllowedPattern: ".+"
+    AllowedValues:
+      - prod
+  S3Origin:
+    Type: String
+    Default: yes-internships-recruiting
+    Description: "Bucket that hosts website"
+    AllowedPattern: ".+"
+  CloudfrontDistributionID:
+    Type: String
+    Description: "ID of the target Cloudfront distribution that will need to be invalidated"
+    Default: E2RKVZCR61ENL0
+    AllowedPattern: ".+"
+
+Resources:
+  ApprovalSNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub "codepipeline-approval-${ApplicationName}"
+      Subscription:
+        - Endpoint: "matthew.nam@yale.edu"
+          Protocol: "email"
+        - Endpoint: "dan.kim@yale.edu"
+          Protocol: "email"
+        - Endpoint: "andrew.milas@yale.edu"
+          Protocol: "email"
+        - Endpoint: "anna.zhang@yale.edu"
+          Protocol: "email"
+        - Endpoint: "bradley.lewis@yale.edu"
+          Protocol: "email"
+        - Endpoint: "emily.slaughter@yale.edu"
+          Protocol: "email"
+        - Endpoint: "siena.cizdziel@yale.edu"
+          Protocol: "email"
+        - Endpoint: "rosie.rothschild@yale.edu"
+          Protocol: "email"
+        
+  CodePipelineArtifactStoreBucket:
+    Type: AWS::S3::Bucket
+
+  CodePipelineArtifactStoreBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref CodePipelineArtifactStoreBucket
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Sid: DenyUnEncryptedObjectUploads
+            Effect: Deny
+            Principal: '*'
+            Action: s3:PutObject
+            Resource: !Join [ '', [ !GetAtt CodePipelineArtifactStoreBucket.Arn, '/*' ] ]
+            Condition:
+              StringNotEquals: 
+                s3:x-amz-server-side-encryption: aws:kms
+          -
+            Sid: DenyInsecureConnections
+            Effect: Deny
+            Principal: '*'
+            Action: s3:*
+            Resource: !Join [ '', [ !GetAtt CodePipelineArtifactStoreBucket.Arn, '/*' ] ]
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+  
+  CodePipelineServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Principal:
+              Service:
+                - codepipeline.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      Policies:
+        -
+          PolicyName: !Sub "codepipeline_${ApplicationName}_service_role"
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              -
+                Effect: Allow
+                Action:
+                  - codebuild:BatchGetBuilds
+                  - codebuild:StartBuild
+                Resource: '*'
+              -
+                Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                  - lambda:ListFunctions
+                Resource: '*'
+              -
+                Effect: Allow
+                Action:
+                  - iam:PassRole
+                Resource: '*'
+              -
+                Effect: Allow
+                Action:
+                  - elasticbeanstalk:*
+                  - ec2:*
+                  - elasticloadbalancing:*
+                  - autoscaling:*
+                  - cloudwatch:*
+                  - s3:*
+                  - sns:*
+                  - cloudformation:*
+                  - rds:*
+                  - sqs:*
+                  - ecs:*
+                Resource: '*'
+              -
+                Effect: Allow
+                Action:
+                  - codestar-connections:UseConnection
+                Resource: '*'
+
+  NPMCodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: ['sts:AssumeRole']
+          Effect: Allow
+          Principal:
+            Service: [codebuild.amazonaws.com]
+        Version: '2012-10-17'
+      Path: /
+      Policies:
+        - PolicyName: !Sub "codebuild_${ApplicationName}_service_role"
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                - 'logs:CreateLogGroup'
+                - 'logs:CreateLogStream'
+                - 'logs:PutLogEvents'
+                Effect: Allow
+                Resource:
+                - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:${ApplicationName}_log_group"
+                - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:${ApplicationName}_log_group:*"
+              - Action:
+                - 'codebuild:CreateReportGroup'
+                - 'codebuild:CreateReport'
+                - 'codebuild:UpdateReport'
+                - 'codebuild:BatchPutTestCases'
+                - 's3:PutObject'
+                - 's3:GetObject'
+                - 's3:GetBucketAcl'
+                - 's3:GetBucketLocation'
+                - 's3:GetObjectVersion'
+                Effect: Allow
+                Resource:
+                - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:report-group:${ApplicationName}_npm_codebuild-*"
+                - "arn:aws:s3:::*/*"
+                - !GetAtt "CodePipelineArtifactStoreBucket.Arn"
+              - Action:
+                - 's3:PutObject'
+                - 's3:ListBucket'
+                - 's3:DeleteObject'
+                Effect: Allow
+                Resource: 
+                - !Sub "arn:aws:s3:::${S3Origin}/*" 
+                - !Sub "arn:aws:s3:::${S3Origin}" 
+              - Action:
+                - 'codestar-connections:UseConnection'
+                Effect: Allow
+                Resource:
+                - "arn:aws:codestar-connections:us-east-2:924475638705:connection/07ab5c73-ad55-4819-82ef-5d8efbdec683"
+  NPMCodeBuild: 
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub "${ApplicationName}_npm_codebuild"
+      Description: "Builds the react project"
+      Artifacts:
+        EncryptionDisabled: false
+        Type: CODEPIPELINE
+      BadgeEnabled: false
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: "aws/codebuild/amazonlinux2-x86_64-standard:3.0"
+        PrivilegedMode: false
+        Type: LINUX_CONTAINER
+        EnvironmentVariables:
+          - Name: BUCKET
+            Type: PLAINTEXT
+            Value: !Ref S3Origin
+      Source:
+        BuildSpec: |
+          version: 0.2
+          phases:
+            install:
+              runtime-versions:
+                nodejs: 12
+              commands:
+                - cd recruiting-infrastructure-react
+                - npm install
+            build:
+              commands:
+                - npm run-script build
+                - aws s3 rm s3://$BUCKET --recursive
+          artifacts:
+            files:
+              - '**/*'
+            discard-paths: 'no'
+            base-directory: 'recruiting-infrastructure-react/build'
+        Type: CODEPIPELINE
+      QueuedTimeoutInMinutes: 480
+      TimeoutInMinutes: 60
+      ServiceRole: !Ref NPMCodeBuildRole
+      LogsConfig:
+        CloudWatchLogs: 
+          GroupName: !Sub "${ApplicationName}_log_group"
+          Status: ENABLED
+          StreamName: !Sub "${ApplicationName}_log_group_stream"
+
+  CodePipeline:
+    Type: "AWS::CodePipeline::Pipeline"
+    Properties:
+      Name: !Sub "${ApplicationName}-deployment-pipeline"
+      RestartExecutionOnUpdate: false
+      ArtifactStore:
+        Location: !Ref CodePipelineArtifactStoreBucket
+        Type: S3
+      RoleArn: 
+        !GetAtt CodePipelineServiceRole.Arn
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: Source
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: '1'
+                Provider: CodeStarSourceConnection
+              OutputArtifacts:
+                - Name: unbuiltwebsite
+              RunOrder: 1
+              Configuration:
+                ConnectionArn: "arn:aws:codestar-connections:us-east-2:924475638705:connection/07ab5c73-ad55-4819-82ef-5d8efbdec683"
+                FullRepositoryId: "matt-nam/recruiting-infrastructure"
+                BranchName: "prod"
+                OutputArtifactFormat: "CODE_ZIP"
+        - Name: Approval
+          Actions:
+            - Name: !Sub "Approve_${ApplicationName}"
+              ActionTypeId:
+                Category: Approval
+                Owner: AWS
+                Version: '1'
+                Provider: Manual
+              Configuration:
+                CustomData: !Sub "Please approve whether the most recent push to ${GitBranch} in ${GitRepo} should be deployed"
+                NotificationArn: !Ref ApprovalSNSTopic 
+              RunOrder: 1
+        - Name: Build
+          Actions:
+          - Name: Build
+            ActionTypeId:
+              Category: Build
+              Owner: AWS
+              Version: '1'
+              Provider: CodeBuild
+            InputArtifacts:
+            - Name: unbuiltwebsite
+            OutputArtifacts:
+            - Name: builtwebsite
+            Configuration:
+              ProjectName: !Ref NPMCodeBuild
+        - Name: Deploy
+          Actions:
+          - Name: DeployAction
+            ActionTypeId:
+              Category: Deploy 
+              Owner: AWS 
+              Version: '1'
+              Provider: S3
+            InputArtifacts:
+            - Name: builtwebsite
+            Configuration:
+              BucketName: !Ref S3Origin
+              Extract: true
+        - Name: CloudfrontDeployment
+          Actions:
+          - Name: InvalidateCloudfront
+            ActionTypeId:
+              Category: Invoke 
+              Owner: AWS 
+              Version: '1'
+              Provider: Lambda
+            Configuration:
+              FunctionName: !Ref LambdaInvalidate
+
+  LambdaInvalidate: 
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: !Sub '${ApplicationName}_invalidate' 
+      Handler: index.lambda_handler
+      Runtime: python3.7
+      Description: 'Invalidate paths on Cloudfront'
+      MemorySize: 128
+      Timeout: 10
+      Role: !GetAtt InvalidateIAMRole.Arn
+      Code:
+        ZipFile: | 
+          import boto3
+          import time
+          import os
+
+          CFID = os.environ['CFID']
+
+          def lambda_handler(event, context):
+            allFiles = ['/*']
+            client = boto3.client('cloudfront')
+            invalidation = client.create_invalidation(
+            DistributionId = CFID,
+            InvalidationBatch={
+              'Paths': {
+                'Quantity': 1,
+                'Items': allFiles
+              },
+              'CallerReference': str(time.time())
+            })
+    
+            pipeline = boto3.client('codepipeline')
+            response = pipeline.put_job_success_result(
+              jobId=event['CodePipeline.job']['id']
+            )
+            return response
+      Environment:
+        Variables:
+          CFID: !Ref CloudfrontDistributionID
+
+  InvalidateIAMRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: !Sub '${ApplicationName}_invalidate_iam_role'
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action:
+              - "sts:AssumeRole"
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+      Policies:
+        - PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "logs:CreateLogGroup"
+                Effect: "Allow"
+                Resource: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*'
+              - Action:
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Effect: "Allow"
+                Resource: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${ApplicationName}_invalidate:*'
+              - Action:
+                  - "cloudfront:CreateInvalidation"
+                  - "cloudfront:GetDistribution"
+                Effect: "Allow"
+                Resource: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudfrontDistributionID}'
+              - Action:
+                  - "codepipeline:AcknowledgeJob"
+                  - "codepipeline:GetJobDetails"
+                  - "codepipeline:PollForJobs"
+                  - "codepipeline:PutJobFailureResult"
+                  - "codepipeline:PutJobSuccessResult"
+                Effect: "Allow"
+                Resource: "*"
+          PolicyName: !Sub "lambda_invalidate_${ApplicationName}_role"
+          

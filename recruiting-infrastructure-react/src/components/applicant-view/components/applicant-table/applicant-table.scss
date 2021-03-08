@@ -1,0 +1,107 @@
+@import "../../../../styles/variables";
+
+%table-label {
+    text-align: center;
+    height: 25px;
+    line-height: 25px;
+    border-radius: 5px;
+}
+
+.table-responsive {
+    border-top: 1px solid $gray-color;
+    height: 100%;
+}
+
+.applicant-table {
+    width: 100%;
+    height: 100%;
+    table-layout: fixed;
+    margin: 0;
+    overflow: hidden;
+}
+
+.applicant-table thead {
+    background-color: lightgray;
+}
+
+.applicant-table tr {
+    border-bottom: 1px solid $gray-color;
+    cursor: pointer;
+    th {
+        background-color: lightgray;
+        border-bottom: 0px !important;
+        span:hover {
+            cursor: pointer;
+        }
+    }
+
+    .rating-header {
+        text-align: center;
+    }
+
+    td, th {
+        padding: 7px;
+        .rating {
+            @extend %table-label;
+            // background-color: $light-green-color;
+            width: 25px;
+            margin: auto;
+        }
+
+        .status {
+            @extend %table-label;
+            background-color: $orange-color;
+            width: 100%;
+        }
+    }
+
+    tr:last-child {
+        border-bottom: none;
+    }
+}
+
+.applicant-table tbody tr:hover {
+    background-color: #eeeeee;
+}
+
+.table-fixed tbody {
+    // height: 100%;
+    overflow-y: auto;
+    // width: 100%;
+}
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+    display: block;
+
+}
+.table-fixed tr:after {
+content: "";
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+.table-fixed tbody td,
+.table-fixed thead > tr > th {
+    float: left;
+}
+
+.rounded-info-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -4px;
+}
+.rounded-info {
+    background-color: $blue-color;
+    padding: 5px 8px;
+    margin: 3px;
+    color: white;
+    border-radius: 5px;
+    font-size: 11px;
+    height: 26px;
+}
+.rounded-info-rejected {
+    background-color: #fe3333 !important;
+}

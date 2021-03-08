@@ -7,62 +7,112 @@ export class ApplicationPosition extends Model {
         return {
             Index: 0,
             ApplicationId: "",
-            Round: 0,
+            Round: 3,
             FirstName: "",
             LastName: "",
             Email: "",
             PhoneNumber: "",
             CreatedAt: "",
+            International: false,
+            InternationalLocation: "",
+            Authorization: false,
+            AuthorizationType: false,
 
             University: "",
             Organization: "",
             Major: "",
-            Year: 0,
+            Year: 2024,
+
+            Responses: [], // list of Response object {Question: "", Response: ""}
+
+            Startups: [""], //Custom Sort on Startup Rank
+            IdealPosition: "",
+            Rank1: "",
+            Rank2: "",
+            Rank3: "",
+            Skills: "",
+            OtherStartups: "",
+
+            ProfitType: "",
+            Industry: [""],
+            Funding: [""],
+
+            Aspirations: "",
+            AdditionalInfo: "",
+            AdditionalFile: "",
+
+            Hours: "", //Might do a custom sort based on lower bound
+            IsPriority: false,
+            StudentLocation: "",
+            ToFall: false,
+
             LinkedIn: "",
             Resume: "",
             Portfolio: "",
-            Video: "",
 
-            Reference: "",
-
-            International: "",
-            Authorization: "",
             Gender: "",
             Ethnicity: "",
             Disability: "",
             Acknowledgement: false,
 
-            Hours: "",
-            ProfitType: "",
-            Industry: [""],
-            Funding: [""],
-
-            Intro: "",
-            Startups: [""],
-            MatchedLater: false,
-            Rank1: "",
-            Rank2: "",
-            Rank3: "",
-
-            Responses: [new Response()], // list of Response object {Question: "", Response: ""}
-
-            Interests: "",
-            Aspirations: "",
-            AdditionalInfo: "",
-            AdditionalFile: "",
-            Skills: "",
+            Reference: "",
 
             RecruiterNotes: new RecruiterNotes() // RecruiterNotes object
         };
     }
-}
+    get priority() {
+        return {
+            Index: 0,
+            ApplicationId: 1,
+            Round: 2,
+            FirstName: 3,
+            LastName: 4,
+            Email: 5,
+            PhoneNumber: 6,
+            CreatedAt: 7,
+            International: 8,
+            InternationalLocation: 9,
+            Authorization: 10,
+            AuthorizationType: 11,
 
-export const compareApplicationPosition = (a, b) => {
-    if (a.Name < b.Name) {
-        return -1;
+            University: 12,
+            Organization: 13,
+            Major: 14,
+            Year: 15,
+
+            Responses: 16,
+
+            Startups: 17,
+            IdealPosition: 18,
+            Rank1: 19,
+            Rank2: 20,
+            Rank3: 21,
+            Skills: 22,
+            OtherStartups: 23,
+
+            ProfitType: 24,
+            Industry: 25,
+            Funding: 26,
+
+            Aspirations: 27,
+            AdditionalInfo: 28,
+            AdditionalFile: 29,
+
+            Hours: 30, //Might do a custom sort based on lower bound
+            IsPriority: 31,
+            StudentLocation: 32,
+            ToFall: 33,
+
+            LinkedIn: 34,
+            Resume: 35,
+            Portfolio: 36,
+
+            Gender: 37,
+            Ethnicity: 38,
+            Disability: 39,
+            Acknowledgement: 40,
+
+            Reference: 41
+        }
     }
-    if (a.Name > b.Name) {
-        return 1;
-    }
-    return 0;
 }

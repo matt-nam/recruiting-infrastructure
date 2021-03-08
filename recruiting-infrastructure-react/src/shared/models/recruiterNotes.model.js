@@ -3,21 +3,25 @@ import { Model } from "./base";
 export class RecruiterNotes extends Model {
     defaults() {
         return {
-            GeneralNotes: [{ Notes: "", RecruiterId: "", CreatedAt: "" }],
-            InterviewNotes: [{ Notes: "", RecruiterId: "", CreatedAt: "" }],
+            GeneralNotes: [{ Notes: "", RecruiterEmail: "", CreatedAt: "" }],
+            InterviewNotes: [{ Notes: "", RecruiterEmail: "", CreatedAt: "" }],
             ExtraMaterial: "",
 
             Rating: 0,
-            StartupPairing: [""],
-            PositionPairing: [""],
-            TalentPools: [""],
-            RejectedPreferences: [""],
+            StartupPreferences: [true, true, true],
+            StartupPairing: [],
+            PositionPairing: [],
+            TalentPools: [],
+            FinalPairing: "",
+
+            NewStartupPairing: [],
+            NewPositionPairing: [],
+            NewTalentPools: [],
 
             Withdrawn: false,
             NotableApplication: false,
-            Readers: [""],
-            Interviewers: [ {RecruiterId: "", Status: ""} ], // Status: "Asked for interview" | "Interview"
-            Status: "",
+
+            Status: {},
             /*
                 Read
                 Accepted by us
@@ -26,7 +30,41 @@ export class RecruiterNotes extends Model {
                 Rejected by start-up
                 Received work-plan
              */
-            StatusDetails: ""
         };
+    }
+
+    editEntry(listName, element, isAdding) {
+        // listName is one of StartupPairing, PositionPairing, or TalentPools
+        // will either add or delete element from given list from this recruiter notes
+        if (isAdding) {
+            if (!this.listName.includes(element)) {
+                this.listName = this.listName.filter(item => item !== "Deleted: "+element)
+                this.listName.push(element)
+            }
+        }
+        else {
+            var i = this.listName.indexOf(element)
+            if (i >= 0) {
+                this.listName[i] = "Deleted: "+element
+            }
+        }
+    }
+}
+
+export const recruiterNotesFactory = (res) => {
+    return {
+        ...res,
+        NewStartupPairing: res.StartupPairing,
+        NewPositionPairing: res.PositionPairing,
+        NewTalentPools: res.TalentPools,
+    }
+}
+
+export const getRecruiterNotes = (recruiterNotes, keyValue, emailValue) => {
+    const index = recruiterNotes[keyValue].findIndex(notes => notes.RecruiterEmail == emailValue)
+    if (index === -1) {
+        return ""
+    } else {
+        return recruiterNotes[keyValue][index].Notes
     }
 }

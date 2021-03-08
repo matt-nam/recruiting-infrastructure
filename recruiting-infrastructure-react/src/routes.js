@@ -5,20 +5,24 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 import Home from "./components/home";
 import Login from "./components/login";
+import SignUp from "./components/signup";
+import Confirm from "./components/confirm";
 import Recruiting from "components/recruiting";
 
 const routes = [
-    // { path: '/', name: 'Home', Component: Home },
-    { path: '/login', name: 'Home', Component: Login },
-    { path: '/', name: "Recruiting", Component: Recruiting}
+    { path: '/', name: 'Home', Component: Home },
+    { path: '/login', name: 'Login', Component: Login },
+    { path: '/signup', name: 'Sign Up', Component: SignUp },
+    { path: '/confirm', name: 'Confirm sign up', Component: Confirm },
+    { path: '/recruiting', name: "Recruiting", Component: Recruiting}
 ]
 
 /**
- * This component merely defines the routes.
- *
+ * This component merely defines the routes. 
+ * 
  * The actual application is only wrapped by BrowserRouter in App.js.
  * This had to be done to allow fade transitions between pages.
- *
+ * 
  * See: http://reactcommunity.org/react-transition-group/with-react-router
  * See: https://reactjs.org/docs/animation.html
  * See: https://css-tricks.com/animating-between-views-in-react/
@@ -40,9 +44,7 @@ export default function Routes() {
                         {routes.map(({ path, Component }) => (
                             <Route key={path} exact path={path} component={Component} />
                         ))}
-                        <div className="NotFound">
-                            <h3>Sorry, page not found!</h3>
-                        </div>
+                        {/* <Route component={NotFound} /> */}
                     </Switch>
                 </div>
             </CSSTransition >
