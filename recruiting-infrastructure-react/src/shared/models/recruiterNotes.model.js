@@ -38,14 +38,14 @@ export class RecruiterNotes extends Model {
         // will either add or delete element from given list from this recruiter notes
         if (isAdding) {
             if (!this.listName.includes(element)) {
-                this.listName = this.listName.filter(item => item !== "Deleted: "+element)
+                this.listName = this.listName.filter(item => item !== "Deleted: " + element)
                 this.listName.push(element)
             }
         }
         else {
             var i = this.listName.indexOf(element)
             if (i >= 0) {
-                this.listName[i] = "Deleted: "+element
+                this.listName[i] = "Deleted: " + element
             }
         }
     }
@@ -66,5 +66,35 @@ export const getRecruiterNotes = (recruiterNotes, keyValue, emailValue) => {
         return ""
     } else {
         return recruiterNotes[keyValue][index].Notes
+    }
+}
+
+const compareAssignmentList = (originalList, newList) => {
+    var deletedEle = []
+    originalList.forEach(ele => {
+        if (!newList.includes(ele)) {
+            deletedEle.push("Deleted: " + ele)
+        }
+    })
+    return newList.concat(deletedEle)
+}
+
+export const processSubmittedRecruiterNotes = (recruiterNotes) => {
+    return {
+        GeneralNotes: recruiterNotes.GeneralNotes,
+        InterviewNotes: recruiterNotes.InterviewNotes,
+        ExtraMaterial: recruiterNotes.ExtraMaterial,
+
+        Rating: recruiterNotes.Rating,
+        StartupPreferences: recruiterNotes.StartupPreferences,
+        StartupPairing: compareAssignmentList(recruiterNotes.StartupPairing, recruiterNotes.NewStartupPairing),
+        PositionPairing: compareAssignmentList(recruiterNotes.PositionPairing, recruiterNotes.NewPositionPairing),
+        TalentPools: compareAssignmentList(recruiterNotes.TalentPools, recruiterNotes.NewTalentPools),
+        FinalPairing: recruiterNotes.FinalPairing,
+
+        Withdrawn: recruiterNotes.Withdrawn,
+        NotableApplication: recruiterNotes.NotableApplication,
+
+        Status: recruiterNotes.Status,
     }
 }

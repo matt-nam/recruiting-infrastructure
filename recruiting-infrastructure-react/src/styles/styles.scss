@@ -173,15 +173,22 @@ a {
     color: $blue-color;
     border-radius: 12px;
     border: 2px solid $blue-color;
-    display: inline-block;
-
-    padding: 12px 20px;
+    display: inline-block;   
 
     transition: all 0.3s;
 
     a {
+        margin: 12px 20px;
         color: white;
         transition: all 0.3s;
+    }
+    
+    input {
+        margin: 4px;
+        font-size: 12px;
+        border: none;
+        outline: none;
+        background-color: transparent;
     }
 }
 

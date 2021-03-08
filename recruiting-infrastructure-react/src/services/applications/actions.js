@@ -25,41 +25,40 @@ export const fetchApplications = (dispatch) => {
     dispatch({ type: FETCHING_APPLICATIONS })
 
     // USING MOCK DATA
-    var res = applicationsFactory(mockData.data);
+    // var res = applicationsFactory(mockData.data);
     // console.log(res)
-    dispatch({
-        type: FETCH_APPLICATIONS_SUCCESS,
-        payload: res
-    })
+    // dispatch({
+    //     type: FETCH_APPLICATIONS_SUCCESS,
+    //     payload: res
+    // })
 
     // CALLING API FOR APPLICATIONS
-    // client.get('main-app', '/applications')
-    //     .then(r => {
-    //         console.log(r)
-    //         let res = applicationsFactory(r)
-    //         dispatch({
-    //             type: FETCH_APPLICATIONS_SUCCESS,
-    //             payload: res
-    //         })
-    //     })
-    //     .catch(err => {
-    //         console.error(err); // log since might be a render err
-    //         dispatch({
-    //             type: FETCH_APPLICATIONS_FAILED,
-    //             payload: err
-    //         });
-    //     })
+    client.get('main-app', '/applications')
+        .then(r => {
+            console.log(r)
+            let res = applicationsFactory(r)
+            dispatch({
+                type: FETCH_APPLICATIONS_SUCCESS,
+                payload: res
+            })
+        })
+        .catch(err => {
+            console.error(err); // log since might be a render err
+            dispatch({
+                type: FETCH_APPLICATIONS_FAILED,
+                payload: err
+            });
+        })
 }
 
-export const submitNotes = (index) => {
+export const submitNotes = (index, id, email, recruiterNotes) => {
     return function (dispatch, getState) {
         dispatch({ type: SUBMITTING_NOTES })
-        var recruiterNotes = getState().applications.data.models[index].RecruiterNotes
 
         var body = {
             // "ApplicationId": getState().applications.data.models[index].ApplicationId,
-            "ApplicationId": "1",
-            "RecruiterEmail": "andrew.milas@yale.edu",
+            "ApplicationId": id, 
+            "RecruiterEmail": email,
             "RecruiterNotes": recruiterNotes
         }
         client.post('main-app', '/notes/submit', body)

@@ -3,13 +3,15 @@ import Input from "./components/input";
 import Number from "./components/number"
 import Select from "./components/select";
 import MultiSelect from "./components/multiselect"
+import { deepEqual } from 'utils/helper'
 import { useDispatch, useSelector } from "react-redux";
 import { getStartups, getPotentialPositions, getStartupData } from 'services/startups/selectors'
-import { getRecruiterNotes } from 'shared/models/recruiterNotes.model'
+import { getRecruiterNotes, processSubmittedRecruiterNotes } from 'shared/models/recruiterNotes.model'
+import { getUserEmail } from 'services/user/selectors'
 import { getTalentPools } from 'services/applications/selectors'
 import { Form, FormGroup } from 'react-bootstrap'
-
 import "./review-view.scss"
+import { submitNotes } from "services/applications/actions";
 
 export const ReviewView = ({ currentApplication, formData }) => {
 
@@ -20,11 +22,13 @@ export const ReviewView = ({ currentApplication, formData }) => {
     const startups = useSelector(state => getStartups(state))
     const positions = useSelector(state => getPotentialPositions(state, recruiterNotes.NewStartupPairing))
     const talentpools = useSelector(state => getTalentPools(state)).map(tp => { return { Name: tp, Id: tp } })
-    var email = "1"
+    var email = useSelector(state => getUserEmail(state))
+
+    const wereChanges = !deepEqual(currentApplication.RecruiterNotes, recruiterNotes)
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(recruiterNotes)
+        dispatch(submitNotes(currentApplication.Index, currentApplication.ApplicationId, email, processSubmittedRecruiterNotes(recruiterNotes)))
     };
 
     const updateApplicationNotes = (keyValue, value) => {
@@ -36,21 +40,18 @@ export const ReviewView = ({ currentApplication, formData }) => {
     }
 
     const updateRecruiterNotes = (keyValue, value) => {
-        var notes = recruiterNotes[keyValue]
+        var notes = [...recruiterNotes[keyValue]]
         const index = notes.findIndex(notes => notes.RecruiterEmail == email)
-        const d = new Date();
-        const n = d.getTime();
         if (index === -1) {
             notes.push({
                 Notes: value,
-                RecruiterEmail: email,
-                CreatedAt: n,
+                RecruiterEmail: email
             })
         } else {
-            notes[index].Notes = value
-            notes[index].CreatedAt = n
+            var note = { ...notes[index], Notes: value }
+            notes[index] = note
         }
-        var res = recruiterNotes
+        var res = { ...recruiterNotes }
         res[keyValue] = notes
         setRecruiterNotes({
             ...res
@@ -159,24 +160,36 @@ export const ReviewView = ({ currentApplication, formData }) => {
         });
         return (<div className="rounded-info-container">
             {names.map((name, index) =>
-                <p className={"rounded-info " + (currentApplication.RecruiterNotes.StartupPreferences[index] ? "" : "rounded-info-rejected")} key={name + index}>{name}</p>
+                <p onClick={() => {
+                    var res = recruiterNotes
+                    res.StartupPreferences[index] = !res.StartupPreferences[index]
+                    setRecruiterNotes({
+                        ...res
+                    })
+                }} className={"rounded-info " + (currentApplication.RecruiterNotes.StartupPreferences[index] ? "" : "rounded-info-rejected")} key={name + index}>{name}</p>
             )}
         </div>);
     }
 
     return (
         <div className="review-view-container">
-            <h3>General Info</h3>
-            <p>Skills: {currentApplication.Skills}</p>
-            <h5>Applicant's Start-up Preferences</h5>
-            {renderStartupPreferences()}
             <Form onSubmit={handleSubmit}>
-                {formData.fields.map((field, index) =>
-                    <FormGroup key={index} controlId={field.name}>
-                        {getFormInput(field)}
-                    </FormGroup>
-                )}
-                <input type="submit" />
+                <div className="review-view-header">
+                    <p>{currentApplication.FirstName} {currentApplication.LastName}</p>
+                    {wereChanges ? <p className="changes">*</p> : <></>}
+                    <div className="regular-button"><input type="submit" /></div>
+                </div>
+                <div className="review-form-container">
+                    <h3>General Info</h3>
+                    <p>Skills: {currentApplication.Skills}</p>
+                    <h5>Applicant's Start-up Preferences</h5>
+                    {renderStartupPreferences()}
+                    {formData.fields.map((field, index) =>
+                        <FormGroup key={index} controlId={field.name}>
+                            {getFormInput(field)}
+                        </FormGroup>
+                    )}
+                </div>
             </Form>
         </div>
     );
