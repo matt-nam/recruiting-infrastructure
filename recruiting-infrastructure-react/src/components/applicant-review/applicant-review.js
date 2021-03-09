@@ -8,11 +8,11 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import ReviewView from './components/review-view';
 import ApplicationView from './components/application-view'
 
-import { getShowingModal, getCurrentApplication } from 'services/applications/selectors'
+import { getShowingModal, getCurrentApplication, getWereChanges } from 'services/applications/selectors'
 import { useDispatch, useSelector } from "react-redux";
 import { formData } from './form-views/review-view-model';
 
-import { setShowingModal } from 'services/applications/actions';
+import { setShowingModal, setWereChanges } from 'services/applications/actions';
 
 export const ApplicantReview = () => {
 
@@ -21,7 +21,7 @@ export const ApplicantReview = () => {
     const isOpen = useSelector(state => getShowingModal(state))
     const currentApplication = useSelector(state => getCurrentApplication(state))
 
-    const [wereChanges, setWereChanges] = useState(false)
+    const wereChanges = useSelector(state => getWereChanges(state))
 
     const hideModal = () => {
         if (wereChanges) {
@@ -30,17 +30,21 @@ export const ApplicantReview = () => {
                 message: 'There are unsubmitted changes.',
                 buttons: [
                     {
-                        label: 'Yes',
-                        onClick: () => dispatch(setShowingModal({ showingModal: false }))
+                        label: 'Close',
+                        onClick: () => {
+                            dispatch(setShowingModal({ showingModal: false }))
+                            dispatch(setWereChanges(false))
+                        }
                     },
                     {
-                        label: 'No',
+                        label: 'Keep Editing',
                         onClick: () => {}
                     }
                 ]
             });
         } else {
             dispatch(setShowingModal({ showingModal: false }))
+            dispatch(setWereChanges(false))
         }
     };
 
@@ -53,7 +57,7 @@ export const ApplicantReview = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <ApplicationView currentApplication={currentApplication} />
-                    <ReviewView currentApplication={currentApplication} formData={formData} setWereChanges={setWereChanges} />
+                    <ReviewView currentApplication={currentApplication} formData={formData} />
                 </Modal.Body>
             </Modal>
         </>

@@ -1,18 +1,16 @@
 import { Model } from "./base";
 
 import {
-    FounderList, 
-    Position, 
-    PositionList, 
-    SkillsList, 
+    FounderList,
+    Position,
+    PositionList,
+    SkillsList,
     StartupInfo,
 } from "shared/models"
 
 export class CatalogPosition extends Model {
     defaults() {
         return {
-            id: "",
-            name: "",
             Positions: new PositionList(),
             Founders: new FounderList(),
             StartupInfo: new StartupInfo(),
@@ -31,12 +29,14 @@ export const catalogPositionFactory = (startup, data) => {
             Title: position.Title + " Intern",
             TimeCommitment: getTimeCommitment(position.TimeCommitment),
             TimeCommitmentVal: position.TimeCommitment,
-            Skills: new SkillsList(position.Skills)
+            Skills: new SkillsList(position.Skills),
+            Paid: getPaid(position.Paid),
+            PaidInfo: position.Paid
         }))),
         StartupInfo: new StartupInfo({
             ...startup.StartupInfo,
             Paid: getPaid(startup.StartupInfo.Paid),
-            PaidInfo: startup.StartupInfo.Paid
+            PaidInfo: startup.StartupInfo.Paid,
         })
     })
 }
@@ -53,11 +53,13 @@ export const compareCatalogPosition = (a, b) => {
 
 function getTimeCommitment(tc) {
     if (tc[0] === 40 && tc[1] === 40) return "Full-time"
-    return "" + tc[0] + "-" + tc[1] + " hours/week"
+    return "" + tc[0] + "-" + tc[1] + " hrs/week"
 }
 
 function getPaid(opt) {
-    if (opt.trim() === "Unpaid" || opt.trim() === "No") return "Unpaid"
+    if (opt && (opt.trim() === "Unpaid" || opt.trim() === "No")) return "Unpaid"
+    else if (opt && opt === "") return ""
+    else if (!opt) return ""
     return "Paid"
 }
 

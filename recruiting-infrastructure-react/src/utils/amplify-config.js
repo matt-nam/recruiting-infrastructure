@@ -1,8 +1,16 @@
 const config = {
+    // apiGateway: {
+    //     REGION: "us-east-2",
+    //     URL: "https://nfd9vi0dv3.execute-api.us-east-2.amazonaws.com/dev/api",
+    // },
     apiGateway: {
         REGION: "us-east-2",
-        URL: "https://nfd9vi0dv3.execute-api.us-east-2.amazonaws.com/dev/api",
+        URL: "https://oxyl4hpryb.execute-api.us-east-2.amazonaws.com/prod/api",
     },
+    // apiGateway: {
+    //     REGION: "us-east-2",
+    //     URL: "https://d1ey7n6lv2zsao.cloudfront.net/api",
+    // },
     cognito: {
         REGION: "us-east-2",
         USER_POOL_ID: "us-east-2_rtKxtWSiU",

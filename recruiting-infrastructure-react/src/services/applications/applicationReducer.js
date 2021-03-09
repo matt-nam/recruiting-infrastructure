@@ -12,14 +12,17 @@ import {
     SUBMIT_NOTES_SUCCESS,
     SUBMIT_NOTES_FAILED,
     SET_SHOWING_MODAL,
+    SET_WERE_CHANGES,
 } from "./action-types";
 import { LOADING, LOADED, FAILED } from "../constants";
 import { loadState, saveState } from "services/api";
 
 const initialState = {
     data: new ApplicationList(),
-    status: LOADED,
+    status: LOADING,
+    submitStatus: FAILED, 
     showingModal: false,
+    wereChanges: false, // whether current application has been edited
     options: {
         current: 0,
         FilterOptions: new FilterOptions()
@@ -152,7 +155,7 @@ function applicationsReducer(state = initialState, action) {
         case SUBMITTING_NOTES: {
             return {
                 ...state,
-                status: LOADING,
+                submitStatus: LOADING,
             }
         }
         case SUBMIT_NOTES_SUCCESS: {
@@ -162,13 +165,19 @@ function applicationsReducer(state = initialState, action) {
             return {
                 ...state,
                 data: newApplications,
-                status: LOADED
+                submitStatus: LOADED
             }
         }
         case SUBMIT_NOTES_FAILED: {
             return {
                 ...state,
-                status: FAILED,
+                submitStatus: FAILED,
+            }
+        }
+        case SET_WERE_CHANGES: {
+            return {
+                ...state,
+                wereChanges: action.payload.wereChanges
             }
         }
         default:

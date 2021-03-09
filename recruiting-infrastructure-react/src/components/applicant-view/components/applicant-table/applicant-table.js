@@ -31,8 +31,10 @@ function renderTableRow(app, prop, startupModels) {
     switch (prop) {
         case "Hours":
             return app[prop]
+        case "Status":
+            return "" + app["RecruiterNotes"][prop][0].Status
         case "Rating":
-            return "" + app["RecruiterNotes"][prop];
+            return app["RecruiterNotes"][prop] === "" ? "-" : "" + app["RecruiterNotes"][prop];
         case "StartupPairing":
             var unsorted_names = [];
             startupModels.forEach(startup => {
@@ -132,7 +134,7 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
                                 <td key={prop + ("_" + index)} className={prop === "Startups" || prop === "StartupPairing" ? "col-xs-" : "col-xs-"}>
                                     <div
                                         className={(prop in renderClassName) ? renderClassName[prop] : ""}
-                                        style={prop === "Rating" ? {
+                                        style={prop === "Rating" && app["RecruiterNotes"][prop] !== "" ? {
                                             backgroundColor: ratingColormap(app["RecruiterNotes"][prop]),
                                             color: ratingColormap(app["RecruiterNotes"][prop]).darken(4)
                                         } : {}}>

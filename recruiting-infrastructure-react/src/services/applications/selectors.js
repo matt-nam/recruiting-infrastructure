@@ -7,6 +7,12 @@ export const getApplicationsState = store => store.applications;
 export const getApplicationsStatus = store =>
     getApplicationsState(store) ? getApplicationsState(store).status : FAILED;
 
+export const getSubmitStatus = store =>
+    getApplicationsState(store) ? getApplicationsState(store).submitStatus : FAILED;
+
+export const getWereChanges = store =>
+getApplicationsState(store) ? getApplicationsState(store).wereChanges : false;
+
 export const getCurrentApplicationId = store => getApplicationsState(store) ? getApplicationsState(store).options.current : "";
 
 export const getCurrentApplication = store => getApplicationsState(store) ? getApplicationsState(store).data.posWithId(getCurrentApplicationId(store)) : {};

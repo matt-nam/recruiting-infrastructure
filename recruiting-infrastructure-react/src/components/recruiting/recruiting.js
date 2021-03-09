@@ -10,7 +10,7 @@ import { useAppContext } from "utils/contextLib";
 import { getTalentPools, getApplicationsStatus } from 'services/applications/selectors';
 import { useUser } from "shared/hooks";
 import { useSelector } from "react-redux";
-import { LOADED } from "services/constants";
+import { FAILED, LOADED } from "services/constants";
 
 // Mock data for companies and talent pools
 // import { companies, talentPools } from './mockData';
@@ -33,7 +33,7 @@ export const Recruiting = () => {
                             <ApplicantView />
                             <ApplicantReview />
                         </React.Fragment>
-                        : <></>}
+                        : status == FAILED ? <p>Applications failed to load.</p> : <p>Loading data...</p>}
                 </div>
             </div> : <div className="login-message">
                 <h2>Not logged in!</h2>

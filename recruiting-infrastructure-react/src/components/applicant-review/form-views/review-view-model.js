@@ -24,7 +24,7 @@ export const formData = {
         {
             component: "number",
             name: "Rating",
-            label: "How would you rate this applicant?",
+            label: "How would you rate this applicant? (1-5)",
             inputType: "regular",
             valueType: "regular",
         },
@@ -45,7 +45,7 @@ export const formData = {
             multiValueType: "positions"
         },
         {
-            component: "multiselect",
+            component: "creatable",
             name: "NewTalentPools",
             label: "Potential Talent Pool Assigments",
             inputType: "regular",
@@ -63,7 +63,7 @@ export const formData = {
         {
             component: "select",
             name: "Status",
-            label: "What should the status of this application be?",
+            label: "Force Status Change",
             inputType: "regular",
             valueType: "status",
             options: [

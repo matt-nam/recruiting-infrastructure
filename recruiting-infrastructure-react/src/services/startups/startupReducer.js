@@ -19,7 +19,6 @@ function startupReducer(state = initialState, action) {
         }
         case FETCH_STARTUPS_SUCCESS: {
             var industries = action.payload.industries
-            console.log(industries)
             return {
                 ...state,
                 data: action.payload,

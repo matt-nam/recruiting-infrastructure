@@ -53,9 +53,9 @@ export const ApplicantView = () => {
     // mock data for displaying properties
     var displayProperties = [];
     if (filterOptions.ViewType !== VIEW_COMPANY) {
-        displayProperties = ["FirstName", "LastName", "Rating", "University", "Major", "Hours"];
+        displayProperties = ["FirstName", "LastName", "Rating", "University", "Major", "Hours", "Status"];
     } else {
-        displayProperties = ["FirstName", "LastName", "Rating", "Startups", "StartupPairing"]
+        displayProperties = ["FirstName", "LastName", "Status", "Rating", "Startups", "StartupPairing"]
     }
 
 

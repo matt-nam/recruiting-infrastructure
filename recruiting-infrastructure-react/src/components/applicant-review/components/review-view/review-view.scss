@@ -1,5 +1,28 @@
 @import "../../../../styles/variables";
 
+.submitting-cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    p {
+        position: relative;
+        background-color: white;
+        border-radius: 10px;
+        border: 1px solid black;
+        padding: 5px;
+        color: black;
+        z-index: 2;
+        margin: auto;
+    }
+}
+
 .review-view-container {
     position: relative;
     width: 50%;
@@ -10,6 +33,7 @@
     form {
         position: relative;
         height: 100%;
+        z-index: 0;
     }
 
     .review-view-header {
@@ -58,6 +82,7 @@
 
         h5 {
             font-weight: 700;
+            text-align: left;
         }
 
         p {
