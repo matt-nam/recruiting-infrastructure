@@ -19,13 +19,27 @@ $recruiting-inner-margins: 20px;
     margin-left: 0;
     justify-content: space-between;
 
+    .cover {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 2;
+    }
+
     .applicant-container-header {
         padding-left: $recruiting-inner-margins;
+    }
+
+    .offset {
+        margin-top: -20px;
     }
     
     .applicant-container-main {
         height: calc(100%);
-
+        position: relative;
         .filter-btn {
             background-color: $blue-color;
             // background-color: rgb(211,211,211);
@@ -107,7 +121,6 @@ $recruiting-inner-margins: 20px;
                     justify-content: center;
                     float: right;
                     align-items: center;
-                    cursor: pointer;
                     border-radius: 0px 8px 8px 0px;
                     width: 50px;
                     height: inherit;
@@ -133,31 +146,29 @@ $recruiting-inner-margins: 20px;
             font-size: 15px;
         }
 
-        .cover {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
         .filter-container {
             overflow-y: auto;
+            z-index: 3;
         }
     }
 }
 
+.reveal-btn-container {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
 .company-view {
-    width: 60%;
     float: left;
     border-right: 1px solid $gray-color;
+    transition: width 200ms ease-in;
 }
 
 .listing-div {
-    width: 40%;
     height: 100%;
     overflow-y: auto;
     padding: 20px;
     float: right;
+    transition: width 200ms ease-out;
 }
