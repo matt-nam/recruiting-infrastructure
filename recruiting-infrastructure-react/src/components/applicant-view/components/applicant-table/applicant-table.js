@@ -14,7 +14,7 @@ export const ratingColormap = chroma
 const renderHeader = {
     "FirstName": "First name",
     "LastName": "Last name",
-    "Hours": "Time commitment",
+    "Hours": "Time Commitment",
     "StartupPairing": "Startup Pairing",
     "Startups": "Startup Rankings"
 }
@@ -30,11 +30,7 @@ function renderTableRow(app, prop, startupModels) {
     }
     switch (prop) {
         case "Hours":
-            // return app[prop] + " hours/week";
-            if (app[prop][0] == 40 && app[prop][1] == 40) {
-                return "Fulltime";
-            }
-            return app[prop][0] + "-" + app[prop][1] + " hours/week";
+            return app[prop]
         case "Rating":
             return "" + app["RecruiterNotes"][prop];
         case "StartupPairing":
@@ -123,7 +119,7 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
                 <thead ref={theadRef}>
                     <tr>
                         {displayProperties.map((prop) => (
-                            <th key={prop} className={(prop === "Startups" || prop === "StartupPairing" ? "col-xs-3" : "col-xs-2") + (prop === "Rating" ? " rating-header" : "")} >
+                            <th key={prop} className={(prop === "Startups" || prop === "StartupPairing" ? "col-xs-" : "col-xs-") + (prop === "Rating" ? " rating-header" : "")} >
                                 <span onClick={() => sortApplications(prop)}>{`${(prop in renderHeader) ? renderHeader[prop] : prop} ` + `${ascendingToggle.currentProp !== prop ? "\u2B0D" : (ascendingToggle.asc ? "\u25B2" : "\u25BC")}`}</span>
                             </th>
                         ))}
@@ -133,7 +129,7 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
                     {applications.map((app, index) => (
                         <tr key={index} onClick={() => handleRowClick(app)}>
                             {displayProperties.map((prop) => (
-                                <td key={prop + ("_" + index)} className={prop === "Startups" || prop === "StartupPairing" ? "col-xs-3" : "col-xs-2"}>
+                                <td key={prop + ("_" + index)} className={prop === "Startups" || prop === "StartupPairing" ? "col-xs-" : "col-xs-"}>
                                     <div
                                         className={(prop in renderClassName) ? renderClassName[prop] : ""}
                                         style={prop === "Rating" ? {

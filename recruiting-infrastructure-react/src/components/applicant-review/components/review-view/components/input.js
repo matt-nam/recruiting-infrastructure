@@ -1,5 +1,5 @@
 import React from "react";
-import { ControlLabel, FormControl } from 'react-bootstrap'
+import { FormControl } from 'react-bootstrap'
 
 export const Input = ({ field, fieldChanged, values, classProp, numRow }) => {
     const handleChange = event => {
@@ -9,7 +9,6 @@ export const Input = ({ field, fieldChanged, values, classProp, numRow }) => {
     }
     return (
         <>
-            <ControlLabel>{field.label}</ControlLabel>
             <FormControl className={classProp} value={values} componentClass="textarea" rows={numRow} onChange={handleChange} />
         </>
     );

@@ -8,7 +8,7 @@ import { ATTEMPT_LOGIN_SUCCESS } from "services/user/action-types";
 
 function App() {
     const dispatch = useDispatch();
-    const [isAuthenticating, setIsAuthenticating] = useState(true);
+    
     const [isAuthenticated, userHasAuthenticated] = useState(false);
 
     useEffect(() => {
@@ -30,8 +30,6 @@ function App() {
                 alert(e);
             }
         }
-
-        setIsAuthenticating(false);
     }
 
     return (

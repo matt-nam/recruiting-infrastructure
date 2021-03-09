@@ -12,7 +12,7 @@ export const Number = ({ field, fieldChanged, values, classProp }) => {
             if (isNaN(intFieldVal)) {
                 fieldChanged(fieldName, "")
             }
-            if (0 <= intFieldVal && intFieldVal <= 10) {
+            if (0 <= intFieldVal && intFieldVal <= 5) {
                 fieldChanged(fieldName, fieldVal)
             }
         }

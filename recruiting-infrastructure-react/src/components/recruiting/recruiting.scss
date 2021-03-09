@@ -1,6 +1,6 @@
 @import "../../styles/variables";
 
-$recruiting-height: 92vh;
+$recruiting-height: 94vh;
 $recruiting-width: 75%;
 $recruiting-margins: 3%;
 $sidebar-width: 100% - $recruiting-width - (3 * $recruiting-margins);
@@ -31,6 +31,7 @@ $recruiting-inner-margins: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .recruiting-sidebar {

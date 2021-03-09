@@ -27,7 +27,7 @@ export const ApplicantView = () => {
     const dispatch = useDispatch();
     const filterOptions = useSelector(state => getApplicationFilterOptions(state));
     const [showFilterOptions, setShowFilterOptions] = useState(false);
-    const [minimizedListing, setMinimizedListing] = useState(false);
+    const [minimizedListing, setMinimizedListing] = useState(true);
 
     function renderTitle() {
         switch (filterOptions.ViewType) {
@@ -87,7 +87,7 @@ export const ApplicantView = () => {
         setMinimizedListing(!minimizedListing);
     }
 
-    const listingPercentage = 35;
+    const listingPercentage = 40;
 
     return (
         <div className="applicant-container">

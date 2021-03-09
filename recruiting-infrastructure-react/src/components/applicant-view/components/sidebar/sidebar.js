@@ -23,8 +23,8 @@ export const Sidebar = ({ companies, talentPools }) => {
                     <OptionSelector title="companies" items={companies} />
                 </div>
                 <div className="sidebar-item">
-                    — applicant pool
-                <ul>
+                    <span className="sidebar-dropdown-header">applicant pool</span>
+                    <ul>
                         <li><span className={filterOptions.ViewType === VIEW_ALL_APPLICANTS ? "active clickable" : "clickable"} onClick={() => changeApplicantView(VIEW_ALL_APPLICANTS)}>all applicants</span></li>
                         <li>
                             <OptionSelector title="talent pool" items={talentPools} />
@@ -32,11 +32,11 @@ export const Sidebar = ({ companies, talentPools }) => {
                     </ul>
                 </div>
                 <div className={"sidebar-item clickable " + (filterOptions.ViewType === VIEW_ACCEPTED ? "active" : "")} onClick={() => changeApplicantView(VIEW_ACCEPTED)}>
-                    acceptance pool
-                    </div>
+                    <span className="sidebar-dropdown-header">acceptance pool</span>
+                </div>
                 <div className={"sidebar-item clickable " + (filterOptions.ViewType === VIEW_REJECTED ? "active" : "")} onClick={() => changeApplicantView(VIEW_REJECTED)}>
-                    rejected pool
-                    </div>
+                    <span className="sidebar-dropdown-header">rejected pool</span>
+                </div>
                 <div className="larger-filler"></div>
                 <button onClick={() => dispatch(fetchApplications)} className="refresh-btn"><img src={refreshIcon} alt="refresh" /></button>
             </div>

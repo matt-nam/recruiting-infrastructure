@@ -11,6 +11,7 @@ export class ApplicationPosition extends Model {
             FirstName: "",
             LastName: "",
             Email: "",
+            Email2: "",
             PhoneNumber: "",
             CreatedAt: "",
             International: false,

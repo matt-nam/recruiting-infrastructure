@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import './applicant-review.scss';
+
 import { Modal } from 'react-bootstrap';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import ReviewView from './components/review-view';
 import ApplicationView from './components/application-view'
@@ -14,11 +17,31 @@ import { setShowingModal } from 'services/applications/actions';
 export const ApplicantReview = () => {
 
     const dispatch = useDispatch()
+
     const isOpen = useSelector(state => getShowingModal(state))
     const currentApplication = useSelector(state => getCurrentApplication(state))
 
+    const [wereChanges, setWereChanges] = useState(false)
+
     const hideModal = () => {
-        dispatch(setShowingModal({ showingModal: false }))
+        if (wereChanges) {
+            confirmAlert({
+                title: 'Confirm to close',
+                message: 'There are unsubmitted changes.',
+                buttons: [
+                    {
+                        label: 'Yes',
+                        onClick: () => dispatch(setShowingModal({ showingModal: false }))
+                    },
+                    {
+                        label: 'No',
+                        onClick: () => {}
+                    }
+                ]
+            });
+        } else {
+            dispatch(setShowingModal({ showingModal: false }))
+        }
     };
 
     return (
@@ -26,17 +49,11 @@ export const ApplicantReview = () => {
             {/* <button onClick={showModal}> Review Applicant </button> */}
             <Modal size="lg" show={isOpen} onHide={hideModal}>
                 <Modal.Header>
-                    Applicant Review <button onClick={hideModal}> Close </button>
+                    Applicant Review<div onClick={hideModal} className="regular-button">Close</div>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <ApplicationView currentApplication={currentApplication}/>
-                        </div>
-                        <div className="col-md-6">
-                            <ReviewView currentApplication={currentApplication} formData={formData}/>
-                        </div>
-                    </div>
+                    <ApplicationView currentApplication={currentApplication} />
+                    <ReviewView currentApplication={currentApplication} formData={formData} setWereChanges={setWereChanges} />
                 </Modal.Body>
             </Modal>
         </>

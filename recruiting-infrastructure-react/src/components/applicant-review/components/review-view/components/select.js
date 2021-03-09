@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap'
+import React from "react";
+import { ControlLabel, FormControl } from 'react-bootstrap'
 
 export const Select = ({ field, fieldChanged, values, classProp }) => {
     const handleChange = event => {

@@ -3,6 +3,7 @@ import Input from "./components/input";
 import Number from "./components/number"
 import Select from "./components/select";
 import MultiSelect from "./components/multiselect"
+import { ControlLabel } from 'react-bootstrap'
 import { deepEqual } from 'utils/helper'
 import { useDispatch, useSelector } from "react-redux";
 import { getStartups, getPotentialPositions, getStartupData } from 'services/startups/selectors'
@@ -12,9 +13,14 @@ import { getTalentPools } from 'services/applications/selectors'
 import { Form, FormGroup } from 'react-bootstrap'
 import "./review-view.scss"
 import { submitNotes } from "services/applications/actions";
-import { List } from "react-bootstrap/lib/Media";
 
-export const ReviewView = ({ currentApplication, formData }) => {
+import international from './images/international.png'
+import time from './images/time.png'
+import doc from './images/doc.png'
+import location from './images/location.png'
+import linkedin from "components/applicant-view/components/listing/images/linkedin.svg";
+
+export const ReviewView = ({ currentApplication, formData, setWereChanges }) => {
 
     const dispatch = useDispatch()
 
@@ -24,10 +30,6 @@ export const ReviewView = ({ currentApplication, formData }) => {
     const positions = useSelector(state => getPotentialPositions(state, recruiterNotes.NewStartupPairing))
     const talentpools = useSelector(state => getTalentPools(state)).map(tp => { return { Name: tp, Id: tp } })
     var email = useSelector(state => getUserEmail(state))
-
-    const wereChanges = !deepEqual(currentApplication.RecruiterNotes, recruiterNotes)
-
-    console.log(currentApplication)
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -41,6 +43,11 @@ export const ReviewView = ({ currentApplication, formData }) => {
         setRecruiterNotes({
             ...res
         })
+        if (!deepEqual(currentApplication.RecruiterNotes, recruiterNotes)) {
+            setWereChanges(true)
+        } else {
+            setWereChanges(false)
+        }
     }
 
     const updateRecruiterNotes = (keyValue, value) => {
@@ -60,6 +67,11 @@ export const ReviewView = ({ currentApplication, formData }) => {
         setRecruiterNotes({
             ...res
         })
+        if (!deepEqual(currentApplication.RecruiterNotes, recruiterNotes)) {
+            setWereChanges(true)
+        } else {
+            setWereChanges(false)
+        }
     }
 
     const setStartupPairing = (keyValue, value) => {
@@ -75,13 +87,13 @@ export const ReviewView = ({ currentApplication, formData }) => {
             case "startups": return (name, value) => setStartupPairing(name, value)
             case "recruiter": return (name, value) => updateRecruiterNotes(name, value)
             default: return () => { }
-        }   
+        }
     }
 
     const getCurrentValue = (valueType, name, emailValue) => {
         switch (valueType) {
             case "regular": return recruiterNotes[name]
-            case "status": return (typeof(recruiterNotes[name]) != typeof("") ? recruiterNotes[name][0]["Status"] : recruiterNotes[name])
+            case "status": return (typeof (recruiterNotes[name]) != typeof ("") ? recruiterNotes[name][0]["Status"] : recruiterNotes[name])
             case "multiselect": return recruiterNotes[name]
             case "startups": return startups.filter(startup => recruiterNotes[name].includes(startup.Id))
             case "positions": return positions.filter(position => recruiterNotes[name].includes(position.Id))
@@ -98,6 +110,17 @@ export const ReviewView = ({ currentApplication, formData }) => {
             case "talentpools": return talentpools
             default: return []
         }
+    }
+
+    const getInternationalStatus = () => {
+        if (currentApplication.International) {
+            var ret = "International | " + currentApplication.InternationalLocation
+            if (currentApplication.Authorization) {
+                ret = ret + " | " + currentApplication.AuthorizationType
+            }
+            return ret
+        }
+        return "Domestic"
     }
 
     const getFormInput = (field) => {
@@ -126,8 +149,15 @@ export const ReviewView = ({ currentApplication, formData }) => {
             case "input":
                 return (
                     <React.Fragment>
-                        {field.valueType == "recruiter" ?
-                            recruiterNotes[field.name].map((notes, index) => <p key={index}>{notes.RecruiterEmail}: {notes.Notes}</p>) : <></>}
+                        <hr />
+                        <ControlLabel>{field.label}</ControlLabel>
+                        {field.valueType == "recruiter" ? (
+                            <div className="recruiter-notes-container">{recruiterNotes[field.name].map((notes, index) =>
+                                <span key={index}>
+                                    <p key={`1 ${index}`} className="recruiter-title"><strong>{notes.RecruiterEmail}: </strong></p>
+                                    <p key={`2 ${index}`} className="recruiter-text">{notes.Notes}</p>
+                                </span>)}
+                            </div>) : <></>}
                         <Input
                             keyValue={field.name}
                             field={field}
@@ -140,13 +170,16 @@ export const ReviewView = ({ currentApplication, formData }) => {
                 )
             case "number":
                 return (
-                    <Number
-                        keyValue={field.name}
-                        field={field}
-                        fieldChanged={getChangedFunction(field.inputType)}
-                        values={getCurrentValue(field.valueType, field.name)}
-                        classProp={field.class}
-                    />
+                    <React.Fragment>
+                        <hr />
+                        <Number
+                            keyValue={field.name}
+                            field={field}
+                            fieldChanged={getChangedFunction(field.inputType)}
+                            values={getCurrentValue(field.valueType, field.name)}
+                            classProp={field.class}
+                        />
+                    </React.Fragment>
                 )
             default:
                 return <></>
@@ -163,7 +196,6 @@ export const ReviewView = ({ currentApplication, formData }) => {
                 }
             }
         });
-        console.log(names)
         return (<div className="rounded-info-container">
             {names.map((name, index) =>
                 <p onClick={() => {
@@ -181,20 +213,32 @@ export const ReviewView = ({ currentApplication, formData }) => {
         <div className="review-view-container">
             <Form onSubmit={handleSubmit}>
                 <div className="review-view-header">
-                    <p>{currentApplication.FirstName} {currentApplication.LastName}</p>
-                    {wereChanges ? <p className="changes">*</p> : <></>}
-                    <div className="regular-button"><input type="submit" /></div>
+                    <div className="header-main">
+                        <h5>
+                            {currentApplication.FirstName} {currentApplication.LastName} {currentApplication.Year} | {currentApplication.University} {currentApplication.Major}
+                            {currentApplication.LinkedIn !== "" ? <a href={currentApplication.LinkedIn} className="detail-icon" target="_black" rel="noreferrer noopener"><img src={linkedin} /></a> : <></>}
+                        </h5>
+                        <div className="regular-button"><input type="submit" /></div>
+                    </div>
+                    <div className="header-details">
+                        {currentApplication.Resume !== "" ? <a href={currentApplication.Resume} className="detail-icon" target="_black" rel="noreferrer noopener"><img src={doc} />Resume</a> : <></>}
+                        <p><img src={international} />{getInternationalStatus()}</p>
+                        <p><img src={time} />{currentApplication.Hours} hours</p>
+                        <p><img src={location} />{currentApplication.StudentLocation}</p>
+                    </div>
+                    {renderStartupPreferences()}
                 </div>
                 <div className="review-form-container">
-                    <h3>General Info</h3>
-                    <p>Skills: {currentApplication.Skills}</p>
-                    <h5>Applicant's Start-up Preferences</h5>
-                    {renderStartupPreferences()}
-                    {formData.fields.map((field, index) =>
-                        <FormGroup key={index} controlId={field.name}>
-                            {getFormInput(field)}
-                        </FormGroup>
-                    )}
+                    <div className="review-form">
+                        <p><strong>Skills:</strong> {currentApplication.Skills}</p>
+                        <p><strong>Affiliation:</strong> {currentApplication.Organization}</p>
+                        <p><strong>Ideal Position:</strong> {currentApplication.IdealPosition}</p>
+                        {formData.fields.map((field, index) =>
+                            <FormGroup key={index} controlId={field.name}>
+                                {getFormInput(field)}
+                            </FormGroup>
+                        )}
+                    </div>
                 </div>
             </Form>
         </div>

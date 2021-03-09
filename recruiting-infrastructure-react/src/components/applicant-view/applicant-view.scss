@@ -5,11 +5,11 @@
     border-radius: 0 12px 12px 0;
 }
 
-$recruiting-height: 92vh;
-$recruiting-width: 75%;
+$recruiting-height: 94vh;
+$recruiting-width: 78%;
 $recruiting-margins: 3%;
 $sidebar-width: 100% - $recruiting-width - (3 * $recruiting-margins);
-$recruiting-inner-margins: 20px;
+$recruiting-inner-margins: 10px;
 
 .applicant-container {
     @extend %border;
@@ -31,6 +31,7 @@ $recruiting-inner-margins: 20px;
 
     .applicant-container-header {
         padding-left: $recruiting-inner-margins;
+        padding-bottom: 4px;
     }
 
     .offset {
@@ -112,6 +113,10 @@ $recruiting-inner-margins: 20px;
                         border-width: 1px;
                         border-radius: 8px 0px 0px 8px;
                         overflow: hidden;
+                        outline: none;
+                        border-color: $gray-color;
+                        outline-color: $gray-color;
+                        border-right: none;
                     }
                 }
             
@@ -127,8 +132,8 @@ $recruiting-inner-margins: 20px;
                     margin-right: 10px;
                 
                     .search-icon {
-                        width: 20px;
-                        height: 20px;
+                        width: 14px;
+                        height: auto;
                         margin-left: -3px;
                         color: white;
                     }
@@ -144,6 +149,7 @@ $recruiting-inner-margins: 20px;
             position: relative;
             height: calc(100% - 119px);
             font-size: 15px;
+            margin-top: 3px;
         }
 
         .filter-container {
@@ -162,7 +168,7 @@ $recruiting-inner-margins: 20px;
 .company-view {
     float: left;
     border-right: 1px solid $gray-color;
-    transition: width 200ms ease-in;
+    transition: width 200ms;
 }
 
 .listing-div {
@@ -170,5 +176,4 @@ $recruiting-inner-margins: 20px;
     overflow-y: auto;
     padding: 20px;
     float: right;
-    transition: width 200ms ease-out;
 }

@@ -6,14 +6,6 @@ import { recruiterNotesFactory } from './recruiterNotes.model'
 
 import { unique } from "utils/helper"
 
-const timeCommitments = {
-    "1-5 hrs/wk": [1, 5],
-    "6-10 hrs/wk": [6, 10],
-    "11-15 hrs/wk": [11, 15],
-    "16-20 hrs/wk": [16, 20],
-    "Fulltime": [40, 40]
-}
-
 const overlap = (a, b) => {
     if (a[1] == b[1] && a[0] == b[0]) return true
     return Math.max(0, Math.min(a[1], b[1]) - Math.max(a[0], b[0])) > 0
@@ -43,13 +35,7 @@ export class ApplicationList extends List {
 
     // Get time commitments
     get timeCommitments() {
-        return [
-            "1-5 hrs/wk",
-            "6-10 hrs/wk",
-            "11-15 hrs/wk",
-            "16-20 hrs/wk",
-            "Fulltime"
-        ]
+        return unique(this.models.map(app => String(app.Hours))).sort()
     }
 
     get talentPools() {
@@ -108,8 +94,7 @@ export class ApplicationList extends List {
             }
         }
         if (opt.Hours.length > 0) {
-            let tcs = opt.Hours.map(optTC => timeCommitments[optTC])
-            if (!tcs.some(tc => overlap(tc, application.Hours))) {
+            if (!opt.Hours.includes(application.Hours.trim())) {
                 return false
             }
         }
@@ -177,13 +162,13 @@ export class ApplicationList extends List {
         }
         else if (opt.SortValue === "Hours") {
             var compareFunction = (a, b) => {
-                var aStart = a.Hours[0];
-                var aEnd = a.Hours[1];
-                var bStart = b.Hours[0];
-                var bEnd = b.Hours[1];
-                return (aEnd < bEnd) ? -1 : (aEnd > bEnd) ? 1 : (
-                    (aStart < bStart) ? -1 : (aStart > bStart) ? 1 : 0
-                );
+                if (a.Hours < b.Hours) {
+                    return -1;
+                }
+                if (a.Hours > b.Hours) {
+                    return 1;
+                }
+                return 0;
             }
         }
         else if (opt.SortValue === "Startups" && opt.hasOwnProperty('ViewValue')) {

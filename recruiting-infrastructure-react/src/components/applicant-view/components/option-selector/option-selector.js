@@ -83,12 +83,11 @@ export const OptionSelector = ({ title, items }) => {
     return (
         <div className="option-selector">
             <div className="sidebar-dropdown">
-                {/* <div className={`sidebar-dropdown-header ${isActive ? 'active' : 'inactive'}`} onClick={() => setIsActive(!isActive)}>— {title}</div> */}
                 <div className={`sidebar-dropdown-header`} >
                     {title === "talent pool" ?
                         <span className={filterOptions.ViewType === VIEW_TALENT_POOL && filterOptions.ViewValue === "" ? "active clickable" : "clickable"}
-                            onClick={() => changeApplicantView(VIEW_TALENT_POOL)}>— {title}</span>
-                        : `\u2014 ${title}`}
+                            onClick={() => changeApplicantView(VIEW_TALENT_POOL)}>{title}</span>
+                        : `${title}`}
                 </div>
                 <button className="sidebar-dropdown-btn" onClick={() => {setIsOpen(!isOpen); setAccordionMaxHeight(s1.current.scrollHeight);}}>{isOpen ? '\u2212' : '+'}</button>
             </div>

@@ -35,7 +35,6 @@ export const fetchApplications = (dispatch) => {
     // CALLING API FOR APPLICATIONS
     client.get('main-app', '/applications')
         .then(r => {
-            console.log(r)
             let res = applicationsFactory(r)
             dispatch({
                 type: FETCH_APPLICATIONS_SUCCESS,
