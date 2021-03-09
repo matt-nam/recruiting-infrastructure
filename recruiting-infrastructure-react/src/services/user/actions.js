@@ -10,9 +10,17 @@ import {
     ATTEMPT_LOGOUT_FAILED,
     ATTEMPTING_SIGN_UP,
     ATTEMPT_SIGN_UP_SUCCESS,
-    ATTEMPT_SIGN_UP_FAILED
+    ATTEMPT_SIGN_UP_FAILED,
+    ATTEMPTING_FETCH_RECRUITERS,
+    ATTEMPT_FETCH_RECRUITERS_SUCCESS,
+    ATTEMPT_FETCH_RECRUITERS_FAILED
 } from "./action-types";
 import { Auth } from "aws-amplify";
+import client from "../api"
+import store from "services/store";
+import {fetchApplications } from "services/applications/actions"
+import { fetchStartups } from 'services/startups/actions';
+import { RecruiterList, recruiterListFactory } from "shared/models/recruiterList.model";
 
 // API call returns lots of information, but we only store email
 export const attemptGetCurrentUser = () => {
@@ -48,6 +56,9 @@ export const attemptLogin = (email, password, callback) => {
                     type: ATTEMPT_LOGIN_SUCCESS,
                     payload: e.attributes.email
                 })
+                store.dispatch(fetchApplications);
+                store.dispatch(fetchStartups);
+                store.dispatch(fetchRecruiters);
             })
             .then(callback)
             .catch(e => {
@@ -83,7 +94,7 @@ export const attemptLogout = callback => {
 }
 
 // After sign up, user is automatically signed in (i.e. getCurrentUser returns newly made acct)
-export const attemptSignUp = (email, password, callback) => {
+export const attemptSignUp = (email, password, name, calendly, callback) => {
     return dispatch => {
         dispatch({
             type: ATTEMPTING_SIGN_UP
@@ -91,10 +102,26 @@ export const attemptSignUp = (email, password, callback) => {
         // see documentation for setting other attributes
         Auth.signUp({ username: email, password: password })
             .then(e => {
-                dispatch({
-                    type: ATTEMPT_SIGN_UP_SUCCESS,
-                    payload: e.user.username
-                });
+                var body = {
+                    "Email": email, 
+                    "Name": name,
+                    "CalendlyLink": calendly
+                }
+                client.post('main-app', '/recruiter', body)
+                    .then(r => {
+                        console.log(r)
+                        dispatch({
+                            type: ATTEMPT_SIGN_UP_SUCCESS,
+                            payload: {email: e.user.username, name, calendlyLink: calendly}
+                        });
+                    })
+                    .catch(err => {
+                        console.error(err); // log since might be a render err
+                        dispatch({  
+                            type: ATTEMPT_SIGN_UP_FAILED,
+                            payload: err
+                        });
+                    })
             })
             .then(callback)
             .catch(e => {
@@ -105,4 +132,24 @@ export const attemptSignUp = (email, password, callback) => {
                 alert(e.message);
             })
     }
+}
+
+export const fetchRecruiters = (dispatch) => {
+    dispatch({ type: ATTEMPTING_FETCH_RECRUITERS })
+
+    client.get('main-app', '/recruiters')
+        .then(r => {
+            let res = recruiterListFactory(r)
+            dispatch({
+                type: ATTEMPT_FETCH_RECRUITERS_SUCCESS,
+                payload: res
+            })
+        })
+        .catch(err => {
+            console.error(err); // log since might be a render err
+            dispatch({
+                type: ATTEMPT_FETCH_RECRUITERS_FAILED,
+                payload: err
+            });
+        })
 }

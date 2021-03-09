@@ -8,7 +8,8 @@ import { deepEqual } from 'utils/helper'
 import { useDispatch, useSelector } from "react-redux";
 import { getStartups, getPotentialPositions, getStartupData } from 'services/startups/selectors'
 import { getRecruiterNotes, processSubmittedRecruiterNotes } from 'shared/models/recruiterNotes.model'
-import { getUserEmail } from 'services/user/selectors'
+import { getRecruiterName } from 'shared/models/recruiterList.model'
+import { getUserEmail, getRecruiterList } from 'services/user/selectors'
 import { getTalentPools } from 'services/applications/selectors'
 import { Form, FormGroup } from 'react-bootstrap'
 import "./review-view.scss"
@@ -30,6 +31,7 @@ export const ReviewView = ({ currentApplication, formData, setWereChanges }) => 
     const positions = useSelector(state => getPotentialPositions(state, recruiterNotes.NewStartupPairing))
     const talentpools = useSelector(state => getTalentPools(state)).map(tp => { return { Name: tp, Id: tp } })
     var email = useSelector(state => getUserEmail(state))
+    var recruiterList = useSelector(state => getRecruiterList(state))
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -154,7 +156,7 @@ export const ReviewView = ({ currentApplication, formData, setWereChanges }) => 
                         {field.valueType == "recruiter" ? (
                             <div className="recruiter-notes-container">{recruiterNotes[field.name].map((notes, index) =>
                                 <span key={index}>
-                                    <p key={`1 ${index}`} className="recruiter-title"><strong>{notes.RecruiterEmail}: </strong></p>
+                                    <p key={`1 ${index}`} className="recruiter-title"><strong>{getRecruiterName(recruiterList, notes.RecruiterEmail)}: </strong></p>
                                     <p key={`2 ${index}`} className="recruiter-text">{notes.Notes}</p>
                                 </span>)}
                             </div>) : <></>}

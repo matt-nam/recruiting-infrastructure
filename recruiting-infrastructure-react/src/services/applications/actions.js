@@ -55,7 +55,6 @@ export const submitNotes = (index, id, email, recruiterNotes) => {
         dispatch({ type: SUBMITTING_NOTES })
 
         var body = {
-            // "ApplicationId": getState().applications.data.models[index].ApplicationId,
             "ApplicationId": id, 
             "RecruiterEmail": email,
             "RecruiterNotes": recruiterNotes

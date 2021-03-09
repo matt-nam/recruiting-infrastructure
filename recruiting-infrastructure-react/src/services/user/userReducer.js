@@ -9,11 +9,15 @@ import {
     ATTEMPTING_SIGN_UP,
     ATTEMPT_SIGN_UP_SUCCESS,
     ATTEMPT_SIGN_UP_FAILED,
+    ATTEMPTING_FETCH_RECRUITERS,
+    ATTEMPT_FETCH_RECRUITERS_SUCCESS,
+    ATTEMPT_FETCH_RECRUITERS_FAILED,
     ATTEMPTING_GET_CURRENT_USER, ATTEMPT_GET_CURRENT_USER_SUCCESS, ATTEMPT_GET_CURRENT_USER_FAILED
 } from "./action-types";
 import { LOADING, LOADED, FAILED } from "../constants";
 
 const initialState = {
+    recruiterList: [],
     user: new User(),
     status: LOADED,
     userHasAuthenticated: false
@@ -30,7 +34,7 @@ function userReducer(state = initialState, action) {
         case ATTEMPT_GET_CURRENT_USER_SUCCESS: {
             return {
                 ...state,
-                user: new User(action.payload),
+                user: new User({email: action.payload}),
                 userHasAuthenticated: true,
                 status: LOADED
             }
@@ -50,7 +54,7 @@ function userReducer(state = initialState, action) {
         case ATTEMPT_LOGIN_SUCCESS: {
             return {
                 ...state,
-                user: new User(action.payload),
+                user: new User({email: action.payload}),
                 userHasAuthenticated: true,
                 status: LOADED,
             };
@@ -91,10 +95,30 @@ function userReducer(state = initialState, action) {
             return {
                 ...state,
                 status: LOADED,
-                user: new User(action.payload)
+                user: new User({email: action.payload.email, name: action.payload.name, calendlyLink: action.payload.calendlyLink})
             }
         }
         case ATTEMPT_SIGN_UP_FAILED: {
+            return {
+                ...state,
+                status: FAILED
+            }
+        }
+        case ATTEMPTING_FETCH_RECRUITERS: {
+            return {
+                ...state,
+                status: LOADING
+            }
+        }
+        case ATTEMPT_FETCH_RECRUITERS_SUCCESS: {
+            return {
+                ...state,
+                recruiterList: action.payload,
+                user: action.payload.models.find(e => e.email == state.user.email),
+                status: LOADED
+            }
+        }
+        case ATTEMPT_FETCH_RECRUITERS_FAILED: {
             return {
                 ...state,
                 status: FAILED
