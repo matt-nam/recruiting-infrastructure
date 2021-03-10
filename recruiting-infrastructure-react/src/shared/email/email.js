@@ -8,22 +8,30 @@ import { getEmail } from "services/email/selectors";
 
 export const Email = (props) => {
     const dispatch = useDispatch();
-    const { closed, setClosed } = props
+    const { applicantId } = props // pass in applicnat ID?
     const [show, setShow] = useState(false);
-    var email = getEmail();
-    console.log(email);
 
     // fetch email
+    var email = getEmail(); // issue with get email and fetching email (fetch email has to happen during handleShow, but if we getEmail before then, defaultValue in textarea seems to be null)
+    // also store doesn't work properly, could be related
+    console.log(email);
+
     const handleShow = () => 
     {
-      dispatch(fetchEmail);
+      dispatch(fetchEmail("interviewTemplate"));
       setShow(true);
     }
 
     // send email
+    const handleSubmit = () => 
+    {
+      const email = document.getElementById("email-text");
+      dispatch(sendEmail(email, applicantId)); 
+      setShow(false);
+    }
+
     const handleClose = () => 
     {
-      dispatch(sendEmail);
       setShow(false);
     }
     
@@ -40,12 +48,11 @@ export const Email = (props) => {
         </Modal.Header>
         <Modal.Body>
             <textarea className="email-container" name="email-entry" rows="4" cols="50"
-              onChange={e => dispatch(editEmail(e.target.value))}>
-                {email}
+              id="email-text" defaultValue={email}>
             </textarea>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleClose} className="send-button">
+          <Button variant="primary" onClick={handleSubmit} className="send-button">
             send
           </Button>
         </Modal.Footer>

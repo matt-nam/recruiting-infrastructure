@@ -1,30 +1,38 @@
 import { FETCHING_EMAIL, FETCH_EMAIL, FETCH_EMAIL_FAILED, SET_EMAIL, SEND_EMAIL_FAILED, SEND_EMAIL } from "./action-types";
 import client from "../api"
 
-export const fetchEmail = (dispatch) => {
-    dispatch({ type: FETCHING_EMAIL })
-    var body = {
-        "requestContext": {
-            "recruiter": "andrew.milas@yale.edu",
-            "type": "interviewTemplate",
-            "student": "Rosie" // correct input?
+export const fetchEmail = (email_type) => {
+    return function (dispatch, getState)
+    {
+        dispatch({ type: FETCHING_EMAIL })
+        var body = {
+            "requestContext": {
+                "recruiter": getState().user.user.email,
+                "type": email_type,
+                "student": getState().applications.data.posWithId(getState().applications.options.current)
+            }
         }
+
+        dispatch({
+            type: FETCH_EMAIL,
+            payload: "this is the email"
+        })
     }
 
-    client.get('main-app', '/recruiter', body)
-        .then(r => {
-            dispatch({
-                type: FETCH_EMAIL,
-                payload: r
-            });
-        })
-        .catch(err => {
-            console.error(err); // log since might be a render err
-            dispatch({
-                type: FETCH_EMAIL_FAILED,
-                payload: err
-            });
-        })
+    // client.get('main-app', '/recruiter', body)
+    //     .then(r => {
+    //         dispatch({
+    //             type: FETCH_EMAIL,
+    //             payload: r
+    //         });
+    //     })
+    //     .catch(err => {
+    //         console.error(err); // log since might be a render err
+    //         dispatch({
+    //             type: FETCH_EMAIL_FAILED,
+    //             payload: err
+    //         });
+    //     })
 }
 
 export const editEmail = (newEmail) => {
@@ -36,22 +44,23 @@ export const editEmail = (newEmail) => {
     }
 }
 
-export const sendEmail = (newEmail) => {
+export const sendEmail = (newEmail, applicantId) => {
     var body = {
-        "body": {
-            "email_body": newEmail,
-            "email_subject": "YES Internship Program <> Interview",
-            "recruiter_email": "andrew.milas@yale.edu",
-            "type": "interviewTemplate"
-        },
+        "email_body": newEmail,
+        "email_subject": "YES Internship Program <> Interview",
+        "recruiter_email": "andrew.milas@yale.edu",
+        "type": "interviewTemplate"
+    }
+
+    var requestContext = {
         "requestContext": {
             "identity": {
-                "cognitoIdentityId": "us-east-2:e55be1ed-23d0-4027-aefe-80728e44269f" // what ID?
+                "cognitoIdentityId": applicantId
             }
         }
     }
     return function (dispatch) {
-        client.post('main-app', '/emailInterview', body)
+        client.post('main-app', '/emailInterview', body, requestContext)
         .then(r => {
             dispatch({
                 type: SEND_EMAIL,

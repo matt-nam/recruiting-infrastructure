@@ -40,6 +40,7 @@ export async function client(endpoint, path, method, { body, ...customConfig } =
         }
         throw new Error(response.statusText)
     } catch (err) {
+        console.log(err)
         return Promise.reject(err.message ? err.message : data)
     }
 }
