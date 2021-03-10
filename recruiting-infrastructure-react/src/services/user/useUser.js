@@ -8,10 +8,8 @@ export default function useUser() {
     const userHasAuthenticated = useSelector(state => {
         return getUserHasAuthenticated(state);
     });
-    const dispatch = useDispatch();
     return {
         user,
-        userHasAuthenticated,
-        dispatch,
+        userHasAuthenticated
     }
 }

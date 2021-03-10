@@ -1,25 +1,51 @@
 import React, { useState } from "react";
 import './applicant-review.scss';
+
 import { Modal } from 'react-bootstrap';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import ReviewView from './components/review-view';
 import ApplicationView from './components/application-view'
 
-import { formData } from 'shared/models/reviewView.model';
-import mockData from 'shared/models/tests/mockApplications';
-import { getShowingModal, getCurrentApplication } from 'services/applications/selectors'
+import { getShowingModal, getCurrentApplication, getWereChanges } from 'services/applications/selectors'
 import { useDispatch, useSelector } from "react-redux";
+import { formData } from './form-views/review-view-model';
 
-import { setApplicationsSortOptions, setCurrentApplication, setShowingModal } from 'services/applications/actions';
+import { setShowingModal, setWereChanges } from 'services/applications/actions';
 
 export const ApplicantReview = () => {
 
     const dispatch = useDispatch()
+
     const isOpen = useSelector(state => getShowingModal(state))
     const currentApplication = useSelector(state => getCurrentApplication(state))
 
+    const wereChanges = useSelector(state => getWereChanges(state))
+
     const hideModal = () => {
-        dispatch(setShowingModal({ showingModal: false }))
+        if (wereChanges) {
+            confirmAlert({
+                title: 'Confirm to close',
+                message: 'There are unsubmitted changes.',
+                buttons: [
+                    {
+                        label: 'Close',
+                        onClick: () => {
+                            dispatch(setShowingModal({ showingModal: false }))
+                            dispatch(setWereChanges(false))
+                        }
+                    },
+                    {
+                        label: 'Keep Editing',
+                        onClick: () => {}
+                    }
+                ]
+            });
+        } else {
+            dispatch(setShowingModal({ showingModal: false }))
+            dispatch(setWereChanges(false))
+        }
     };
 
     return (
@@ -27,21 +53,12 @@ export const ApplicantReview = () => {
             {/* <button onClick={showModal}> Review Applicant </button> */}
             <Modal size="lg" show={isOpen} onHide={hideModal}>
                 <Modal.Header>
-                    Applicant Review
+                    Applicant Review<div onClick={hideModal} className="regular-button">Close</div>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <ApplicationView currentApplication={currentApplication}/>
-                        </div>
-                        <div className="col-md-6">
-                            <ReviewView formData={mockData, formData} />
-                        </div>
-                    </div>
+                    <ApplicationView currentApplication={currentApplication} />
+                    <ReviewView currentApplication={currentApplication} formData={formData} />
                 </Modal.Body>
-                <Modal.Footer>
-                    <button onClick={hideModal}> Close </button>
-                </Modal.Footer>
             </Modal>
         </>
     );

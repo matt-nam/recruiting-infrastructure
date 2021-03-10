@@ -5,6 +5,7 @@ import { LOADING, LOADED, FAILED } from "../constants";
 
 const initialState = {
     data: new Catalog(),
+    industries: [],
     status: LOADED
 }
 
@@ -17,9 +18,11 @@ function startupReducer(state = initialState, action) {
             }
         }
         case FETCH_STARTUPS_SUCCESS: {
+            var industries = action.payload.industries
             return {
                 ...state,
                 data: action.payload,
+                industries: industries,
                 status: LOADED,
             };
         }

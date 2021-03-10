@@ -9,6 +9,7 @@ import { useUser } from "shared/hooks";
 import { useAppContext } from "utils/contextLib";
 import { attemptLogout } from "services/user/actions";
 import { useHistory } from "react-router-dom";
+import { setTableFilterOptions } from "services/applications/actions"
 import { useDispatch, useSelector } from "react-redux";
 import {
     getApplicationFilterOptions,
@@ -16,10 +17,9 @@ import {
     getOrganizations,
     getMajors,
     getYears,
-    getTimeCommitments,
-    getIndustries
+    getTimeCommitments
 } from 'services/applications/selectors';
-import { getStartupsState } from 'services/startups/selectors';
+import { getStartupsState, getIndustries } from 'services/startups/selectors';
 import FilterView from './components/filter-view'
 import { VIEW_COMPANY, VIEW_TALENT_POOL, VIEW_ACCEPTED, VIEW_REJECTED, VIEW_ALL_APPLICANTS } from 'services/constants';
 import Email from 'shared/email';
@@ -28,6 +28,7 @@ export const ApplicantView = () => {
     const dispatch = useDispatch();
     const filterOptions = useSelector(state => getApplicationFilterOptions(state));
     const [showFilterOptions, setShowFilterOptions] = useState(false);
+    const [minimizedListing, setMinimizedListing] = useState(true);
 
     function renderTitle() {
         switch (filterOptions.ViewType) {
@@ -53,9 +54,9 @@ export const ApplicantView = () => {
     // mock data for displaying properties
     var displayProperties = [];
     if (filterOptions.ViewType !== VIEW_COMPANY) {
-        displayProperties = ["FirstName", "LastName", "Rating", "University", "Major", "Hours"];
+        displayProperties = ["FirstName", "LastName", "Rating", "University", "Major", "Hours", "Status"];
     } else {
-        displayProperties = ["FirstName", "LastName", "Rating", "Startups", "StartupPairing"]
+        displayProperties = ["FirstName", "LastName", "Status", "Rating", "Startups", "StartupPairing"]
     }
 
 
@@ -82,11 +83,25 @@ export const ApplicantView = () => {
         }
     }
 
+    const toggleListing = event => {
+        event.preventDefault();
+        setMinimizedListing(!minimizedListing);
+    }
+
+    const listingPercentage = 40;
+
     return (
         <div className="applicant-container">
-            <div className={"applicant-container-main" + (filterOptions.ViewType === VIEW_COMPANY ? " company-view" : "")}>
+            <div className={"cover" + (showFilterOptions ? "" : " hide")} onClick={() => setShowFilterOptions(!showFilterOptions)}></div>
+            <div
+                className={"applicant-container-main" + (filterOptions.ViewType === VIEW_COMPANY ? " company-view" : "")}
+                style={{ width: (minimizedListing ? (filterOptions.ViewType === VIEW_COMPANY ? "100%" : "") : (filterOptions.ViewType === VIEW_COMPANY ? (100 - listingPercentage)+"%" : "")),
+                borderRight: (minimizedListing && filterOptions.ViewType === VIEW_COMPANY ? "0px" : "")}}>
+                {filterOptions.ViewType === VIEW_COMPANY && minimizedListing ? <div className="reveal-btn-container">
+                    <Button onClick={toggleListing}>&lt;</Button>
+                </div> : null}
                 <div className="applicant-container-header">
-                    <h3>{renderTitle()}</h3>
+                    <h3 style={{marginTop: (filterOptions.ViewType === VIEW_COMPANY ? "" : "-4px")}}>{renderTitle()}</h3>
                     <div className="query-container">
                         <div className="dropdown-container">
                             <div className="dropdown">
@@ -98,8 +113,9 @@ export const ApplicantView = () => {
                             <div className="search-input-container">
                                 <input
                                     type="text"
-                                    placeholder="search keywords or skills"
-                                    autoComplete="off"></input>
+                                    placeholder="search first name"
+                                    autoComplete="off"
+                                    onChange={e => dispatch(setTableFilterOptions({ Option: "KeywordSearch", Value: e.target.value }))}></input>
                             </div>
                             <div className="icon-container">
                                 <img className="search-icon" src={Icon} alt="Search" />
@@ -108,11 +124,13 @@ export const ApplicantView = () => {
                         </div>
                     </div>
                 </div>
-                <div className="pool-container">
-                    <ApplicantTable displayProperties={displayProperties} viewValue={filterOptions.ViewValue} />
-                </div>
-                <div className={"cover" + (showFilterOptions ? "" : " hide")} onClick={() => setShowFilterOptions(!showFilterOptions)}></div>
-                <div className="filter-container" style={{ width: (showFilterOptions ? "30%" : "0px"), padding: (showFilterOptions ? "2%" : "0px") }}>
+                <ApplicantTable displayProperties={displayProperties} viewValue={filterOptions.ViewValue} />
+                <div
+                    className="filter-container"
+                    style={{
+                        width: (showFilterOptions ? "400px" : "0px"),
+                        padding: (showFilterOptions ? "2%" : "0px")
+                    }}>
                     <div className="filter-container-row">
                         <h4>Filter Options</h4>
                         <button className="filter-btn" onClick={() => setShowFilterOptions(!showFilterOptions)}>Close</button>
@@ -129,9 +147,17 @@ export const ApplicantView = () => {
                     />
                 </div>
             </div>
-            {filterOptions.ViewType === VIEW_COMPANY ? <div className="listing-div">
-                <Listing listing={currentListing} />
-            </div> : null}
+            {filterOptions.ViewType === VIEW_COMPANY ?
+                <div
+                    className="listing-div"
+                    style={{
+                        width: (minimizedListing ? "0%" : listingPercentage+"%"),
+                        padding: (minimizedListing ? "0px" : "20px"),
+                        overflow: (minimizedListing ? "hidden" : "")
+                    }}>
+                    <Button onClick={toggleListing}>&gt;</Button>
+                    <Listing listing={currentListing} />
+                </div> : null}
         </div>
     )
 };

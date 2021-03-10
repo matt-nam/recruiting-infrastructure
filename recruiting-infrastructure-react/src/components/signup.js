@@ -9,12 +9,14 @@ export default function SignUp() {
     const history = useHistory();
     const [fields, handleFieldChange] = useFormFields({
         email: "",
-        password: ""
+        password: "",
+        name: "",
+        calendly: ""
     });
 
     const handleSubmit = event => {
         event.preventDefault();
-        store.dispatch(attemptSignUp(fields.email, fields.password, () => { history.push("/confirm") }))
+        store.dispatch(attemptSignUp(fields.email, fields.password, fields.name, fields.calendly, () => { history.push("/confirm") }))
     }
 
     return (
@@ -36,6 +38,22 @@ export default function SignUp() {
                         placeholder="password"
                         type="password"
                         value={fields.password}
+                        onChange={handleFieldChange}
+                    />
+                </FormGroup>
+                <FormGroup controlId="name" bsSize="large">
+                    <FormControl
+                        placeholder="name"
+                        type="name"
+                        value={fields.name}
+                        onChange={handleFieldChange}
+                    />
+                </FormGroup>
+                <FormGroup controlId="calendly" bsSize="large">
+                    <FormControl
+                        placeholder="calendly link"
+                        type="calendly"
+                        value={fields.calendly}
                         onChange={handleFieldChange}
                     />
                 </FormGroup>

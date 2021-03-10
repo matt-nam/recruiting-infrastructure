@@ -167,21 +167,30 @@ a {
 }
 
 .regular-button {
+    display: flex;
+    justify-items: center;
+    align-items: center;
     background-color: white;
     text-decoration: none;
     outline: none;
     color: $blue-color;
-    border-radius: 12px;
-    border: 2px solid $blue-color;
-    display: inline-block;
-
-    padding: 12px 20px;
-
+    border-radius: 6px;
+    border: 1px solid $blue-color;
     transition: all 0.3s;
+    font-weight: 700;
 
     a {
+        margin: 12px 20px;
         color: white;
         transition: all 0.3s;
+    }
+    
+    input {
+        margin: 3px 4px;
+        font-size: 12px;
+        border: none;
+        outline: none;
+        background-color: transparent;
     }
 }
 

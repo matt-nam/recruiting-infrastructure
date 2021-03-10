@@ -16,6 +16,18 @@
 
 .search-wrapper {
     padding: 2.5px;
+    .chip {
+        background-color: $blue-color;
+        border: 1px solid $blue-color;
+    }
+    .chip:hover {
+        color: $blue-color;
+        background-color: white;
+    }
+}
+
+.sidebar-dropdown-header {
+    font-weight: 700;
 }
 
 .sidebar-dropdown {
@@ -28,19 +40,20 @@
     .sidebar-dropdown-btn {
         color: black;
         border-radius: 4px;
-        background-color: lightgrey;
-        border: none;
-        width: 30px;
-        height: 28px;
+        background-color: white;
+        border: 1px solid black;
+        margin-top: 2px;
+        width: 24px;
+        height: 22px;
         outline: none;
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: all 0.2s;
     }
     .sidebar-dropdown-btn:hover {
         opacity: 0.5;
     }
-
 }
 
 

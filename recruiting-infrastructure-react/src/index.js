@@ -10,6 +10,7 @@ import { Amplify } from 'aws-amplify';
 import config from 'utils/amplify-config';
 import {fetchApplications, setApplicationsFilterOptions, setCurrentApplication, submitNotes } from "./services/applications/actions"
 import { fetchStartups } from 'services/startups/actions';
+import { fetchRecruiters } from 'services/user/actions';
 
 Amplify.configure({
   Auth: {
@@ -30,10 +31,9 @@ Amplify.configure({
   }
 });
 
-
 store.dispatch(fetchApplications);
 store.dispatch(fetchStartups);
-// store.dispatch(submitNotes(0));
+store.dispatch(fetchRecruiters);
 
 ReactDOM.render(
     <Provider store={store}>

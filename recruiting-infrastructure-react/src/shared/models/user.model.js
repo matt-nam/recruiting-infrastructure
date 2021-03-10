@@ -3,12 +3,18 @@ import { Model } from "./base";
 export class User extends Model {
     defaults() {
         return {
-            email: ""
+            email: "",
+            name: "",
+            calendlyLink: ""
         };
     }
 
-    constructor(email) {
+    constructor(user) {
         super();
-        this.email = email;
+        if (user) {
+            this.email = user.email;
+            this.name = user.name;
+            this.calendlyLink = user.calendlyLink;
+        }
     }
 }

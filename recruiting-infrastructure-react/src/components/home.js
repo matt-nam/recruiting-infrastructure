@@ -39,13 +39,21 @@ export default function Home() {
         }
     }
 
+    const goToRecruiting = event => {
+        event.preventDefault();
+        history.push("/recruiting");
+    }
+
     const printAuth = () => { console.log(user) }
 
     return (
         <div>
             <h2>Welcome</h2>
             { user.userHasAuthenticated || isAuthenticated ? (
+                <React.Fragment>
                 <Button onClick={handleLogout}>Log out</Button>
+                <Button onClick={goToRecruiting}>Recruiting page</Button>
+                </React.Fragment>
             ) : (
                 <React.Fragment>
                     <Button onClick={handleLogin}>Log in</Button>

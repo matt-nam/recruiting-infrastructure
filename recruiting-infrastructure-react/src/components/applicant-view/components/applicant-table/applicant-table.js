@@ -5,7 +5,8 @@ import { useDispatch } from "react-redux";
 import chroma from 'chroma-js';
 import { getApplicationListFiltered, getApplicationFilterOptions } from 'services/applications/selectors';
 import { getStartupsState } from 'services/startups/selectors';
-import { setApplicationsSortOptions,setCurrentApplication, setShowingModal } from 'services/applications/actions';
+import { setApplicationsSortOptions, setCurrentApplication, setShowingModal } from 'services/applications/actions';
+import { statusMap } from "services/constants";
 
 export const ratingColormap = chroma
     .scale(['#f8696b', '#ffeb84', '#63b37b'])
@@ -14,7 +15,7 @@ export const ratingColormap = chroma
 const renderHeader = {
     "FirstName": "First name",
     "LastName": "Last name",
-    "Hours": "Time commitment",
+    "Hours": "Time Commitment",
     "StartupPairing": "Startup Pairing",
     "Startups": "Startup Rankings"
 }
@@ -30,13 +31,11 @@ function renderTableRow(app, prop, startupModels) {
     }
     switch (prop) {
         case "Hours":
-            // return app[prop] + " hours/week";
-            if (app[prop][0] == 40 && app[prop][1] == 40) {
-                return "Fulltime";
-            }
-            return app[prop][0] + "-" + app[prop][1] + " hours/week";
+            return app[prop]
+        case "Status":
+            return statusMap[app["RecruiterNotes"][prop][0].Status]
         case "Rating":
-            return "" + app["RecruiterNotes"][prop];
+            return app["RecruiterNotes"][prop] === "" ? "-" : "" + app["RecruiterNotes"][prop];
         case "StartupPairing":
             var unsorted_names = [];
             startupModels.forEach(startup => {
@@ -85,8 +84,8 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
     const [ascendingToggle, setAscendingToggle] = useState(defaultAscendingToggle);
 
     const handleRowClick = (app) => {
-        dispatch(setCurrentApplication({applicationId: app.ApplicationId}))
-        dispatch(setShowingModal({showingModal: true}))
+        dispatch(setCurrentApplication({ applicationId: app.ApplicationId }))
+        dispatch(setShowingModal({ showingModal: true }))
     }
 
     function sortApplications(prop) {
@@ -118,12 +117,12 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
     }, [viewValue]);
 
     return (
-        <div ref={divRef} className="table-responsive">
-            <table className="applicant-table table-fixed">
+        <div ref={divRef} className="applicant-table-container">
+            <table className="applicant-table">
                 <thead ref={theadRef}>
                     <tr>
                         {displayProperties.map((prop) => (
-                            <th key={prop} className={(prop === "Startups" || prop === "StartupPairing" ? "col-xs-3" : "col-xs-2") + (prop === "Rating" ? " rating-header" : "")} >
+                            <th key={prop} className={(prop === "Startups" || prop === "StartupPairing" ? "col-xs-" : "col-xs-") + (prop === "Rating" ? " rating-header" : "")} >
                                 <span onClick={() => sortApplications(prop)}>{`${(prop in renderHeader) ? renderHeader[prop] : prop} ` + `${ascendingToggle.currentProp !== prop ? "\u2B0D" : (ascendingToggle.asc ? "\u25B2" : "\u25BC")}`}</span>
                             </th>
                         ))}
@@ -133,10 +132,10 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
                     {applications.map((app, index) => (
                         <tr key={index} onClick={() => handleRowClick(app)}>
                             {displayProperties.map((prop) => (
-                                <td key={prop + ("_" + index)} className={prop === "Startups" || prop === "StartupPairing" ? "col-xs-3" : "col-xs-2"}>
+                                <td key={prop + ("_" + index)} className={prop === "Startups" || prop === "StartupPairing" ? "col-xs-" : "col-xs-"}>
                                     <div
                                         className={(prop in renderClassName) ? renderClassName[prop] : ""}
-                                        style={prop === "Rating" ? {
+                                        style={prop === "Rating" && app["RecruiterNotes"][prop] !== "" ? {
                                             backgroundColor: ratingColormap(app["RecruiterNotes"][prop]),
                                             color: ratingColormap(app["RecruiterNotes"][prop]).darken(4)
                                         } : {}}>

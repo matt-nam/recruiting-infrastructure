@@ -1,14 +1,28 @@
 import { ApplicationList, applicationsFactory } from "../../shared/models/applicationList.model";
 import { FilterOptions } from "../../shared/models/filterOptions.model";
-import { SET_TABLE_FILTER_OPTIONS, FETCH_APPLICATIONS_SUCCESS, FETCHING_APPLICATIONS, FETCH_APPLICATIONS_FAILED, SET_APPLICATIONS_FILTER_OPTIONS, SET_CURRENT_APPLICATION, SET_APPLICATIONS_SORT_OPTIONS, SUBMITTING_NOTES, SUBMIT_NOTES_SUCCESS, SUBMIT_NOTES_FAILED, SET_SHOWING_MODAL } from "./action-types";
+import {
+    SET_TABLE_FILTER_OPTIONS,
+    FETCH_APPLICATIONS_SUCCESS,
+    FETCHING_APPLICATIONS,
+    FETCH_APPLICATIONS_FAILED,
+    SET_APPLICATIONS_FILTER_OPTIONS,
+    SET_CURRENT_APPLICATION,
+    SET_APPLICATIONS_SORT_OPTIONS,
+    SUBMITTING_NOTES,
+    SUBMIT_NOTES_SUCCESS,
+    SUBMIT_NOTES_FAILED,
+    SET_SHOWING_MODAL,
+    SET_WERE_CHANGES,
+} from "./action-types";
 import { LOADING, LOADED, FAILED } from "../constants";
 import { loadState, saveState } from "services/api";
 
 const initialState = {
     data: new ApplicationList(),
-    status: LOADED,
+    status: LOADING,
+    submitStatus: FAILED, 
     showingModal: false,
-    currentId: "",
+    wereChanges: false, // whether current application has been edited
     options: {
         current: 0,
         FilterOptions: new FilterOptions()
@@ -59,7 +73,7 @@ function applicationsReducer(state = initialState, action) {
                 SortValue: action.payload.SortValue,
                 Ascending: action.payload.Ascending
             });
-            saveState('sortOptions',{
+            saveState('sortOptions', {
                 Ascending: newFilterOptions.Ascending,
                 SortValue: newFilterOptions.SortValue
             })
@@ -141,7 +155,7 @@ function applicationsReducer(state = initialState, action) {
         case SUBMITTING_NOTES: {
             return {
                 ...state,
-                status: LOADING,
+                submitStatus: LOADING,
             }
         }
         case SUBMIT_NOTES_SUCCESS: {
@@ -150,14 +164,20 @@ function applicationsReducer(state = initialState, action) {
             newApplications.models[action.payload.index].RecruiterNotes = action.payload.res
             return {
                 ...state,
-                    data: newApplications,
-                status: LOADED
+                data: newApplications,
+                submitStatus: LOADED
             }
         }
         case SUBMIT_NOTES_FAILED: {
             return {
                 ...state,
-                status: FAILED,
+                submitStatus: FAILED,
+            }
+        }
+        case SET_WERE_CHANGES: {
+            return {
+                ...state,
+                wereChanges: action.payload.wereChanges
             }
         }
         default:

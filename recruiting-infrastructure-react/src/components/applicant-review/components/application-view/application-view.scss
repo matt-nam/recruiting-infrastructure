@@ -1,1 +1,50 @@
-@import "../../../../../styles/variables";
+@import "../../../../styles/variables";
+
+.application-view {
+    padding: 0 20px;
+    padding-bottom: 30px;
+    height: 100%;
+    width: 50%;
+    overflow-y: scroll;
+    text-align: left;
+
+    h3 {
+        font-weight: 700;
+    }
+
+    p {
+        margin-top: 4px;
+        margin-bottom: 4px;
+        font-size: 14px;
+    }
+    .section-title {
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+    .str-label {
+        color: gray;
+        margin-left: 20px;
+    }
+    .str-label-2 {
+        color: gray;
+        margin-left: 40px;
+    }
+    .question {
+        font-weight: 700;
+        font-size: 12px;
+        border-bottom: 1px solid gray;
+    }
+    .response {
+        color: black;
+        font-size: 13px;
+        padding: 6px;
+    }
+    .response-list {
+        color: black;
+        font-size: 13px;
+        padding: 2px 6px;
+    }
+    .red {
+        color: red;
+    }
+}

@@ -2,16 +2,9 @@ import { List } from "./base";
 import { ApplicationPosition } from "./applicationPosition.model";
 import { RecruiterNotes } from "./recruiterNotes.model";
 import { VIEW_COMPANY, VIEW_TALENT_POOL } from 'services/constants';
+import { recruiterNotesFactory } from './recruiterNotes.model'
 
 import { unique } from "utils/helper"
-
-const timeCommitments = {
-    "1-5 hrs/wk": [1, 5],
-    "6-10 hrs/wk": [6, 10],
-    "11-15 hrs/wk": [11, 15],
-    "16-20 hrs/wk": [16, 20],
-    "Fulltime": [40, 40]
-}
 
 const overlap = (a, b) => {
     if (a[1] == b[1] && a[0] == b[0]) return true
@@ -37,28 +30,12 @@ export class ApplicationList extends List {
     }
 
     get years() {
-        return unique(this.models.map(app => app.Year)).sort()
+        return unique(this.models.map(app => String(app.Year))).sort()
     }
 
     // Get time commitments
     get timeCommitments() {
-        return [
-            "1-5 hrs/wk",
-            "6-10 hrs/wk",
-            "11-15 hrs/wk",
-            "16-20 hrs/wk",
-            "Fulltime"
-        ]
-    }
-
-    get industries() {
-        var ret = new Set()
-        this.models.forEach(app => {
-            app.Industry.forEach(industry =>
-                ret.add(industry.trim())
-            )
-        })
-        return Array.from(ret).sort()
+        return unique(this.models.map(app => String(app.Hours))).sort()
     }
 
     get talentPools() {
@@ -85,6 +62,12 @@ export class ApplicationList extends List {
 
     // Helper function for filtered
     filteredByTableOptions(opt, application) {
+        if (opt.KeywordSearch && opt.KeywordSearch != "") {
+            let search = opt.KeywordSearch.trim().toLowerCase()
+            if (!application.FirstName.toLowerCase().includes(search)) {
+                return false
+            }
+        }
         if (opt.University.length > 0) {
             if (!opt.University.includes(application.University.trim())) {
                 return false
@@ -101,7 +84,7 @@ export class ApplicationList extends List {
             }
         }
         if (opt.Year.length > 0) {
-            if (!opt.Year.includes(application.Year)) {
+            if (!opt.Year.includes(String(application.Year))) {
                 return false
             }
         }
@@ -111,8 +94,7 @@ export class ApplicationList extends List {
             }
         }
         if (opt.Hours.length > 0) {
-            let tcs = opt.Hours.map(optTC => timeCommitments[optTC])
-            if (!tcs.some(tc => overlap(tc, application.Hours))) {
+            if (!opt.Hours.includes(application.Hours.trim())) {
                 return false
             }
         }
@@ -154,7 +136,7 @@ export class ApplicationList extends List {
                     return application.RecruiterNotes.TalentPools.includes(opt.ViewValue)
                 }
                 case VIEW_COMPANY: {
-                    return application.Startups.includes(opt.ViewValue.id)
+                    return application.Startups.includes(opt.ViewValue.id) || application.RecruiterNotes.StartupPairing.includes(opt.ViewValue.id);
                 }
                 default:
                     return true;
@@ -180,13 +162,13 @@ export class ApplicationList extends List {
         }
         else if (opt.SortValue === "Hours") {
             var compareFunction = (a, b) => {
-                var aStart = a.Hours[0];
-                var aEnd = a.Hours[1];
-                var bStart = b.Hours[0];
-                var bEnd = b.Hours[1];
-                return (aEnd < bEnd) ? -1 : (aEnd > bEnd) ? 1 : (
-                    (aStart < bStart) ? -1 : (aStart > bStart) ? 1 : 0
-                );
+                if (a.Hours < b.Hours) {
+                    return -1;
+                }
+                if (a.Hours > b.Hours) {
+                    return 1;
+                }
+                return 0;
             }
         }
         else if (opt.SortValue === "Startups" && opt.hasOwnProperty('ViewValue')) {
@@ -271,9 +253,9 @@ export const applicationsFactory = (res) => {
     let idCounter = 0
     return new ApplicationList(res.map((listing) => {
         return new ApplicationPosition({
-            RecruiterNotes: new RecruiterNotes(listing.RecruiterNotes),
+            ...listing,
+            RecruiterNotes: new RecruiterNotes(recruiterNotesFactory(listing.RecruiterNotes)),
             Index: idCounter++,
-            ...listing
         })
     }))
 }

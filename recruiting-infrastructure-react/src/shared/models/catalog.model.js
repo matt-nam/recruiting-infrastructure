@@ -16,6 +16,37 @@ export class Catalog extends List {
     get model() {
         return CatalogPosition
     }
+
+    get industries() {
+        var ret = new Set()
+        this.models.forEach(pos => {
+            pos.StartupInfo.Industries.forEach(industry =>
+                ret.add(industry.trim())
+            )
+        })
+        return Array.from(ret).sort()
+    }
+
+    get startups() {
+        return this.models.map(pos => {
+            return {
+                Name: pos.StartupInfo.StartupName,
+                Id: pos.StartupInfo.StartupId
+            }
+        })
+    }
+
+    getPositionsFor(startupIds) {
+        var startups = this.models.filter(pos => startupIds.includes(pos.StartupInfo.StartupId))
+        var positions = []
+        startups.forEach(startup => startup.Positions.models.forEach(pos => {
+            positions.push({
+                Name: startup.StartupInfo.StartupName + " - " + pos.Title,
+                Id: pos.PositionId
+            })
+        }))
+        return positions
+    }
 }
 
 export const catalogFactory = (data) => {
