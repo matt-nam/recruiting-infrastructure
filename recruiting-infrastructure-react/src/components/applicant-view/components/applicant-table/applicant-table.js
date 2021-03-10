@@ -5,7 +5,8 @@ import { useDispatch } from "react-redux";
 import chroma from 'chroma-js';
 import { getApplicationListFiltered, getApplicationFilterOptions } from 'services/applications/selectors';
 import { getStartupsState } from 'services/startups/selectors';
-import { setApplicationsSortOptions,setCurrentApplication, setShowingModal } from 'services/applications/actions';
+import { setApplicationsSortOptions, setCurrentApplication, setShowingModal } from 'services/applications/actions';
+import { statusMap } from "services/constants";
 
 export const ratingColormap = chroma
     .scale(['#f8696b', '#ffeb84', '#63b37b'])
@@ -32,7 +33,7 @@ function renderTableRow(app, prop, startupModels) {
         case "Hours":
             return app[prop]
         case "Status":
-            return "" + app["RecruiterNotes"][prop][0].Status
+            return statusMap[app["RecruiterNotes"][prop][0].Status]
         case "Rating":
             return app["RecruiterNotes"][prop] === "" ? "-" : "" + app["RecruiterNotes"][prop];
         case "StartupPairing":
@@ -83,8 +84,8 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
     const [ascendingToggle, setAscendingToggle] = useState(defaultAscendingToggle);
 
     const handleRowClick = (app) => {
-        dispatch(setCurrentApplication({applicationId: app.ApplicationId}))
-        dispatch(setShowingModal({showingModal: true}))
+        dispatch(setCurrentApplication({ applicationId: app.ApplicationId }))
+        dispatch(setShowingModal({ showingModal: true }))
     }
 
     function sortApplications(prop) {
@@ -116,8 +117,8 @@ export const ApplicantTable = ({ displayProperties, viewValue }) => {
     }, [viewValue]);
 
     return (
-        <div ref={divRef} className="table-responsive">
-            <table className="applicant-table table-fixed">
+        <div ref={divRef} className="applicant-table-container">
+            <table className="applicant-table">
                 <thead ref={theadRef}>
                     <tr>
                         {displayProperties.map((prop) => (

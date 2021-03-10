@@ -65,16 +65,22 @@
             padding: 2px;
             width: 40px;
             height: 40px;
-            border: 1px solid $gray-color;
+            border: none;
             vertical-align: middle;
             border-radius: 0px;
             position: absolute;
             bottom: 0;
-            right: 0;
+            left: 0;
+            outline: none;
+            background-color: white;
+            transition: all 0.3s;
             img {
                 width: 20px;
                 height: 20px;
             }
+        }
+        .refresh-btn:hover {
+            opacity: 0.5;
         }
     }
 }

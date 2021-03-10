@@ -1,5 +1,6 @@
 import React from "react";
 import { ControlLabel, FormControl } from 'react-bootstrap'
+import { statusMap } from "services/constants";
 
 export const Select = ({ field, fieldChanged, values, classProp }) => {
     const handleChange = event => {
@@ -13,7 +14,7 @@ export const Select = ({ field, fieldChanged, values, classProp }) => {
             <FormControl className={classProp} componentClass="select" value={values} onChange={handleChange}>
                 {field.options.map(({ label }, index) => (
                     <option value={label} key={`${values}_${index}`}>
-                        {label}
+                        {statusMap[label]}
                     </option>
                 ))}
             </FormControl>
