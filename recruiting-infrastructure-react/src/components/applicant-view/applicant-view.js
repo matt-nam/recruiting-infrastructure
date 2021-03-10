@@ -95,8 +95,7 @@ export const ApplicantView = () => {
             <div
                 className={"applicant-container-main" + (filterOptions.ViewType === VIEW_COMPANY ? " company-view" : "")}
                 style={{ width: (minimizedListing ? (filterOptions.ViewType === VIEW_COMPANY ? "100%" : "") : (filterOptions.ViewType === VIEW_COMPANY ? (100 - listingPercentage)+"%" : "")),
-                borderRight: (minimizedListing && filterOptions.ViewType === VIEW_COMPANY ? "0px" : ""), 
-                paddingTop: (filterOptions.ViewType === VIEW_COMPANY ? "" : "20px")}}>
+                borderRight: (minimizedListing && filterOptions.ViewType === VIEW_COMPANY ? "0px" : "")}}>
                 {filterOptions.ViewType === VIEW_COMPANY && minimizedListing ? <div className="reveal-btn-container">
                     <Button onClick={toggleListing}>&lt;</Button>
                 </div> : null}
@@ -123,9 +122,7 @@ export const ApplicantView = () => {
                         </div>
                     </div>
                 </div>
-                <div className="pool-container">
-                    <ApplicantTable displayProperties={displayProperties} viewValue={filterOptions.ViewValue} />
-                </div>
+                <ApplicantTable displayProperties={displayProperties} viewValue={filterOptions.ViewValue} />
                 <div
                     className="filter-container"
                     style={{

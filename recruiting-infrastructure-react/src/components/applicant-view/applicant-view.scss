@@ -30,17 +30,22 @@ $recruiting-inner-margins: 10px;
     }
 
     .applicant-container-header {
+        flex: 0 0 auto;
+        padding-top: 20px;
         padding-left: $recruiting-inner-margins;
-        padding-bottom: 4px;
+        padding-bottom: 7px;
     }
 
     .offset {
         margin-top: -20px;
     }
-    
+
     .applicant-container-main {
         height: calc(100%);
         position: relative;
+        display: flex;
+        flex-direction: column;
+
         .filter-btn {
             background-color: $blue-color;
             // background-color: rgb(211,211,211);
@@ -81,31 +86,29 @@ $recruiting-inner-margins: 10px;
                     margin-left: 0;
                     margin-right: $recruiting-margins;
                     border-radius: 100%;
-
-                    
                 }
             }
-            
+
             .search-bar-container {
                 margin-left: 10px;
                 margin-bottom: 20px;
                 background-color: none;
                 position: relative;
                 // margin-right: $recruiting-margins;
-            
+
                 box-sizing: border-box;
                 border-radius: 14px;
                 display: flex;
                 float: right;
                 height: 30px;
-            
+
                 .search-input-container {
                     width: auto;
                     height: inherit;
                     position: relative;
                     float: right;
                     font-size: 15px;
-            
+
                     input {
                         height: inherit;
                         padding: 14px;
@@ -119,7 +122,7 @@ $recruiting-inner-margins: 10px;
                         border-right: none;
                     }
                 }
-            
+
                 .icon-container {
                     background-color: $blue-color;
                     display: flex;
@@ -130,7 +133,7 @@ $recruiting-inner-margins: 10px;
                     width: 50px;
                     height: inherit;
                     margin-right: 10px;
-                
+
                     .search-icon {
                         width: 14px;
                         height: auto;
@@ -145,13 +148,6 @@ $recruiting-inner-margins: 10px;
             }
         }
         
-        .pool-container {
-            position: relative;
-            height: calc(100% - 92px);
-            font-size: 15px;
-            margin-top: 3px;
-        }
-
         .filter-container {
             overflow-y: auto;
             z-index: 3;
